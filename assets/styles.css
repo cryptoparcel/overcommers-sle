@@ -477,3 +477,27 @@ input{
   .actions{ justify-content:flex-start; flex-wrap:wrap; }
   .card{ grid-column: span 12; }
 }
+
+
+/* Header right-side logo */
+.header-right-logo{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+}
+.right-logo{
+  height: 44px;
+  width: auto;
+  display:block;
+  border-radius: 12px;
+  box-shadow: 0 14px 28px rgba(2,6,23,.12);
+  border: 1px solid rgba(7,25,34,.10);
+  background: #fff;
+}
+@media (min-width: 900px){
+  .right-logo{ height: 54px; } /* bigger on desktop */
+}
+@media (max-width: 680px){
+  .header-right-logo{ justify-content:flex-start; }
+  .right-logo{ height: 48px; }
+}
