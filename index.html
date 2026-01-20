@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVERCOMMERS | SLE - Transitional Sober Living for Recovery and Reentry</title>
+    <style>
+        /* Global Styles - Professional, clean, empathetic design inspired by Harvard-level UI/UX principles: minimalism, accessibility, responsive grid. */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f9f9f9;
+            line-height: 1.6;
+        }
+        header, section, footer {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: #004d40; /* Deep green for growth and trust */
+        }
+        a {
+            text-decoration: none;
+            color: #00796b; /* Teal accent for actions */
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        /* Header */
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+        }
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+        .social-icons img {
+            width: 24px;
+            height: 24px;
+        }
+        /* Hero Section */
+        #hero {
+            background: linear-gradient(to bottom, #e0f2f1, #b2dfdb); /* Calming gradient */
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        #hero h1 {
+            font-size: 2.5rem;
+        }
+        .cta-button {
+            background-color: #ff5722; /* Warm orange for hope/action */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            margin: 0.5rem;
+            display: inline-block;
+        }
+        /* Interactive Boxes - Grid layout, responsive */
+        #boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        .box {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .box:hover {
+            transform: scale(1.05);
+        }
+        .box img {
+            width: 50px;
+            height: 50px;
+        }
+        /* Why We Help - Alternating layout for narrative flow */
+        #why-help {
+            background-color: #e8f5e9;
+        }
+        .reason {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .reason:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        .reason img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+        /* Stories Section - Carousel simulation with grid */
+        #stories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        .story-card {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        /* Placeholder */
+        #story-placeholder {
+            text-align: center;
+            border: 2px dashed #ccc;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        #story-placeholder img {
+            width: 600px;
+            height: 400px;
+            background-color: #eee;
+            display: block;
+            margin: 0 auto;
+        }
+        /* Highlights - Accordion-like with details */
+        #highlights details {
+            margin-bottom: 1rem;
+        }
+        /* Shop Teaser */
+        #shop-teaser {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            text-align: center;
+        }
+        /* Footer */
+        footer {
+            background-color: #004d40;
+            color: white;
+            text-align: center;
+        }
+        /* Responsive Media Queries */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+            }
+            .reason {
+                flex-direction: column;
+            }
+        }
+        /* Accessibility: High contrast, ARIA labels */
+        [role="button"] {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h2>OVERCOMMERS | SLE</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#boxes">What We Do</a></li>
+                <li><a href="#why-help">Resources</a></li>
+                <li><a href="#shop-teaser">Shop</a></li>
+                <li><a href="/login">Login</a></li> <!-- Link to login page -->
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="social-icons">
+            <a href="https://youtube.com" aria-label="YouTube"><img src="https://via.placeholder.com/24?text=YT" alt="YouTube Icon"></a>
+            <a href="https://instagram.com" aria-label="Instagram"><img src="https://via.placeholder.com/24?text=IG" alt="Instagram Icon"></a>
+            <a href="https://facebook.com" aria-label="Facebook"><img src="https://via.placeholder.com/24?text=FB" alt="Facebook Icon"></a>
+            <a href="https://tiktok.com" aria-label="TikTok"><img src="https://via.placeholder.com/24?text=TT" alt="TikTok Icon"></a>
+            <a href="https://linkedin.com" aria-label="LinkedIn"><img src="https://via.placeholder.com/24?text=LI" alt="LinkedIn Icon"></a>
+            <a href="mailto:info@overcommerssle.com" aria-label="Email"><img src="https://via.placeholder.com/24?text=@" alt="Email Icon"></a>
+        </div>
+    </header>
+
+    <section id="hero">
+        <h1>OVERCOMMERS | SLE: Transitional Sober Living for Addiction Recovery and Prison Reentry</h1>
+        <p>From incarceration to independence—acclimating to society with sobriety, skills, and community support. Owned by Lumpia Bros Cafe, we draw inspiration from community-driven systems to empower your journey.</p>
+        <a href="/apply" class="cta-button">Apply for Transition</a>
+        <a href="/shop" class="cta-button">Shop to Empower</a>
+        <a href="/login" class="cta-button">Login</a>
+    </section>
+
+    <section id="boxes">
+        <h2>Explore Our Offerings</h2>
+        <div class="box" role="button" tabindex="0">
+            <img src="https://via.placeholder.com/50?text=WD" alt="What We Do Icon">
+            <h3>What We Do</h3>
+            <p>Discover services, mission, partners, and team for transitional recovery.</p>
+        </div>
+        <div class="box" role="button" tabindex="0">
+            <img src="https://via.placeholder.com/50?text=RS" alt="Resources Icon">
+            <h3>Resources</h3>
+            <p>Access videos, blogs, and skills training for your journey.</p>
+        </div>
+        <div class="box" role="button" tabindex="0">
+            <img src="https://via.placeholder.com/50?text=SH" alt="Shop Icon">
+            <h3>Shop</h3>
+            <p>Browse merchandise to support our programs.</p>
+            <!-- Teaser link to cart -->
+            <a href="/cart">View Cart</a>
+        </div>
+        <div class="box" role="button" tabindex="0">
+            <img src="https://via.placeholder.com/50?text=PR" alt="Privacy Icon">
+            <h3>Privacy</h3>
+            <p>Our commitment to your data security.</p>
+        </div>
+    </section>
+
+    <section id="why-help">
+        <h2>Why We Help: Empowering Recovery and Reentry</h2>
+        <div class="reason">
+            <img src="https://via.placeholder.com/100?text=AR" alt="Addiction Recovery">
+            <div>
+                <h3>Addiction Recovery & Rehabilitation</h3>
+                <p>Structured sobriety to heal from addiction's grip, with certified therapy for lasting change, inspired by community systems like Lumpia Bros Cafe where practical support fosters resilience.</p>
+            </div>
+        </div>
+        <div class="reason">
+            <img src="https://via.placeholder.com/100?text=PT" alt="Prison Transition">
+            <div>
+                <h3>Prison-to-Society Transition</h3>
+                <p>Acclimation support: Relearning real-world interactions, environmental awareness, and unlocking potential post-incarceration.</p>
+            </div>
+        </div>
+        <div class="reason">
+            <img src="https://via.placeholder.com/100?text=LS" alt="Life Skills">
+            <div>
+                <h3>Life Skills & Tech Upkeep</h3>
+                <p>Master budgeting, communication, and modern tech—closing the 20-year gap in digital navigation and world systems.</p>
+            </div>
+        </div>
+        <div class="reason">
+            <img src="https://via.placeholder.com/100?text=CG" alt="Community Give-Back">
+            <div>
+                <h3>Community Give-Back</h3>
+                <p>Backed by licensed officials, law enforcement, and mayoral endorsements—helping individuals rebuild to strengthen San Jose, starting local and giving back through reintegration.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="stories">
+        <h2>Stories & Accomplishments</h2>
+        <div class="story-card">
+            <h3>Inspired Transformations</h3>
+            <p>Inspired by the Lumpia Bros Cafe system—where community work transforms lives—our residents achieve sobriety (90% 6-month retention), jobs (75% placement), and zero recidivism in cohorts.</p>
+        </div>
+        <div class="story-card">
+            <h3>A Journey from Incarceration</h3>
+            <p>After 15 years inside, one resident overcame addiction, learned apps for job hunting, and now mentors others—proving recovery leads to contribution and showing there is always a way forward.</p>
+        </div>
+        <!-- Add more as needed -->
+    </section>
+
+    <section id="story-placeholder">
+        <h2>Featured Reentry Story</h2>
+        <img src="https://via.placeholder.com/600x400?text=Placeholder+Image" alt="Story Placeholder Image">
+        <p>Details forthcoming on a journey from prison to purpose. Replace with real content.</p>
+    </section>
+
+    <section id="highlights">
+        <h2>Highlights</h2>
+        <details>
+            <summary>Our Partners</summary>
+            <p>Collaborating with local recovery networks (e.g., NARR affiliates) and businesses for holistic support. [Placeholder: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.]</p>
+        </details>
+        <details>
+            <summary>Certified Support</summary>
+            <p>Backed by licensed and appointed officials on behalf of the community.</p>
+        </details>
+        <details>
+            <summary>Community Backing</summary>
+            <p>Endorsed by law enforcement and local leaders for reintegration success.</p>
+        </details>
+    </section>
+
+    <section id="shop-teaser">
+        <h2>Shop to Support Recovery</h2>
+        <div>
+            <img src="https://via.placeholder.com/200?text=Product+1" alt="Product 1">
+            <p>Branded Merch - $20</p>
+            <a href="/cart" class="cta-button">Add to Cart</a>
+        </div>
+        <div>
+            <img src="https://via.placeholder.com/200?text=Product+2" alt="Product 2">
+            <p>Recovery Journal - $15</p>
+            <a href="/cart" class="cta-button">Add to Cart</a>
+        </div>
+        <!-- Link to checkout from cart -->
+        <a href="/checkout">Proceed to Checkout</a>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 OVERCOMMERS | SLE. All rights reserved. Owned by Lumpia Bros Cafe.</p>
+        <div class="social-icons">
+            <!-- Repeated social icons -->
+            <a href="https://youtube.com" aria-label="YouTube"><img src="https://via.placeholder.com/24?text=YT" alt="YouTube Icon"></a>
+            <a href="https://instagram.com" aria-label="Instagram"><img src="https://via.placeholder.com/24?text=IG" alt="Instagram Icon"></a>
+            <a href="https://facebook.com" aria-label="Facebook"><img src="https://via.placeholder.com/24?text=FB" alt="Facebook Icon"></a>
+            <a href="https://tiktok.com" aria-label="TikTok"><img src="https://via.placeholder.com/24?text=TT" alt="TikTok Icon"></a>
+            <a href="https://linkedin.com" aria-label="LinkedIn"><img src="https://via.placeholder.com/24?text=LI" alt="LinkedIn Icon"></a>
+            <a href="mailto:info@overcommerssle.com" aria-label="Email"><img src="https://via.placeholder.com/24?text=@" alt="Email Icon"></a>
+        </div>
+        <a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a>
+    </footer>
+
+    <script>
+        // Basic JS for interactivity - e.g., box clicks (modal simulation)
+        document.querySelectorAll('.box').forEach(box => {
+            box.addEventListener('click', () => {
+                alert('Explore options: Services, Mission, etc. (Modal placeholder)');
+            });
+        });
+    </script>
+</body>
+</html>
