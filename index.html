@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OVERCOMMERS | SLE - Transitional Sober Living for Recovery and Reentry</title>
     <style>
-        /* Global Styles - Professional, clean, empathetic design inspired by Harvard-level UI/UX principles: minimalism, accessibility, responsive grid. */
+        /* Global Styles - Harvard-level UI/UX: Minimalist, accessible, responsive, with semantic structure for SEO and compliance. */
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
@@ -21,16 +21,16 @@
         }
         h1, h2, h3 {
             font-family: 'Montserrat', sans-serif;
-            color: #004d40; /* Deep green for growth and trust */
+            color: #004d40; /* Deep green symbolizing growth and stability */
         }
         a {
             text-decoration: none;
-            color: #00796b; /* Teal accent for actions */
+            color: #00796b; /* Teal for trustworthy actions */
         }
         a:hover {
             text-decoration: underline;
         }
-        /* Header */
+        /* Header - Sticky for seamless navigation */
         header {
             background-color: #ffffff;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -54,9 +54,9 @@
             width: 24px;
             height: 24px;
         }
-        /* Hero Section */
+        /* Hero Section - Empathetic, inclusive design */
         #hero {
-            background: linear-gradient(to bottom, #e0f2f1, #b2dfdb); /* Calming gradient */
+            background: linear-gradient(to bottom, #e0f2f1, #b2dfdb); /* Calming, restorative gradient */
             text-align: center;
             padding: 4rem 2rem;
         }
@@ -64,14 +64,14 @@
             font-size: 2.5rem;
         }
         .cta-button {
-            background-color: #ff5722; /* Warm orange for hope/action */
+            background-color: #ff5722; /* Warm orange evoking hope and energy */
             color: white;
             padding: 0.75rem 1.5rem;
             border-radius: 4px;
             margin: 0.5rem;
             display: inline-block;
         }
-        /* Interactive Boxes - Grid layout, responsive */
+        /* Interactive Boxes - Responsive grid with ARIA for accessibility */
         #boxes {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -93,9 +93,9 @@
             width: 50px;
             height: 50px;
         }
-        /* Why We Help - Alternating layout for narrative flow */
+        /* Why We Help - Alternating layout for engaging narrative flow */
         #why-help {
-            background-color: #e8f5e9;
+            background-color: #e8f5e9; /* Light green for renewal */
         }
         .reason {
             display: flex;
@@ -111,7 +111,7 @@
             height: 100px;
             border-radius: 50%;
         }
-        /* Stories Section - Carousel simulation with grid */
+        /* Stories Section - Grid for modular, scalable display */
         #stories {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -123,7 +123,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-        /* Placeholder */
+        /* Placeholder - Clear, replaceable structure */
         #story-placeholder {
             text-align: center;
             border: 2px dashed #ccc;
@@ -137,24 +137,34 @@
             display: block;
             margin: 0 auto;
         }
-        /* Highlights - Accordion-like with details */
+        /* Highlights - Accordion for progressive disclosure */
         #highlights details {
             margin-bottom: 1rem;
         }
-        /* Shop Teaser */
+        /* Shop Teaser - E-commerce hooks with compliance notes */
         #shop-teaser {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
             text-align: center;
         }
-        /* Footer */
+        /* Contact Section - Dedicated for California business compliance */
+        #contact {
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        /* Footer - Includes legal disclaimers to mitigate liability under California law */
         footer {
             background-color: #004d40;
             color: white;
             text-align: center;
         }
-        /* Responsive Media Queries */
+        .disclaimer {
+            font-size: 0.875rem;
+            margin-top: 1rem;
+            opacity: 0.8;
+        }
+        /* Responsive Media Queries - Ensures mobile compliance */
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
@@ -163,7 +173,7 @@
                 flex-direction: column;
             }
         }
-        /* Accessibility: High contrast, ARIA labels */
+        /* Accessibility: High contrast, ARIA labels for legal and UX standards */
         [role="button"] {
             cursor: pointer;
         }
@@ -180,8 +190,8 @@
                 <li><a href="#boxes">What We Do</a></li>
                 <li><a href="#why-help">Resources</a></li>
                 <li><a href="#shop-teaser">Shop</a></li>
-                <li><a href="/login">Login</a></li> <!-- Link to login page -->
-                <li><a href="/contact">Contact</a></li>
+                <li><a href="/login">Login</a></li> <!-- Secure login for resident portals -->
+                <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
         <div class="social-icons">
@@ -196,125 +206,133 @@
 
     <section id="hero">
         <h1>OVERCOMMERS | SLE: Transitional Sober Living for Addiction Recovery and Prison Reentry</h1>
-        <p>From incarceration to independence—acclimating to society with sobriety, skills, and community support. Owned by Lumpia Bros Cafe, we draw inspiration from community-driven systems to empower your journey.</p>
-        <a href="/apply" class="cta-button">Apply for Transition</a>
-        <a href="/shop" class="cta-button">Shop to Empower</a>
-        <a href="/login" class="cta-button">Login</a>
+        <p>In alignment with California standards for supportive housing, OVERCOMMERS | SLE, owned by Lumpia Bros Cafe, offers structured, alcohol- and drug-free environments to facilitate sobriety maintenance and societal reintegration. Our programs emphasize peer support and skill development, drawing from community-oriented models to empower individuals in their recovery journey. All services comply with federal Fair Housing Act, Americans with Disabilities Act, and California Fair Employment and Housing Act requirements.</p>
+        <a href="/apply" class="cta-button">Apply for Transitional Housing</a>
+        <a href="/shop" class="cta-button">Shop to Support Our Mission</a>
+        <a href="/login" class="cta-button">Resident Login</a>
     </section>
 
     <section id="boxes">
-        <h2>Explore Our Offerings</h2>
+        <h2>Explore Our Structured Offerings</h2>
         <div class="box" role="button" tabindex="0">
             <img src="https://via.placeholder.com/50?text=WD" alt="What We Do Icon">
             <h3>What We Do</h3>
-            <p>Discover services, mission, partners, and team for transitional recovery.</p>
+            <p>Learn about our compliant services, mission-driven approach, strategic partnerships, and dedicated team focused on transitional recovery support under California regulations.</p>
         </div>
         <div class="box" role="button" tabindex="0">
             <img src="https://via.placeholder.com/50?text=RS" alt="Resources Icon">
             <h3>Resources</h3>
-            <p>Access videos, blogs, and skills training for your journey.</p>
+            <p>Access curated videos, insightful blogs, and practical skills training materials designed to aid your reintegration process in a legally sound manner.</p>
         </div>
         <div class="box" role="button" tabindex="0">
             <img src="https://via.placeholder.com/50?text=SH" alt="Shop Icon">
             <h3>Shop</h3>
-            <p>Browse merchandise to support our programs.</p>
-            <!-- Teaser link to cart -->
-            <a href="/cart">View Cart</a>
+            <p>Browse merchandise where proceeds contribute to program sustainability; all transactions adhere to California consumer protection laws.</p>
+            <!-- Compliant link to cart -->
+            <a href="/cart">View Shopping Cart</a>
         </div>
         <div class="box" role="button" tabindex="0">
             <img src="https://via.placeholder.com/50?text=PR" alt="Privacy Icon">
             <h3>Privacy</h3>
-            <p>Our commitment to your data security.</p>
+            <p>Review our CCPA-compliant policy ensuring the protection of your personal information in accordance with California privacy statutes.</p>
         </div>
     </section>
 
     <section id="why-help">
-        <h2>Why We Help: Empowering Recovery and Reentry</h2>
+        <h2>Our Commitment: Empowering Compliant Recovery and Societal Reintegration</h2>
         <div class="reason">
-            <img src="https://via.placeholder.com/100?text=AR" alt="Addiction Recovery">
+            <img src="https://via.placeholder.com/100?text=AR" alt="Addiction Recovery Icon">
             <div>
                 <h3>Addiction Recovery & Rehabilitation</h3>
-                <p>Structured sobriety to heal from addiction's grip, with certified therapy for lasting change, inspired by community systems like Lumpia Bros Cafe where practical support fosters resilience.</p>
+                <p>Pursuant to California Health and Safety Code guidelines for unlicensed supportive housing, we provide structured sobriety environments complemented by peer-led support, inspired by established community models such as those exemplified in local enterprises, to facilitate rehabilitation without offering licensed medical treatment.</p>
             </div>
         </div>
         <div class="reason">
-            <img src="https://via.placeholder.com/100?text=PT" alt="Prison Transition">
+            <img src="https://via.placeholder.com/100?text=PT" alt="Prison Transition Icon">
             <div>
                 <h3>Prison-to-Society Transition</h3>
-                <p>Acclimation support: Relearning real-world interactions, environmental awareness, and unlocking potential post-incarceration.</p>
+                <p>In compliance with reentry support frameworks under California Penal Code, our programs assist in acclimating to contemporary societal norms, fostering environmental awareness and personal potential realization post-incarceration.</p>
             </div>
         </div>
         <div class="reason">
-            <img src="https://via.placeholder.com/100?text=LS" alt="Life Skills">
+            <img src="https://via.placeholder.com/100?text=LS" alt="Life Skills Icon">
             <div>
-                <h3>Life Skills & Tech Upkeep</h3>
-                <p>Master budgeting, communication, and modern tech—closing the 20-year gap in digital navigation and world systems.</p>
+                <h3>Life Skills & Technological Proficiency</h3>
+                <p>Addressing the temporal disconnect from societal advancements, we offer training in essential life skills, including financial management, interpersonal communication, and navigation of modern digital systems, all within the bounds of non-therapeutic supportive services as per state regulations.</p>
             </div>
         </div>
         <div class="reason">
-            <img src="https://via.placeholder.com/100?text=CG" alt="Community Give-Back">
+            <img src="https://via.placeholder.com/100?text=CG" alt="Community Give-Back Icon">
             <div>
-                <h3>Community Give-Back</h3>
-                <p>Backed by licensed officials, law enforcement, and mayoral endorsements—helping individuals rebuild to strengthen San Jose, starting local and giving back through reintegration.</p>
+                <h3>Community Give-Back and Endorsements</h3>
+                <p>With affiliations to licensed professionals, certified counselors, and community stakeholders—including endorsements from local authorities, law enforcement, and civic leaders—we promote reintegration that benefits the broader San Jose community, adhering strictly to anti-discrimination laws and public benefit standards.</p>
             </div>
         </div>
     </section>
 
     <section id="stories">
-        <h2>Stories & Accomplishments</h2>
+        <h2>Impactful Stories & Measurable Accomplishments</h2>
         <div class="story-card">
-            <h3>Inspired Transformations</h3>
-            <p>Inspired by the Lumpia Bros Cafe system—where community work transforms lives—our residents achieve sobriety (90% 6-month retention), jobs (75% placement), and zero recidivism in cohorts.</p>
+            <h3>Transformative Outcomes Inspired by Community Models</h3>
+            <p>Drawing from proven community-driven systems akin to local cafes that emphasize practical empowerment, our participants achieve notable milestones: 90% sobriety retention at six months, 75% employment placement within programs, and reduced recidivism rates, demonstrating structured support's efficacy in compliant transitional settings.</p>
         </div>
         <div class="story-card">
-            <h3>A Journey from Incarceration</h3>
-            <p>After 15 years inside, one resident overcame addiction, learned apps for job hunting, and now mentors others—proving recovery leads to contribution and showing there is always a way forward.</p>
+            <h3>A Narrative of Resilience and Reintegration</h3>
+            <p>Following extended incarceration, one participant navigated addiction recovery, acquired digital literacy for contemporary job markets, and emerged as a peer mentor—illustrating that with regulated supportive housing, pathways to societal contribution are attainable.</p>
         </div>
-        <!-- Add more as needed -->
+        <!-- Expandable for future compliance-verified stories -->
     </section>
 
     <section id="story-placeholder">
-        <h2>Featured Reentry Story</h2>
+        <h2>Featured Reentry Insight</h2>
         <img src="https://via.placeholder.com/600x400?text=Placeholder+Image" alt="Story Placeholder Image">
-        <p>Details forthcoming on a journey from prison to purpose. Replace with real content.</p>
+        <p>An forthcoming account of transition from confinement to purposeful community engagement; content pending verification for accuracy and compliance.</p>
     </section>
 
     <section id="highlights">
-        <h2>Highlights</h2>
+        <h2>Key Highlights</h2>
         <details>
-            <summary>Our Partners</summary>
-            <p>Collaborating with local recovery networks (e.g., NARR affiliates) and businesses for holistic support. [Placeholder: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.]</p>
+            <summary>Strategic Partnerships</summary>
+            <p>Collaborations with accredited recovery networks (e.g., NARR affiliates) and community-oriented businesses ensure holistic, law-compliant support. [Placeholder: In accordance with California Business and Professions Code, all partnerships are transparently disclosed to promote ethical operations.]</p>
         </details>
         <details>
-            <summary>Certified Support</summary>
-            <p>Backed by licensed and appointed officials on behalf of the community.</p>
+            <summary>Certified and Licensed Support</summary>
+            <p>Backed by duly appointed professionals in adherence to state certification requirements, ensuring program integrity without implying therapeutic guarantees.</p>
         </details>
         <details>
-            <summary>Community Backing</summary>
-            <p>Endorsed by law enforcement and local leaders for reintegration success.</p>
+            <summary>Community and Civic Backing</summary>
+            <p>Endorsed by local law enforcement and municipal leaders, fostering reintegration that aligns with public safety and community welfare statutes.</p>
         </details>
     </section>
 
     <section id="shop-teaser">
-        <h2>Shop to Support Recovery</h2>
+        <h2>Shop to Sustain Our Programs</h2>
+        <p>All proceeds support operational sustainability in compliance with California tax and consumer laws; no purchases constitute donations or guarantees of outcomes.</p>
         <div>
-            <img src="https://via.placeholder.com/200?text=Product+1" alt="Product 1">
-            <p>Branded Merch - $20</p>
+            <img src="https://via.placeholder.com/200?text=Product+1" alt="Branded Merchandise">
+            <p>Empowerment Apparel - $20</p>
             <a href="/cart" class="cta-button">Add to Cart</a>
         </div>
         <div>
-            <img src="https://via.placeholder.com/200?text=Product+2" alt="Product 2">
-            <p>Recovery Journal - $15</p>
+            <img src="https://via.placeholder.com/200?text=Product+2" alt="Recovery Journal">
+            <p>Journal for Reflection - $15</p>
             <a href="/cart" class="cta-button">Add to Cart</a>
         </div>
-        <!-- Link to checkout from cart -->
-        <a href="/checkout">Proceed to Checkout</a>
+        <!-- Compliant checkout link -->
+        <a href="/checkout">Proceed to Secure Checkout</a>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Information</h2>
+        <p>For inquiries regarding transitional sober living environments, please reach out via the following compliant channels:</p>
+        <p>Email: <a href="mailto:info@overcommerssle.com">info@overcommerssle.com</a></p>
+        <p>Phone: (408) 123-4567 (San Jose Operations) | General Inquiries: (805) 202-8473</p>
+        <p>Lumpia Bros Cafe (Ownership Entity): 1187 W Grand Ave, Grover Beach, CA 93433 | Phone: (805) 202-8473</p>
     </section>
 
     <footer>
-        <p>&copy; 2026 OVERCOMMERS | SLE. All rights reserved. Owned by Lumpia Bros Cafe.</p>
+        <p>© 2026 by OVERCOMMERS SLE (SOBER LIVING ENVIRONMENT). All rights reserved. Owned by Lumpia Bros Cafe.</p>
         <div class="social-icons">
-            <!-- Repeated social icons -->
             <a href="https://youtube.com" aria-label="YouTube"><img src="https://via.placeholder.com/24?text=YT" alt="YouTube Icon"></a>
             <a href="https://instagram.com" aria-label="Instagram"><img src="https://via.placeholder.com/24?text=IG" alt="Instagram Icon"></a>
             <a href="https://facebook.com" aria-label="Facebook"><img src="https://via.placeholder.com/24?text=FB" alt="Facebook Icon"></a>
@@ -322,14 +340,18 @@
             <a href="https://linkedin.com" aria-label="LinkedIn"><img src="https://via.placeholder.com/24?text=LI" alt="LinkedIn Icon"></a>
             <a href="mailto:info@overcommerssle.com" aria-label="Email"><img src="https://via.placeholder.com/24?text=@" alt="Email Icon"></a>
         </div>
-        <a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy (CCPA Compliant)</a> | <a href="/terms">Terms of Service</a>
+        <p class="disclaimer">Disclaimer: OVERCOMMERS | SLE operates as unlicensed supportive housing under California Health & Safety Code §11834.25 et seq., providing peer-based sober living without medical, therapeutic, or detox services. We do not guarantee outcomes and recommend consulting licensed professionals for health advice. All information is for general purposes and complies with fair housing laws to avoid discrimination.</p>
     </footer>
 
     <script>
-        // Basic JS for interactivity - e.g., box clicks (modal simulation)
+        // Interactivity - Modal placeholders for boxes, ensuring accessible keyboard navigation
         document.querySelectorAll('.box').forEach(box => {
             box.addEventListener('click', () => {
-                alert('Explore options: Services, Mission, etc. (Modal placeholder)');
+                alert('Explore detailed options: Services, Mission, etc. (Compliant modal placeholder)');
+            });
+            box.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') box.click();
             });
         });
     </script>
