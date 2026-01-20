@@ -2,1450 +2,836 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OVERCOMMERS | SLE — Transitional Sober Living for Recovery and Reentry</title>
-  <meta name="description" content="OVERCOMMERS | SLE provides structured, peer-supported sober living for recovery and reentry — supportive housing (not licensed treatment). Resources, resident portal, and program information." />
-  <meta name="theme-color" content="#0b5f57" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OVERCOMMERS | SLE — Transitional Sober Living</title>
 
-  <!-- Performance: preconnect + font swap -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+
+  <meta name="description" content="OVERCOMMERS | SLE provides structured transitional sober living support for addiction recovery and prison reentry." />
+  <meta name="theme-color" content="#0B2B2A" />
 
   <style>
     :root{
-      /* Core palette */
-      --bg: #f5fbff;
-      --surface: #ffffff;
+      --bg: #f6fbfb;
+      --panel: rgba(255,255,255,.86);
+      --panel-strong: #ffffff;
       --text: #0f172a;
       --muted: #475569;
-      --border: rgba(2, 6, 23, 0.10);
+      --brand: #0f766e;
+      --brand-2: #0ea5a4;
+      --accent: #fb6a3c;
+      --accent-2: #ff8a65;
+      --border: rgba(15,118,110,.14);
+      --shadow: 0 18px 40px rgba(2, 6, 23, .12);
+      --shadow-soft: 0 10px 24px rgba(2, 6, 23, .10);
+      --radius: 18px;
 
-      /* Brand */
-      --primary: #0b5f57;      /* deep teal */
-      --primary-2: #0ea5a0;    /* bright teal */
-      --accent: #ff6a3d;       /* warm orange */
-
-      /* Effects */
-      --radius: 16px;
-      --radius-sm: 12px;
-      --shadow: 0 10px 26px rgba(2, 6, 23, 0.08);
-      --shadow-soft: 0 6px 18px rgba(2, 6, 23, 0.06);
-
-      /* Layout */
-      --max: 1120px;
-      --pad: 24px;
-
-      /* Motion */
-      --ease: cubic-bezier(.2,.9,.2,1);
+      /* Locked image URLs (fixed photo IDs; NOT random pulls) */
+      --img-hero: url("https://images.unsplash.com/photo-1764093707138-9696b95340e5?auto=format&fit=crop&w=2600&q=80");
+      --img-support: url("https://images.unsplash.com/photo-1573497701240-345a300b8d36?auto=format&fit=crop&w=1600&q=80");
+      --img-house: url("https://images.unsplash.com/photo-1759355787174-044355f63c55?auto=format&fit=crop&w=1600&q=80");
+      --img-training: url("https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80");
+      --img-hands: url("https://images.unsplash.com/photo-1704386651981-0729a60da579?auto=format&fit=crop&w=1600&q=80");
+      --img-help: url("https://images.unsplash.com/photo-1578357078586-491adf1aa5ba?auto=format&fit=crop&w=1600&q=80");
+      --img-shirt: url("https://images.unsplash.com/photo-1620799139507-2a76f79a2f4d?auto=format&fit=crop&w=1400&q=80");
+      --img-journal: url("https://images.unsplash.com/photo-1761322572550-967ea8c0bfd9?auto=format&fit=crop&w=1400&q=80");
     }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
     body{
-      margin: 0;
-      font-family: "Roboto", system-ui, -apple-system, Segoe UI, Arial, sans-serif;
-      color: var(--text);
-      background: var(--bg);
-      line-height: 1.6;
-    }
-    img{ max-width: 100%; display: block; }
-    a{ color: inherit; text-decoration: none; }
-    a:hover{ text-decoration: underline; }
-    p{ margin: 0 0 1rem; color: var(--muted); }
-    h1,h2,h3{
-      font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Arial, sans-serif;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      margin: 0 0 .75rem;
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% 0%, rgba(14,165,164,.14), transparent 55%),
+        radial-gradient(900px 500px at 85% 15%, rgba(251,106,60,.12), transparent 55%),
+        var(--bg);
+      line-height:1.55;
     }
 
-    /* Skip link */
-    .skip-link{
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 12px;
-      box-shadow: var(--shadow-soft);
-      transform: translateY(-150%);
-      transition: transform .2s var(--ease);
-      z-index: 9999;
-      color: var(--text);
-    }
-    .skip-link:focus{
-      transform: translateY(0);
-      outline: 3px solid rgba(14,165,160,.35);
-      outline-offset: 2px;
-    }
+    a{ color:inherit; text-decoration:none; }
+    a:focus{ outline: 3px solid rgba(14,165,164,.35); outline-offset: 3px; border-radius: 10px; }
 
-    /* Focus styles */
-    :focus-visible{
-      outline: 3px solid rgba(14,165,160,.40);
-      outline-offset: 3px;
-      border-radius: 10px;
-    }
-
-    /* Container */
     .container{
-      max-width: var(--max);
+      width: min(1200px, 92vw);
       margin: 0 auto;
-      padding: 0 var(--pad);
     }
 
-    /* Header */
-    header{
+    /* ===== Header ===== */
+    .topbar{
       position: sticky;
       top: 0;
-      z-index: 1000;
-      background: rgba(255,255,255,.72);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: rgba(246,251,251,.72);
+      border-bottom: 1px solid rgba(15,118,110,.10);
     }
-    .header-inner{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
+    header{
+      display:flex;
+      align-items:center;
+      gap: 18px;
       padding: 14px 0;
     }
+
     .brand{
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 220px;
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width: 260px;
     }
-    .brand-mark{
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      background: radial-gradient(circle at 30% 30%, rgba(14,165,160,.8), rgba(11,95,87,1));
-      box-shadow: 0 10px 20px rgba(11,95,87,.20);
-      border: 1px solid rgba(255,255,255,.55);
+
+    .logo-badge{
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      overflow:hidden;
+      box-shadow: 0 10px 18px rgba(2,6,23,.18);
+      border: 1px solid rgba(255,255,255,.6);
+      background: #0b2b2a;
+      flex: 0 0 auto;
     }
-    .brand-title{
-      line-height: 1.1;
+    .brand h1{
+      font-family: Montserrat, Inter, sans-serif;
+      font-size: 18px;
+      margin:0;
+      letter-spacing: .2px;
+      line-height: 1.15;
     }
-    .brand-title strong{
-      display: block;
-      font-family: "Montserrat", system-ui, sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--primary);
-      letter-spacing: -0.01em;
-    }
-    .brand-title span{
-      display: block;
-      font-size: .84rem;
+    .brand small{
+      display:block;
+      margin-top: 3px;
+      font-size: 12px;
       color: var(--muted);
     }
 
-    /* Nav */
-    .nav{
-      display: flex;
-      align-items: center;
+    nav{
+      flex: 1 1 auto;
+      display:flex;
+      justify-content:center;
+    }
+    nav ul{
+      display:flex;
+      align-items:center;
       gap: 18px;
-    }
-    .nav a{
-      font-weight: 500;
-      color: var(--text);
-      padding: 10px 10px;
-      border-radius: 12px;
-      transition: background .18s var(--ease), transform .18s var(--ease);
-    }
-    .nav a:hover{
-      background: rgba(14,165,160,.10);
-      text-decoration: none;
-      transform: translateY(-1px);
-    }
-    .nav a.is-cta{
-      background: rgba(255,106,61,.12);
-      color: #8a2c10;
-      border: 1px solid rgba(255,106,61,.25);
-    }
-    .nav a.is-cta:hover{
-      background: rgba(255,106,61,.18);
-    }
-
-    /* Social icons */
-    .social{
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .icon-btn{
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      display: grid;
-      place-items: center;
-      box-shadow: 0 8px 16px rgba(2, 6, 23, 0.04);
-      transition: transform .18s var(--ease), box-shadow .18s var(--ease), background .18s var(--ease);
-    }
-    .icon-btn:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 12px 22px rgba(2,6,23,.08);
-      background: rgba(14,165,160,.06);
-      text-decoration: none;
-    }
-    .icon{
-      width: 18px;
-      height: 18px;
-      color: var(--primary);
-    }
-
-    /* Mobile menu button */
-    .menu-btn{
-      display: none;
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      box-shadow: 0 8px 16px rgba(2, 6, 23, 0.04);
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform .18s var(--ease), box-shadow .18s var(--ease);
-    }
-    .menu-btn:hover{ transform: translateY(-1px); box-shadow: 0 12px 22px rgba(2,6,23,.08); }
-    .menu-btn svg{ width: 20px; height: 20px; color: var(--text); }
-
-    /* Mobile nav panel */
-    .mobile-panel{
-      display: none;
-      border-top: 1px solid var(--border);
-      background: rgba(255,255,255,.82);
-      backdrop-filter: blur(10px);
-    }
-    .mobile-panel-inner{
-      padding: 14px 0 18px;
-      display: grid;
-      gap: 8px;
-    }
-    .mobile-panel a{
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(2,6,23,.06);
-      background: var(--surface);
-      box-shadow: 0 10px 20px rgba(2,6,23,.04);
-      font-weight: 500;
-    }
-
-    /* Hero */
-    .hero{
-      position: relative;
-      overflow: hidden;
-      padding: 70px 0 34px;
-    }
-    .hero::before,
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset: -40% -20% auto -20%;
-      height: 520px;
-      background:
-        radial-gradient(closest-side at 15% 35%, rgba(14,165,160,.22), transparent 70%),
-        radial-gradient(closest-side at 65% 25%, rgba(255,106,61,.14), transparent 70%),
-        radial-gradient(closest-side at 85% 70%, rgba(11,95,87,.14), transparent 70%);
-      filter: blur(0px);
-      transform: rotate(-6deg);
-      pointer-events:none;
-    }
-    .hero::after{
-      inset: auto -20% -55% -20%;
-      height: 520px;
-      transform: rotate(7deg);
-      opacity: .55;
-    }
-    .hero-card{
-      position: relative;
-      background: rgba(255,255,255,.80);
-      border: 1px solid rgba(2,6,23,.08);
-      border-radius: calc(var(--radius) + 6px);
-      box-shadow: var(--shadow);
-      padding: 28px;
-    }
-    .hero-top{
-      display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 22px;
-      align-items: center;
-    }
-    .hero h1{
-      font-size: clamp(2rem, 3.2vw, 3rem);
-      margin-bottom: 10px;
-      color: #062b2a;
-    }
-    .hero p{
-      font-size: 1.06rem;
-      color: rgba(15,23,42,.78);
-      margin-bottom: 18px;
-    }
-    .pill-row{
-      display: flex;
+      list-style:none;
+      margin:0;
+      padding:0;
       flex-wrap: wrap;
-      gap: 10px;
-      margin: 16px 0 0;
+      justify-content:center;
     }
+    nav a{
+      font-weight: 600;
+      font-size: 13px;
+      color: rgba(15,23,42,.86);
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      white-space: nowrap; /* prevents ugly letter-by-letter wrapping */
+    }
+    nav a:hover{
+      background: rgba(14,165,164,.10);
+      border-color: rgba(14,165,164,.14);
+    }
+
+    .right-actions{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap: 10px;
+      margin-left: auto; /* pushes all the way right */
+      min-width: 250px;
+    }
+
     .pill{
-      display: inline-flex;
-      align-items: center;
+      display:inline-flex;
+      align-items:center;
       gap: 10px;
       padding: 10px 12px;
       border-radius: 999px;
-      background: rgba(14,165,160,.08);
-      border: 1px solid rgba(14,165,160,.16);
-      color: rgba(6,43,42,.88);
-      font-weight: 500;
-      font-size: .92rem;
+      background: var(--panel);
+      border: 1px solid rgba(15,118,110,.12);
+      box-shadow: 0 10px 18px rgba(2,6,23,.06);
     }
-    .pill svg{ width: 16px; height: 16px; color: var(--primary); }
 
-    .cta-row{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 18px;
+    .social a{
+      display:inline-flex;
+      width: 34px; height: 34px;
+      align-items:center;
+      justify-content:center;
+      border-radius: 999px;
+      border: 1px solid rgba(15,118,110,.12);
+      background: rgba(255,255,255,.75);
+      transition: transform .15s ease, background .15s ease;
     }
+    .social a:hover{ transform: translateY(-1px); background: rgba(255,255,255,.92); }
+    .social svg{ width: 18px; height: 18px; opacity: .85; }
+
     .btn{
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
       gap: 10px;
-      padding: 12px 16px;
-      border-radius: 14px;
-      border: 1px solid rgba(2,6,23,.10);
-      background: var(--surface);
-      box-shadow: 0 10px 20px rgba(2,6,23,.05);
-      font-weight: 600;
-      color: var(--text);
-      transition: transform .18s var(--ease), box-shadow .18s var(--ease), background .18s var(--ease);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      border: 1px solid rgba(15,118,110,.16);
+      background: rgba(255,255,255,.85);
+      cursor:pointer;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
     }
-    .btn:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 14px 26px rgba(2,6,23,.08);
-      text-decoration: none;
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 12px 20px rgba(2,6,23,.10); background: #fff; }
+    .btn.primary{
+      border-color: rgba(251,106,60,.20);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      box-shadow: 0 16px 28px rgba(251,106,60,.20);
     }
-    .btn-primary{
-      background: linear-gradient(180deg, rgba(14,165,160,.18), rgba(14,165,160,.08));
-      border: 1px solid rgba(14,165,160,.22);
-      color: #063a38;
+    .btn.primary:hover{ box-shadow: 0 18px 34px rgba(251,106,60,.26); }
+
+    /* ===== Hero ===== */
+    .hero{
+      padding: 34px 0 18px;
     }
-    .btn-accent{
-      background: linear-gradient(180deg, rgba(255,106,61,.22), rgba(255,106,61,.10));
-      border: 1px solid rgba(255,106,61,.24);
-      color: #5a200d;
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 18px;
+      align-items: stretch;
     }
-    .btn svg{ width: 18px; height: 18px; }
+    .hero-card{
+      position: relative;
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.55);
+      background:
+        linear-gradient(180deg, rgba(11,43,42,.70), rgba(11,43,42,.35)),
+        var(--img-hero);
+      background-size: cover;
+      background-position: center;
+      min-height: 420px;
+      padding: 26px;
+      display:flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .hero-card .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      width: fit-content;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.22);
+      color: rgba(255,255,255,.92);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: .2px;
+      margin-bottom: 14px;
+    }
+    .hero-card h2{
+      font-family: Montserrat, Inter, sans-serif;
+      color: white;
+      font-size: clamp(26px, 3.2vw, 40px);
+      line-height: 1.1;
+      margin: 0 0 12px;
+      text-shadow: 0 12px 26px rgba(0,0,0,.32);
+    }
+    .hero-card p{
+      color: rgba(255,255,255,.88);
+      margin: 0 0 18px;
+      max-width: 62ch;
+      font-size: 14px;
+    }
+    .hero-cta{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
 
     .hero-side{
-      background: rgba(14,165,160,.06);
-      border: 1px solid rgba(14,165,160,.14);
-      border-radius: var(--radius);
-      padding: 18px;
+      display:flex;
+      flex-direction: column;
+      gap: 18px;
     }
-    .hero-side h3{
-      margin: 0 0 10px;
-      font-size: 1.1rem;
-      color: #063a38;
-    }
-    .hero-side ul{
-      margin: 0;
-      padding-left: 18px;
-      color: rgba(15,23,42,.76);
-    }
-    .hero-side li{ margin: 8px 0; }
 
-    /* Section spacing */
+    .side-panel{
+      border-radius: var(--radius);
+      background: var(--panel);
+      border: 1px solid rgba(15,118,110,.14);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+    }
+    .side-panel .img{
+      height: 160px;
+      background: var(--img-support);
+      background-size: cover;
+      background-position: center;
+      border-bottom: 1px solid rgba(15,118,110,.12);
+    }
+    .side-panel .pad{
+      padding: 16px;
+    }
+    .side-panel h3{
+      margin: 0 0 6px;
+      font-family: Montserrat, Inter, sans-serif;
+      font-size: 16px;
+    }
+    .side-panel p{
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* ===== Sections ===== */
     section{
-      padding: 46px 0;
+      padding: 30px 0;
     }
     .section-head{
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-    .section-head p{ margin: 0; max-width: 60ch; }
-
-    /* Cards grid */
-    .grid{
-      display: grid;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
       gap: 16px;
-      grid-template-columns: repeat(12, 1fr);
+      margin-bottom: 14px;
+    }
+    .section-head h2{
+      margin:0;
+      font-family: Montserrat, Inter, sans-serif;
+      font-size: 22px;
+      letter-spacing: .2px;
+    }
+    .section-head p{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 62ch;
+    }
+
+    /* ===== Offering Cards ===== */
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 14px;
     }
     .card{
-      background: var(--surface);
-      border: 1px solid rgba(2,6,23,.08);
       border-radius: var(--radius);
-      box-shadow: var(--shadow-soft);
-      padding: 18px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(15,118,110,.12);
+      box-shadow: 0 12px 22px rgba(2,6,23,.08);
+      overflow:hidden;
+      display:flex;
+      flex-direction: column;
+      min-height: 320px;
+    }
+    .card .thumb{
+      height: 140px;
+      background-size: cover;
+      background-position: center;
+      border-bottom: 1px solid rgba(15,118,110,.10);
+    }
+    .card .body{
+      padding: 14px 14px 16px;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      height: 100%;
     }
     .card h3{
-      margin-bottom: 6px;
-      font-size: 1.15rem;
-      color: #062b2a;
+      margin: 0;
+      font-family: Montserrat, Inter, sans-serif;
+      font-size: 16px;
     }
-    .card p{ margin: 0; }
+    .card p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .card .actions{
+      margin-top: auto;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
-    /* Offerings boxes (now real links) */
-    .offerings .card{
-      position: relative;
-      overflow: hidden;
-      transition: transform .18s var(--ease), box-shadow .18s var(--ease), border-color .18s var(--ease);
+    /* ===== Why We Help ===== */
+    .why{
+      border-radius: calc(var(--radius) + 8px);
+      border: 1px solid rgba(15,118,110,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.92));
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
     }
-    .offerings .card:hover{
-      transform: translateY(-2px);
-      box-shadow: var(--shadow);
-      border-color: rgba(14,165,160,.22);
+    .why-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
     }
-    .offerings a.card{
-      display: block;
-      text-decoration: none;
-      cursor: pointer;
+    .reason{
+      padding: 18px;
+      border-top: 1px solid rgba(15,118,110,.10);
+      display:flex;
+      gap: 14px;
+      align-items:flex-start;
+      background: rgba(255,255,255,.70);
     }
-    .card-top{
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
+    .reason:nth-child(1), .reason:nth-child(2){
+      border-top: none;
     }
-    .badge{
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      background: rgba(14,165,160,.12);
-      border: 1px solid rgba(14,165,160,.18);
-      color: var(--primary);
+    .reason .icon{
+      width: 52px; height: 52px;
+      border-radius: 16px;
+      border: 1px solid rgba(15,118,110,.14);
+      background: rgba(14,165,164,.10);
+      display:flex;
+      align-items:center;
+      justify-content:center;
       flex: 0 0 auto;
     }
-    .badge svg{ width: 20px; height: 20px; }
-    .card-meta{
-      display: flex;
-      gap: 10px;
-      margin-top: 12px;
-      flex-wrap: wrap;
-    }
-    .tag{
-      font-size: .88rem;
-      font-weight: 500;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: rgba(2,6,23,.04);
-      border: 1px solid rgba(2,6,23,.06);
-      color: rgba(15,23,42,.78);
-    }
+    .reason h4{ margin: 0 0 6px; font-size: 15px; font-family: Montserrat, Inter, sans-serif; }
+    .reason p{ margin: 0; color: var(--muted); font-size: 13px; }
 
-    /* Reasons (alternating layout) */
-    .reasons{
-      background: linear-gradient(180deg, rgba(14,165,160,.06), rgba(255,255,255,0));
-      border-top: 1px solid rgba(2,6,23,.06);
-      border-bottom: 1px solid rgba(2,6,23,.06);
-    }
-    .reason-row{
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 18px;
-      align-items: center;
-      padding: 18px;
-    }
-    .reason-row + .reason-row{
+    /* ===== Stories ===== */
+    .stories{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
       margin-top: 14px;
     }
-    .avatar{
-      width: 92px;
-      height: 92px;
-      border-radius: 22px;
-      background:
-        radial-gradient(circle at 25% 25%, rgba(255,106,61,.28), transparent 60%),
-        radial-gradient(circle at 75% 75%, rgba(14,165,160,.28), transparent 60%),
-        linear-gradient(180deg, rgba(11,95,87,.22), rgba(11,95,87,.10));
-      border: 1px solid rgba(2,6,23,.10);
-      box-shadow: 0 18px 28px rgba(2,6,23,.08);
+    .story{
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.86);
+      border: 1px solid rgba(15,118,110,.12);
+      box-shadow: 0 12px 22px rgba(2,6,23,.08);
+      padding: 16px;
     }
+    .story h3{ margin: 0 0 8px; font-family: Montserrat, Inter, sans-serif; font-size: 16px; }
+    .story p{ margin: 0; color: var(--muted); font-size: 13px; }
 
-    /* Stories */
-    .stories .card{
-      padding: 20px;
+    /* ===== Shop ===== */
+    .shop{
+      border-radius: calc(var(--radius) + 8px);
+      background: rgba(255,255,255,.86);
+      border: 1px solid rgba(15,118,110,.12);
+      box-shadow: var(--shadow-soft);
+      padding: 18px;
     }
-    .note{
-      border-left: 4px solid rgba(14,165,160,.55);
-      padding-left: 12px;
-      margin-top: 10px;
+    .shop-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 12px;
+    }
+    .product{
+      border-radius: var(--radius);
+      overflow:hidden;
+      border: 1px solid rgba(15,118,110,.12);
+      background: #fff;
+      box-shadow: 0 10px 20px rgba(2,6,23,.08);
+      display:flex;
+      flex-direction: column;
+    }
+    .product .pimg{
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+    }
+    .product .pbody{
+      padding: 14px;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      height: 100%;
+    }
+    .product strong{ font-size: 14px; }
+    .product span{ color: var(--muted); font-size: 13px; }
+    .product .actions{ margin-top:auto; display:flex; gap: 10px; flex-wrap: wrap; }
+
+    /* ===== Contact ===== */
+    .contact{
+      border-radius: calc(var(--radius) + 8px);
+      overflow:hidden;
+      border: 1px solid rgba(15,118,110,.12);
+      box-shadow: var(--shadow-soft);
+      background:
+        linear-gradient(180deg, rgba(11,43,42,.72), rgba(11,43,42,.25)),
+        var(--img-help);
+      background-size: cover;
+      background-position: center;
+      color: white;
+    }
+    .contact .pad{
+      padding: 20px;
+      backdrop-filter: blur(10px);
+    }
+    .contact h2{ margin: 0 0 10px; font-family: Montserrat, Inter, sans-serif; font-size: 20px; }
+    .contact p{ margin: 0 0 8px; color: rgba(255,255,255,.88); font-size: 13px; }
+    .contact a{ color: rgba(255,255,255,.95); text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ===== Footer ===== */
+    footer{
+      padding: 26px 0 36px;
       color: rgba(15,23,42,.72);
     }
-
-    /* Highlights accordion */
-    details{
-      background: var(--surface);
-      border: 1px solid rgba(2,6,23,.08);
-      border-radius: var(--radius-sm);
-      box-shadow: var(--shadow-soft);
-      padding: 14px 16px;
-    }
-    details + details{ margin-top: 12px; }
-    summary{
-      cursor: pointer;
-      font-weight: 600;
-      color: #062b2a;
-      list-style: none;
-    }
-    summary::-webkit-details-marker{ display:none; }
-    details[open]{
-      border-color: rgba(14,165,160,.20);
-    }
-    details p{ margin: 10px 0 0; }
-
-    /* Shop teaser */
-    .shop-grid{
-      display: grid;
-      gap: 16px;
-      grid-template-columns: repeat(12, 1fr);
-      align-items: start;
-    }
-    .shop-item{
-      grid-column: span 6;
-    }
-    .shop-img{
-      border-radius: 14px;
-      border: 1px solid rgba(2,6,23,.08);
-      background:
-        radial-gradient(circle at 30% 30%, rgba(14,165,160,.14), transparent 55%),
-        radial-gradient(circle at 70% 70%, rgba(255,106,61,.12), transparent 55%),
-        linear-gradient(180deg, rgba(2,6,23,.03), rgba(2,6,23,.01));
-      height: 180px;
-      margin-bottom: 12px;
-    }
-    .shop-actions{
-      display: flex;
-      flex-wrap: wrap;
+    .foot{
+      border-top: 1px solid rgba(15,118,110,.12);
+      padding-top: 16px;
+      display:flex;
+      flex-direction: column;
       gap: 10px;
-      margin-top: 12px;
+      font-size: 12px;
     }
-
-    /* Contact */
-    .contact{
-      background: rgba(255,255,255,.7);
-      border-top: 1px solid rgba(2,6,23,.06);
+    .legal-links a{
+      color: rgba(15,23,42,.75);
+      font-weight: 700;
     }
-    .contact-card{
-      display: grid;
-      gap: 14px;
-      grid-template-columns: 1.2fr .8fr;
-      align-items: start;
-      padding: 22px;
-    }
-    .contact-card a{
-      color: var(--primary);
-      font-weight: 600;
-    }
-
-    /* Footer */
-    footer{
-      background: #052a28;
-      color: rgba(255,255,255,.88);
-      padding: 34px 0;
-      border-top: 1px solid rgba(255,255,255,.10);
-    }
-    footer .muted{
-      color: rgba(255,255,255,.72);
-    }
-    footer a{ color: rgba(255,255,255,.92); }
-    footer a:hover{ color: #ffffff; }
-    .footer-top{
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 18px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-    .footer-links{
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
+    .legal-links a:hover{ text-decoration: underline; text-underline-offset: 3px; }
     .disclaimer{
-      font-size: .92rem;
-      color: rgba(255,255,255,.72);
-      margin-top: 14px;
-      max-width: 90ch;
+      color: rgba(15,23,42,.68);
+      max-width: 100ch;
     }
 
-    /* Modal */
-    .modal-overlay{
-      position: fixed;
-      inset: 0;
-      background: rgba(2,6,23,.55);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      z-index: 2000;
-    }
-    .modal-overlay[aria-hidden="false"]{ display: flex; }
-    .modal{
-      width: min(760px, 100%);
-      background: rgba(255,255,255,.92);
-      border: 1px solid rgba(255,255,255,.35);
-      border-radius: calc(var(--radius) + 6px);
-      box-shadow: 0 24px 60px rgba(2,6,23,.30);
-      backdrop-filter: blur(10px);
-      overflow: hidden;
-    }
-    .modal-head{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 18px;
-      border-bottom: 1px solid rgba(2,6,23,.08);
-    }
-    .modal-title{
-      font-family: "Montserrat", system-ui, sans-serif;
-      font-size: 1.15rem;
-      margin: 0;
-      color: #062b2a;
-    }
-    .modal-close{
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      border: 1px solid rgba(2,6,23,.10);
-      background: var(--surface);
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      transition: transform .18s var(--ease), box-shadow .18s var(--ease);
-    }
-    .modal-close:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 12px 22px rgba(2,6,23,.10);
-    }
-    .modal-body{
-      padding: 18px;
-    }
-    .modal-body p{ color: rgba(15,23,42,.78); }
-    .modal-foot{
-      padding: 16px 18px;
-      border-top: 1px solid rgba(2,6,23,.08);
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      background: rgba(2,6,23,.02);
-    }
-
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      *{ transition: none !important; scroll-behavior: auto; }
-    }
-
-    /* Responsive */
+    /* ===== Responsive ===== */
     @media (max-width: 980px){
-      .hero-top{ grid-template-columns: 1fr; }
-      .hero-side{ order: 2; }
-    }
-    @media (max-width: 860px){
-      .nav, .social.desktop{ display: none; }
-      .menu-btn{ display: inline-flex; }
-      .mobile-panel{ display: none; }
-      .mobile-panel.is-open{ display: block; }
-      .reason-row{ grid-template-columns: 1fr; }
-      .avatar{ width: 80px; height: 80px; }
-      .contact-card{ grid-template-columns: 1fr; }
-      .shop-item{ grid-column: span 12; }
-    }
-    @media (max-width: 520px){
-      :root{ --pad: 18px; }
+      .hero-grid{ grid-template-columns: 1fr; }
+      .right-actions{ min-width: unset; }
+      nav{ justify-content:flex-start; }
+      header{ flex-wrap: wrap; }
       .brand{ min-width: unset; }
-      .hero-card{ padding: 20px; }
-      .btn{ width: 100%; }
-      .pill{ width: 100%; justify-content: flex-start; }
+      .cards{ grid-template-columns: repeat(2, 1fr); }
+      .why-grid{ grid-template-columns: 1fr; }
+      .stories{ grid-template-columns: 1fr; }
+      .shop-grid{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px){
+      .cards{ grid-template-columns: 1fr; }
+      nav ul{ gap: 10px; }
+      .hero-card{ min-height: 440px; }
     }
   </style>
 </head>
 
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-
-  <!-- Inline SVG icon symbols (no external hotlinks) -->
-  <svg width="0" height="0" style="position:absolute; left:-9999px; top:-9999px;" aria-hidden="true" focusable="false">
-    <symbol id="i-menu" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"/>
-    </symbol>
-    <symbol id="i-x" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.29 19.71 2.88 18.3 9.17 12 2.88 5.71 4.29 4.29l6.3 6.31 6.3-6.31 1.41 1.42z"/>
-    </symbol>
-    <symbol id="i-check" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-    </symbol>
-    <symbol id="i-home" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M12 3 2 12h3v9h6v-6h2v6h6v-9h3L12 3z"/>
-    </symbol>
-    <symbol id="i-info" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M11 7h2V9h-2V7zm0 4h2v6h-2v-6zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
-    </symbol>
-    <symbol id="i-book" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12v-2H6V4h12v16h2V4a2 2 0 0 0-2-2z"/>
-    </symbol>
-    <symbol id="i-lock" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M12 1a5 5 0 0 0-5 5v4H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm3 9H9V6a3 3 0 0 1 6 0v4z"/>
-    </symbol>
-    <symbol id="i-cart" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.17 14h9.66c.75 0 1.4-.41 1.74-1.03L21 6H6.21L5.27 4H2v2h2l3.6 7.59-1.35 2.44C5.52 17.37 6.48 19 8 19h12v-2H8l1.17-2z"/>
-    </symbol>
-    <symbol id="i-arrow" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M12 4 10.59 5.41 16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/>
-    </symbol>
-
-    <!-- Social -->
-    <symbol id="i-youtube" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31.5 31.5 0 0 0 2 12a31.5 31.5 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 22 12a31.5 31.5 0 0 0-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z"/>
-    </symbol>
-    <symbol id="i-instagram" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 4.2A3.8 3.8 0 1 1 8.2 12 3.8 3.8 0 0 1 12 8.2zm0 2A1.8 1.8 0 1 0 13.8 12 1.8 1.8 0 0 0 12 10.2zM17.6 6.9a.9.9 0 1 1-.9-.9.9.9 0 0 1 .9.9z"/>
-    </symbol>
-    <symbol id="i-facebook" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M13.5 22v-8h2.7l.4-3H13.5V9.1c0-.9.3-1.6 1.7-1.6h1.5V4.8c-.3 0-1.4-.1-2.6-.1-2.6 0-4.3 1.6-4.3 4.5V11H7.1v3h2.7v8h3.7z"/>
-    </symbol>
-    <symbol id="i-tiktok" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M16.7 2h-2.6v13.1c0 1.6-1.3 2.9-2.9 2.9s-2.9-1.3-2.9-2.9 1.3-2.9 2.9-2.9c.3 0 .6 0 .9.1V9.6c-.3 0-.6-.1-.9-.1-3.1 0-5.6 2.5-5.6 5.6s2.5 5.6 5.6 5.6 5.6-2.5 5.6-5.6V7.4c1.1.9 2.4 1.4 3.8 1.4V6.2c-2.1 0-3.9-1.7-3.9-3.9z"/>
-    </symbol>
-    <symbol id="i-linkedin" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5zM3 9h4v12H3V9zm7 0h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.3c0-1.3 0-2.9-1.8-2.9s-2.1 1.4-2.1 2.8V21h-4V9z"/>
-    </symbol>
-    <symbol id="i-mail" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
-    </symbol>
-  </svg>
-
-  <!-- Social template (reused in header + footer via JS, no duplication) -->
-  <template id="socialTemplate">
-    <a class="icon-btn" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-      <svg class="icon" aria-hidden="true"><use href="#i-youtube"></use></svg>
-    </a>
-    <a class="icon-btn" href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-      <svg class="icon" aria-hidden="true"><use href="#i-instagram"></use></svg>
-    </a>
-    <a class="icon-btn" href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-      <svg class="icon" aria-hidden="true"><use href="#i-facebook"></use></svg>
-    </a>
-    <a class="icon-btn" href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-      <svg class="icon" aria-hidden="true"><use href="#i-tiktok"></use></svg>
-    </a>
-    <a class="icon-btn" href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-      <svg class="icon" aria-hidden="true"><use href="#i-linkedin"></use></svg>
-    </a>
-    <a class="icon-btn" href="mailto:info@overcommerssle.com" aria-label="Email">
-      <svg class="icon" aria-hidden="true"><use href="#i-mail"></use></svg>
-    </a>
-  </template>
-
-  <header>
+  <!-- Sticky Header -->
+  <div class="topbar">
     <div class="container">
-      <div class="header-inner">
-        <a class="brand" href="#hero" aria-label="OVERCOMMERS | SLE home">
-          <div class="brand-mark" aria-hidden="true"></div>
-          <div class="brand-title">
-            <strong>OVERCOMMERS | SLE</strong>
-            <span>Transitional sober living &amp; reentry support</span>
+      <header>
+        <div class="brand">
+          <div class="logo-badge" aria-hidden="true">
+            <!-- Inline SVG logo (never breaks, never changes) -->
+            <svg viewBox="0 0 64 64" width="46" height="46" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#0ea5a4"/>
+                  <stop offset="1" stop-color="#fb6a3c"/>
+                </linearGradient>
+              </defs>
+              <rect x="0" y="0" width="64" height="64" rx="16" fill="#0b2b2a"/>
+              <circle cx="32" cy="32" r="18" fill="none" stroke="url(#g)" stroke-width="6"/>
+              <path d="M25 40c3 3 7 5 12 5" fill="none" stroke="rgba(255,255,255,.86)" stroke-width="3" stroke-linecap="round"/>
+              <path d="M24 26c4-5 12-6 18-2" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="3" stroke-linecap="round"/>
+            </svg>
           </div>
-        </a>
+          <div>
+            <h1>OVERCOMMERS | SLE</h1>
+            <small>Transitional Sober Living • Recovery & Reentry</small>
+          </div>
+        </div>
 
-        <nav class="nav" aria-label="Primary navigation">
-          <a href="#hero">Home</a>
-          <a href="#offerings">What We Do</a>
-          <a href="#reasons">Resources</a>
-          <a href="/shop">Shop</a>
-          <a href="/login" class="is-cta">Resident Login</a>
-          <a href="#contact">Contact</a>
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#offerings">What We Do</a></li>
+            <li><a href="#commitment">Resources</a></li>
+            <li><a href="#stories">Impact</a></li>
+            <li><a href="#shop">Shop</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
         </nav>
 
-        <div class="social desktop" id="socialHeader" aria-label="Social links"></div>
-
-        <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobilePanel">
-          <svg aria-hidden="true"><use href="#i-menu"></use></svg>
-        </button>
-      </div>
-
-      <div class="mobile-panel" id="mobilePanel">
-        <div class="mobile-panel-inner">
-          <a href="#hero">Home</a>
-          <a href="#offerings">What We Do</a>
-          <a href="#reasons">Resources</a>
-          <a href="/shop">Shop</a>
-          <a href="/login">Resident Login</a>
-          <a href="#contact">Contact</a>
-          <div class="social" id="socialMobile" aria-label="Social links (mobile)"></div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main id="main">
-    <!-- HERO -->
-    <section class="hero" id="hero" aria-labelledby="heroTitle">
-      <div class="container">
-        <div class="hero-card">
-          <div class="hero-top">
-            <div>
-              <h1 id="heroTitle">Transitional sober living for recovery and prison reentry</h1>
-              <p>
-                OVERCOMMERS | SLE offers a structured, alcohol- and drug-free environment with peer support and practical life skills.
-                We operate as supportive housing and do not provide licensed medical, therapeutic, or detox services.
-              </p>
-
-              <div class="cta-row">
-                <a class="btn btn-primary" href="/apply">
-                  <svg aria-hidden="true"><use href="#i-check"></use></svg>
-                  Apply for Transitional Housing
-                </a>
-                <a class="btn btn-accent" href="/shop">
-                  <svg aria-hidden="true"><use href="#i-cart"></use></svg>
-                  Shop Merchandise
-                </a>
-                <a class="btn" href="/login">
-                  <svg aria-hidden="true"><use href="#i-lock"></use></svg>
-                  Resident Login
-                </a>
-              </div>
-
-              <div class="pill-row" aria-label="Program quick facts">
-                <div class="pill">
-                  <svg aria-hidden="true"><use href="#i-check"></use></svg>
-                  Peer-based support &amp; accountability
-                </div>
-                <div class="pill">
-                  <svg aria-hidden="true"><use href="#i-check"></use></svg>
-                  Life skills &amp; modern technology coaching
-                </div>
-                <div class="pill">
-                  <svg aria-hidden="true"><use href="#i-check"></use></svg>
-                  Fair-housing aligned &amp; privacy-minded
-                </div>
-              </div>
-            </div>
-
-            <aside class="hero-side" aria-label="How we work">
-              <h3>What you can expect</h3>
-              <ul>
-                <li>Clear house guidelines and a supportive community</li>
-                <li>Tools for stability: routines, employment readiness, budgeting</li>
-                <li>Referrals to licensed professionals when needed</li>
-                <li>Transparent policies and resident-first communication</li>
-              </ul>
-              <p class="note" style="margin-top:12px;">
-                Looking for treatment or detox? We can help connect you with licensed providers.
-              </p>
-            </aside>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- OFFERINGS -->
-    <section class="offerings" id="offerings" aria-labelledby="offeringsTitle">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 id="offeringsTitle">Explore our structured offerings</h2>
-            <p>Tap an option to learn more. Each card opens a quick overview and gives you the next best action.</p>
-          </div>
-        </div>
-
-        <div class="grid" role="list">
-          <!-- Card 1 -->
-          <a class="card" role="listitem"
-             href="#"
-             data-modal="what"
-             aria-label="What we do (opens details)"
-          >
-            <div class="card-top">
-              <div class="badge" aria-hidden="true"><svg><use href="#i-info"></use></svg></div>
-              <div>
-                <h3>What We Do</h3>
-                <p>Structured sober living with peer support, stability planning, and reentry-ready skills.</p>
-              </div>
-            </div>
-            <div class="card-meta" aria-hidden="true">
-              <span class="tag">Supportive housing</span>
-              <span class="tag">Peer-based</span>
-              <span class="tag">Reentry support</span>
-            </div>
-          </a>
-
-          <!-- Card 2 -->
-          <a class="card" role="listitem"
-             href="#"
-             data-modal="resources"
-             aria-label="Resources (opens details)"
-          >
-            <div class="card-top">
-              <div class="badge" aria-hidden="true"><svg><use href="#i-book"></use></svg></div>
-              <div>
-                <h3>Resources</h3>
-                <p>Curated guides, videos, and skill-building materials designed for real-world reintegration.</p>
-              </div>
-            </div>
-            <div class="card-meta" aria-hidden="true">
-              <span class="tag">Life skills</span>
-              <span class="tag">Job readiness</span>
-              <span class="tag">Digital basics</span>
-            </div>
-          </a>
-
-          <!-- Card 3 -->
-          <a class="card" role="listitem"
-             href="/shop"
-             aria-label="Shop (go to shop)"
-          >
-            <div class="card-top">
-              <div class="badge" aria-hidden="true"><svg><use href="#i-cart"></use></svg></div>
-              <div>
-                <h3>Shop</h3>
-                <p>Merchandise that supports operations. Clear checkout and consumer-friendly policies.</p>
-              </div>
-            </div>
-            <div class="card-meta" aria-hidden="true">
-              <span class="tag">Secure checkout</span>
-              <span class="tag">Transparent policies</span>
-            </div>
-          </a>
-
-          <!-- Card 4 -->
-          <a class="card" role="listitem"
-             href="#"
-             data-modal="privacy"
-             aria-label="Privacy (opens details)"
-          >
-            <div class="card-top">
-              <div class="badge" aria-hidden="true"><svg><use href="#i-lock"></use></svg></div>
-              <div>
-                <h3>Privacy</h3>
-                <p>We respect your data. Learn how we collect, use, and protect personal information.</p>
-              </div>
-            </div>
-            <div class="card-meta" aria-hidden="true">
-              <span class="tag">Privacy-first</span>
-              <span class="tag">Clear consent</span>
-              <span class="tag">Resident respect</span>
-            </div>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- REASONS / COMMITMENT -->
-    <section class="reasons" id="reasons" aria-labelledby="reasonsTitle">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 id="reasonsTitle">Our commitment: recovery support and reintegration</h2>
-            <p>We focus on environment, routine, accountability, and practical tools — while coordinating referrals to licensed care when appropriate.</p>
-          </div>
-        </div>
-
-        <div class="card reason-row">
-          <div class="avatar" aria-hidden="true"></div>
-          <div>
-            <h3>Addiction recovery &amp; rehabilitation</h3>
-            <p>
-              We provide a structured sober living environment with peer-led support and community accountability.
-              We do not provide licensed clinical treatment, therapy, or detox services.
-            </p>
-          </div>
-        </div>
-
-        <div class="card reason-row">
-          <div class="avatar" aria-hidden="true"></div>
-          <div>
-            <h3>Prison-to-society transition</h3>
-            <p>
-              Reentry can be overwhelming. We help residents rebuild routines, navigate today’s social expectations,
-              and create a practical plan for stability.
-            </p>
-          </div>
-        </div>
-
-        <div class="card reason-row">
-          <div class="avatar" aria-hidden="true"></div>
-          <div>
-            <h3>Life skills &amp; modern technology</h3>
-            <p>
-              Learn budgeting basics, communication skills, and the digital essentials needed for work, housing,
-              and everyday life — from email and smartphones to online forms.
-            </p>
-          </div>
-        </div>
-
-        <div class="card reason-row">
-          <div class="avatar" aria-hidden="true"></div>
-          <div>
-            <h3>Community give-back &amp; responsible partnerships</h3>
-            <p>
-              We build relationships with local organizations and referral networks to expand opportunity,
-              while keeping operations transparent and resident-focused.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- STORIES -->
-    <section class="stories" id="stories" aria-labelledby="storiesTitle">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 id="storiesTitle">Impact stories &amp; measurable progress</h2>
-            <p>We prioritize truth, transparency, and resident dignity. Verified program metrics can be published as they’re formally audited.</p>
-          </div>
-        </div>
-
-        <div class="grid">
-          <div class="card" style="grid-column: span 6;">
-            <h3>Progress you can feel (without hype)</h3>
-            <p>
-              Residents build stability through routines, community accountability, and practical skills.
-              Our goal is consistency — housing stability, employment readiness, and healthier choices over time.
-            </p>
-            <div class="note">
-              When outcomes are published, they will be clearly sourced and time-bounded (no inflated claims).
-            </div>
-          </div>
-
-          <div class="card" style="grid-column: span 6;">
-            <h3>A narrative of resilience</h3>
-            <p>
-              After long incarceration, one resident rebuilt their daily habits, learned modern digital basics for job applications,
-              and became a peer mentor — showing that stable environments can help create real momentum.
-            </p>
-            <div class="note">
-              Stories are shared with consent and identifying details are protected.
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:16px;">
-          <h3>Featured reentry insight</h3>
-          <p>
-            This space can highlight a resident-approved story, a staff message, or a community resource guide.
-            Keep it short, real, and updated.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- HIGHLIGHTS -->
-    <section id="highlights" aria-labelledby="highlightsTitle">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 id="highlightsTitle">Key highlights</h2>
-            <p>Quick answers to common questions. Click to expand.</p>
-          </div>
-        </div>
-
-        <details>
-          <summary>Strategic partnerships</summary>
-          <p>
-            We collaborate with community organizations and referral networks to support stability and reintegration.
-            Partnerships are described transparently and do not imply guaranteed outcomes.
-          </p>
-        </details>
-
-        <details>
-          <summary>Support and referrals</summary>
-          <p>
-            We provide peer-based support and operational guidance. When licensed care is needed (therapy, detox, medical),
-            we encourage residents to consult qualified professionals and can help connect them with resources.
-          </p>
-        </details>
-
-        <details>
-          <summary>Community standards and fair housing alignment</summary>
-          <p>
-            We aim to operate in alignment with fair-housing principles and anti-discrimination expectations.
-            Policies are designed to be clear, consistent, and respectful of resident dignity.
-          </p>
-        </details>
-      </div>
-    </section>
-
-    <!-- SHOP TEASER -->
-    <section id="shop" aria-labelledby="shopTitle">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 id="shopTitle">Shop our merchandise</h2>
-            <p>Proceeds support operations. Purchases are not donations and do not guarantee outcomes.</p>
-          </div>
-          <div>
-            <a class="btn" href="/shop">
-              Visit Shop
-              <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        <!-- Pushed fully right; login pinned here -->
+        <div class="right-actions">
+          <div class="pill social" aria-label="Social links">
+            <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.7 4.6 12 4.6 12 4.6s-5.7 0-7.5.5A3 3 0 0 0 2.4 7.2 31.7 31.7 0 0 0 2 12s.1 2.7.4 4.8a3 3 0 0 0 2.1 2.1c1.8.5 7.5.5 7.5.5s5.7 0 7.5-.5a3 3 0 0 0 2.1-2.1c.3-2.1.4-4.8.4-4.8s0-2.7-.4-4.8ZM10.4 15.4v-6l5.2 3-5.2 3Z"/></svg>
+            </a>
+            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4A5.8 5.8 0 0 1 16.2 22H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm8.4 2H7.8A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4a3.8 3.8 0 0 0 3.8-3.8V7.8A3.8 3.8 0 0 0 16.2 4ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm6.3-.9a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0Z"/></svg>
+            </a>
+            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3H13.5V9.1c0-.9.2-1.5 1.6-1.5h1.7V5a23 23 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.4V11H7.5v3h2.6v8h3.4Z"/></svg>
+            </a>
+            <a href="mailto:info@overcommerssle.com" aria-label="Email">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5L4 8V6l8 5 8-5v2Z"/></svg>
             </a>
           </div>
+
+          <a class="btn" href="/apply">Apply</a>
+          <a class="btn primary" href="/login" title="Resident Login">Login</a>
         </div>
-
-        <div class="shop-grid">
-          <div class="card shop-item">
-            <div class="shop-img" aria-hidden="true"></div>
-            <h3>Empowerment Apparel</h3>
-            <p>Clean design, comfortable fit. Supports program operations.</p>
-            <div class="shop-actions">
-              <a class="btn btn-accent" href="/cart">
-                <svg aria-hidden="true"><use href="#i-cart"></use></svg>
-                Add to Cart
-              </a>
-              <a class="btn" href="/shop">View details</a>
-            </div>
-          </div>
-
-          <div class="card shop-item">
-            <div class="shop-img" aria-hidden="true"></div>
-            <h3>Recovery Journal</h3>
-            <p>A guided journal focused on reflection, routines, and next steps.</p>
-            <div class="shop-actions">
-              <a class="btn btn-accent" href="/cart">
-                <svg aria-hidden="true"><use href="#i-cart"></use></svg>
-                Add to Cart
-              </a>
-              <a class="btn" href="/shop">View details</a>
-            </div>
-          </div>
-
-          <div class="card" style="grid-column: span 12;">
-            <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
-              <div>
-                <h3 style="margin-bottom:6px;">Secure checkout</h3>
-                <p style="margin:0;">Ready to complete your purchase?</p>
-              </div>
-              <a class="btn btn-primary" href="/checkout">
-                Proceed to Checkout
-                <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section class="contact" id="contact" aria-labelledby="contactTitle">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 id="contactTitle">Contact information</h2>
-            <p>Have questions about supportive sober living or reentry support? Reach out.</p>
-          </div>
-        </div>
-
-        <div class="card contact-card">
-          <div>
-            <h3>Get in touch</h3>
-            <p>Email: <a href="mailto:info@overcommerssle.com">info@overcommerssle.com</a></p>
-            <p>Phone (San Jose operations): <a href="tel:+14081234567">(408) 123-4567</a></p>
-            <p>General inquiries: <a href="tel:+18052028473">(805) 202-8473</a></p>
-          </div>
-          <div>
-            <h3>Ownership entity</h3>
-            <p class="muted" style="color:rgba(15,23,42,.78);">
-              Lumpia Bros Cafe<br/>
-              1187 W Grand Ave, Grover Beach, CA 93433<br/>
-              Phone: <a href="tel:+18052028473">(805) 202-8473</a>
-            </p>
-            <a class="btn" href="/apply" style="margin-top:10px; width:100%; justify-content:center;">
-              Apply Now
-              <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      <div class="footer-top">
-        <div>
-          <h3 style="margin:0 0 6px; color:#ffffff;">OVERCOMMERS | SLE</h3>
-          <div class="muted">Supportive sober living environment • Recovery &amp; reentry</div>
-        </div>
-
-        <div class="footer-links" aria-label="Footer links">
-          <a href="/privacy">Privacy Policy</a>
-          <span class="muted">|</span>
-          <a href="/terms">Terms of Service</a>
-          <span class="muted">|</span>
-          <a href="/login">Resident Login</a>
-        </div>
-      </div>
-
-      <div class="social" id="socialFooter" aria-label="Social links (footer)"></div>
-
-      <p class="disclaimer">
-        Disclaimer: OVERCOMMERS | SLE provides peer-based supportive housing and does not provide medical, therapeutic, or detox services.
-        Information on this website is general and not health advice. If you need clinical care, consult licensed professionals.
-        We aim to operate in alignment with fair-housing and anti-discrimination expectations.
-      </p>
-
-      <p class="muted" style="margin-top:14px;">
-        © 2026 OVERCOMMERS SLE (SOBER LIVING ENVIRONMENT). All rights reserved. Owned by Lumpia Bros Cafe.
-      </p>
-    </div>
-  </footer>
-
-  <!-- Modal -->
-  <div class="modal-overlay" id="modalOverlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal" role="document">
-      <div class="modal-head">
-        <h3 class="modal-title" id="modalTitle">Details</h3>
-        <button class="modal-close" id="modalClose" aria-label="Close dialog">
-          <svg aria-hidden="true"><use href="#i-x"></use></svg>
-        </button>
-      </div>
-      <div class="modal-body" id="modalBody">
-        <p></p>
-      </div>
-      <div class="modal-foot" id="modalFoot">
-        <!-- Buttons injected by JS -->
-      </div>
+      </header>
     </div>
   </div>
 
+  <!-- Hero -->
+  <main class="container">
+    <section class="hero" id="home">
+      <div class="hero-grid">
+        <div class="hero-card" role="region" aria-label="Hero">
+          <div class="kicker">Structured • Supportive • Sober Living</div>
+          <h2>Recovery and Reentry deserve a place that feels safe, stable, and human.</h2>
+          <p>
+            OVERCOMMERS | SLE offers a structured, alcohol- and drug-free environment that supports sobriety maintenance and community reintegration.
+            We focus on peer support, accountability, and practical skill development while operating within applicable fair housing and anti-discrimination requirements.
+          </p>
+          <div class="hero-cta">
+            <a class="btn primary" href="/apply">Apply for Transitional Housing</a>
+            <a class="btn" href="#offerings">Explore Offerings</a>
+            <a class="btn" href="/shop">Shop</a>
+          </div>
+        </div>
+
+        <div class="hero-side">
+          <div class="side-panel">
+            <div class="img" aria-hidden="true"></div>
+            <div class="pad">
+              <h3>Built around belonging</h3>
+              <p>Support works best when it’s consistent, respectful, and real. We emphasize structure without losing compassion.</p>
+              <a class="btn" href="#stories">See Impact</a>
+            </div>
+          </div>
+
+          <div class="side-panel">
+            <div class="pad">
+              <h3>Quick Contact</h3>
+              <p>Email <a href="mailto:info@overcommerssle.com">info@overcommerssle.com</a> • Phone (408) 123-4567</p>
+              <a class="btn" href="#contact">Contact Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Offerings -->
+    <section id="offerings">
+      <div class="section-head">
+        <div>
+          <h2>What We Do</h2>
+          <p>Clear structure, practical support, and a calmer place to rebuild momentum.</p>
+        </div>
+      </div>
+
+      <div class="cards">
+        <article class="card">
+          <div class="thumb" style="background-image: var(--img-house);" aria-hidden="true"></div>
+          <div class="body">
+            <h3>Transitional Sober Living</h3>
+            <p>Alcohol- and drug-free living with house expectations designed for stability, accountability, and healthier routines.</p>
+            <div class="actions">
+              <a class="btn primary" href="/apply">Apply</a>
+              <a class="btn" href="#commitment">How it works</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb" style="background-image: var(--img-support);" aria-hidden="true"></div>
+          <div class="body">
+            <h3>Peer Support & Community</h3>
+            <p>Positive daily rhythms, supportive check-ins, and belonging — because isolation is where relapse grows.</p>
+            <div class="actions">
+              <a class="btn" href="#stories">Real outcomes</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb" style="background-image: var(--img-training);" aria-hidden="true"></div>
+          <div class="body">
+            <h3>Life Skills & Digital Readiness</h3>
+            <p>Practical tools: budgeting basics, communication habits, and navigating modern systems for work and daily life.</p>
+            <div class="actions">
+              <a class="btn" href="#stories">See progress</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb" style="background-image: var(--img-hands);" aria-hidden="true"></div>
+          <div class="body">
+            <h3>Resources & Referrals</h3>
+            <p>Curated education + guidance toward appropriate licensed services when needed (without implying clinical treatment).</p>
+            <div class="actions">
+              <a class="btn" href="/resources">Resources</a>
+              <a class="btn" href="/privacy">Privacy</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Commitment / Why Help -->
+    <section id="commitment">
+      <div class="section-head">
+        <div>
+          <h2>Our Commitment</h2>
+          <p>We focus on stability, reintegration, and dignity — with clear boundaries on what we are and aren’t.</p>
+        </div>
+      </div>
+
+      <div class="why">
+        <div class="why-grid">
+          <div class="reason">
+            <div class="icon" aria-hidden="true">🏠</div>
+            <div>
+              <h4>Structured environment</h4>
+              <p>Clear house expectations designed to support sobriety and reduce chaos.</p>
+            </div>
+          </div>
+          <div class="reason">
+            <div class="icon" aria-hidden="true">🧭</div>
+            <div>
+              <h4>Reentry momentum</h4>
+              <p>Support for transitioning back into modern routines, responsibilities, and community norms.</p>
+            </div>
+          </div>
+          <div class="reason">
+            <div class="icon" aria-hidden="true">🧰</div>
+            <div>
+              <h4>Practical skill building</h4>
+              <p>Budgeting, communication, job readiness basics, and navigating digital systems.</p>
+            </div>
+          </div>
+          <div class="reason">
+            <div class="icon" aria-hidden="true">🤝</div>
+            <div>
+              <h4>Community give-back</h4>
+              <p>Reintegration works better when residents can contribute and build pride through positive action.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stories -->
+    <section id="stories">
+      <div class="section-head">
+        <div>
+          <h2>Impact & Progress</h2>
+          <p>We keep the tone human — real stories, real next steps, real accountability.</p>
+        </div>
+      </div>
+
+      <div class="stories">
+        <div class="story">
+          <h3>From surviving → stabilizing</h3>
+          <p>
+            Residents often arrive overwhelmed. A stable environment, daily structure, and peer accountability helps reduce friction —
+            and makes it easier to focus on work, rebuilding relationships, and long-term goals.
+          </p>
+        </div>
+        <div class="story">
+          <h3>From reentry → contribution</h3>
+          <p>
+            After extended incarceration, modern systems can feel foreign. With digital readiness and life-skills support,
+            residents can re-enter with confidence and avoid the “stuck” loop that drives relapse.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Shop -->
+    <section id="shop">
+      <div class="section-head">
+        <div>
+          <h2>Shop (Program Sustainability)</h2>
+          <p>Consistent product imagery (locked URLs) and clean layout — easy to upgrade into a real storefront later.</p>
+        </div>
+      </div>
+
+      <div class="shop">
+        <div class="shop-grid">
+          <div class="product">
+            <div class="pimg" style="background-image: var(--img-shirt);" aria-hidden="true"></div>
+            <div class="pbody">
+              <strong>Empowerment Apparel</strong>
+              <span>Simple, clean, mission-aligned merch.</span>
+              <div class="actions">
+                <a class="btn primary" href="/cart">Add to Cart</a>
+                <a class="btn" href="/shop">View Shop</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="product">
+            <div class="pimg" style="background-image: var(--img-journal);" aria-hidden="true"></div>
+            <div class="pbody">
+              <strong>Recovery Journal</strong>
+              <span>Reflection prompts + space for routines and goals.</span>
+              <div class="actions">
+                <a class="btn primary" href="/cart">Add to Cart</a>
+                <a class="btn" href="/checkout">Checkout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 12px; color: var(--muted); font-size: 12px;">
+          Note: Purchases support operations; no purchase guarantees outcomes.
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="contact">
+        <div class="pad">
+          <h2>Contact</h2>
+          <p>For inquiries regarding transitional sober living environments:</p>
+          <p>Email: <a href="mailto:info@overcommerssle.com">info@overcommerssle.com</a></p>
+          <p>Phone: (408) 123-4567 (San Jose Operations) • General: (805) 202-8473</p>
+          <p>Lumpia Bros Cafe (Ownership Entity): 1187 W Grand Ave, Grover Beach, CA 93433</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="foot">
+        <div><strong>© 2026 OVERCOMMERS SLE (Sober Living Environment).</strong> All rights reserved. Owned by Lumpia Bros Cafe.</div>
+        <div class="legal-links">
+          <a href="/privacy">Privacy Policy</a> · <a href="/terms">Terms of Service</a>
+        </div>
+        <div class="disclaimer">
+          Disclaimer: OVERCOMMERS | SLE operates as supportive sober living and does not provide medical, therapeutic, or detox services.
+          We do not guarantee outcomes. For health advice or clinical care, consult licensed professionals. We adhere to fair housing and anti-discrimination requirements.
+        </div>
+      </div>
+    </footer>
+  </main>
+
   <script>
-    (function () {
-      // ----- Social icons reuse (header/footer/mobile) -----
-      const socialTemplate = document.getElementById("socialTemplate");
-      const mountSocial = (el) => {
-        if (!el || !socialTemplate) return;
-        el.innerHTML = "";
-        el.appendChild(socialTemplate.content.cloneNode(true));
-      };
-      mountSocial(document.getElementById("socialHeader"));
-      mountSocial(document.getElementById("socialFooter"));
-      mountSocial(document.getElementById("socialMobile"));
+    // Small polish: highlight active nav link while scrolling (optional but nice UX)
+    const sections = Array.from(document.querySelectorAll("main section[id]"));
+    const navLinks = Array.from(document.querySelectorAll("nav a"));
 
-      // ----- Mobile menu -----
-      const menuBtn = document.getElementById("menuBtn");
-      const mobilePanel = document.getElementById("mobilePanel");
+    const byId = (id) => navLinks.find(a => a.getAttribute("href") === "#" + id);
+    const setActive = (id) => {
+      navLinks.forEach(a => a.style.background = "transparent");
+      const link = byId(id);
+      if (link) link.style.background = "rgba(14,165,164,.10)";
+    };
 
-      function setMenu(open) {
-        menuBtn.setAttribute("aria-expanded", String(open));
-        mobilePanel.classList.toggle("is-open", open);
-        if (open) {
-          // Focus first link for accessibility
-          const firstLink = mobilePanel.querySelector("a");
-          if (firstLink) firstLink.focus();
-        }
-      }
+    const io = new IntersectionObserver((entries) => {
+      const visible = entries.filter(e => e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+      if (visible) setActive(visible.target.id);
+    }, { threshold: [0.25, 0.5, 0.75] });
 
-      if (menuBtn && mobilePanel) {
-        menuBtn.addEventListener("click", () => {
-          const isOpen = menuBtn.getAttribute("aria-expanded") === "true";
-          setMenu(!isOpen);
-        });
-
-        // Close mobile menu when clicking a link
-        mobilePanel.addEventListener("click", (e) => {
-          const t = e.target;
-          if (t && t.tagName === "A") setMenu(false);
-        });
-
-        // Close on ESC
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") setMenu(false);
-        });
-      }
-
-      // ----- Modal (accessible: focus trap, ESC close) -----
-      const overlay = document.getElementById("modalOverlay");
-      const closeBtn = document.getElementById("modalClose");
-      const modalTitle = document.getElementById("modalTitle");
-      const modalBody = document.getElementById("modalBody");
-      const modalFoot = document.getElementById("modalFoot");
-
-      let lastFocus = null;
-
-      const modalContent = {
-        what: {
-          title: "What We Do",
-          body: `
-            <p>
-              We provide a structured sober living environment centered on routine, peer accountability, and practical support.
-              Residents work on stability planning (housing, work readiness, scheduling, budgeting) and build community habits that support sobriety.
-            </p>
-            <p class="note">
-              We are supportive housing — not licensed clinical treatment. If you need therapy, detox, or medical care, we recommend licensed providers.
-            </p>
-          `,
-          actions: [
-            { label: "Apply", href: "/apply", kind: "primary" },
-            { label: "Contact", href: "#contact", kind: "default" }
-          ]
-        },
-        resources: {
-          title: "Resources",
-          body: `
-            <p>
-              Our resources focus on practical reintegration: digital basics (email, online forms), job readiness,
-              budgeting foundations, communication skills, and resident-friendly guides for day-to-day stability.
-            </p>
-            <p>
-              We can also point you toward local and licensed services when clinical care is needed.
-            </p>
-          `,
-          actions: [
-            { label: "See Highlights", href: "#highlights", kind: "primary" },
-            { label: "Contact", href: "#contact", kind: "default" }
-          ]
-        },
-        privacy: {
-          title: "Privacy",
-          body: `
-            <p>
-              We aim to be privacy-minded: collect only what we need, use it for clear purposes, and protect it with reasonable safeguards.
-              You can publish full policy details on your <a href="/privacy">Privacy Policy</a> page.
-            </p>
-            <p class="note">
-              Tip: avoid placing sensitive personal details in public forms; share them only through secure, appropriate channels.
-            </p>
-          `,
-          actions: [
-            { label: "Privacy Policy", href: "/privacy", kind: "primary" },
-            { label: "Close", action: "close", kind: "default" }
-          ]
-        }
-      };
-
-      function buildButton({ label, href, kind, action }) {
-        const a = document.createElement("a");
-        a.className = "btn" + (kind === "primary" ? " btn-primary" : "");
-        a.textContent = label;
-
-        if (action === "close") {
-          a.href = "#";
-          a.addEventListener("click", (e) => { e.preventDefault(); closeModal(); });
-          return a;
-        }
-
-        a.href = href || "#";
-        if ((href || "").startsWith("#")) {
-          a.addEventListener("click", () => closeModal());
-        }
-        return a;
-      }
-
-      function getFocusable(container) {
-        return Array.from(container.querySelectorAll(
-          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
-        )).filter(el => el.offsetParent !== null);
-      }
-
-      function openModal(key) {
-        const data = modalContent[key];
-        if (!data || !overlay) return;
-
-        lastFocus = document.activeElement;
-
-        modalTitle.textContent = data.title;
-        modalBody.innerHTML = data.body;
-
-        modalFoot.innerHTML = "";
-        data.actions.forEach(act => modalFoot.appendChild(buildButton(act)));
-
-        overlay.setAttribute("aria-hidden", "false");
-
-        // Focus first focusable element in modal
-        const focusables = getFocusable(overlay);
-        const close = closeBtn || focusables[0];
-        if (close) close.focus();
-
-        // trap focus
-        function trap(e) {
-          if (overlay.getAttribute("aria-hidden") === "true") return;
-
-          if (e.key === "Escape") {
-            e.preventDefault();
-            closeModal();
-            return;
-          }
-
-          if (e.key !== "Tab") return;
-
-          const items = getFocusable(overlay);
-          if (!items.length) return;
-
-          const first = items[0];
-          const last = items[items.length - 1];
-
-          if (e.shiftKey && document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-          } else if (!e.shiftKey && document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-          }
-        }
-
-        overlay._trapHandler = trap;
-        document.addEventListener("keydown", overlay._trapHandler);
-      }
-
-      function closeModal() {
-        if (!overlay) return;
-        overlay.setAttribute("aria-hidden", "true");
-
-        if (overlay._trapHandler) {
-          document.removeEventListener("keydown", overlay._trapHandler);
-          overlay._trapHandler = null;
-        }
-
-        if (lastFocus && typeof lastFocus.focus === "function") {
-          lastFocus.focus();
-        }
-      }
-
-      // Open modal from offerings cards
-      document.querySelectorAll("[data-modal]").forEach(el => {
-        el.addEventListener("click", (e) => {
-          e.preventDefault();
-          const key = el.getAttribute("data-modal");
-          openModal(key);
-        });
-        el.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            const key = el.getAttribute("data-modal");
-            openModal(key);
-          }
-        });
-      });
-
-      // Close modal interactions
-      if (closeBtn) closeBtn.addEventListener("click", closeModal);
-      if (overlay) {
-        overlay.addEventListener("click", (e) => {
-          if (e.target === overlay) closeModal();
-        });
-      }
-
-      // Close mobile menu if resizing up
-      window.addEventListener("resize", () => {
-        if (window.innerWidth > 860) setMenu(false);
-      });
-    })();
+    sections.forEach(s => io.observe(s));
   </script>
 </body>
 </html>
