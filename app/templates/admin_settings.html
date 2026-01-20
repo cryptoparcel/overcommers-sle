@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>Homepage settings</h2>
+        <p>Update text + featured YouTube video. Changes go live immediately.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card" style="grid-column: span 8;">
+        <div class="body">
+          <form method="post">
+            <div class="field">
+              <label for="headline">Homepage headline</label>
+              <input id="headline" name="home_headline" type="text" value="{{ settings.home_headline or '' }}" />
+            </div>
+            <div class="field">
+              <label for="subhead">Homepage subhead</label>
+              <input id="subhead" name="home_subhead" type="text" value="{{ settings.home_subhead or '' }}" />
+            </div>
+            <div class="field">
+              <label for="lead">Homepage lead</label>
+              <input id="lead" name="home_lead" type="text" value="{{ settings.home_lead or '' }}" />
+            </div>
+            <div class="field">
+              <label for="youtube">YouTube URL (any format)</label>
+              <input id="youtube" name="youtube_url" type="text" value="{{ settings.youtube_url or '' }}" placeholder="https://www.youtube.com/watch?v=..." />
+              <div class="helptext">We’ll automatically convert it to an embed URL.</div>
+            </div>
+            <div class="actions">
+              <button class="btn primary" type="submit">Save settings</button>
+              <a class="btn" href="{{ url_for('public.index') }}">View homepage</a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column: span 4;">
+        <div class="body">
+          <h3>Tip</h3>
+          <p>For heavy traffic, put Cloudflare in front and cache public pages. Keep POST endpoints rate-limited.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

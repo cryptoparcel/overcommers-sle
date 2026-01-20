@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>Login</h2>
+        <p>Access your account.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card" style="grid-column: span 6;">
+        <div class="body">
+          <form method="post">
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required />
+            </div>
+            <div class="field">
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password" required />
+            </div>
+            <div class="actions">
+              <button class="btn primary" type="submit">Login</button>
+              <a class="btn" href="{{ url_for('auth.register') }}">Create account</a>
+            </div>
+            {% if error %}
+              <p style="color:#b91c1c; font-weight:800; margin:0;">{{ error }}</p>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column: span 6;">
+        <div class="body">
+          <h3>Admin access</h3>
+          <p>If you’re setting up the site, create your first admin using the instructions in README.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title or "OVERCOMERS | SLE" }}</title>
+  <meta name="description" content="{{ meta_description or 'OVERCOMERS | SLE — Transitional sober living supporting recovery and reentry with structure, community, and practical life skills.' }}" />
+  <meta name="theme-color" content="#0b5f57" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/styles.css') }}" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="topbar">
+    <div class="container">
+      <div class="header">
+        <a class="brand" href="{{ url_for('public.index') }}" aria-label="OVERCOMERS | SLE home">
+          <img class="brand-mark" src="{{ url_for('static', filename='images/logo-sunrise.png') }}" alt="OVERCOMERS logo" />
+          <div class="brand-title">
+            <strong>OVERCOMERS | SLE</strong>
+            <span>Transitional sober living • recovery &amp; reentry</span>
+          </div>
+        </a>
+
+        <nav class="nav" aria-label="Primary">
+          <ul>
+            <li><a href="{{ url_for('public.what_we_do') }}">What We Do</a></li>
+            <li><a href="{{ url_for('public.resources') }}">Resources</a></li>
+            <li><a href="{{ url_for('public.impact') }}">Impact</a></li>
+            <li><a href="{{ url_for('public.shop') }}">Shop</a></li>
+            <li><a href="{{ url_for('public.contact') }}">Contact</a></li>
+          </ul>
+        </nav>
+
+        <div class="actions">
+          <a class="btn" href="{{ url_for('public.shop') }}">Shop</a>
+          <a class="btn primary" href="{{ url_for('public.apply') }}">Apply</a>
+          {% if current_user.is_authenticated %}
+            <a class="btn" href="{{ url_for('auth.logout') }}">Logout</a>
+            {% if current_user.role == 'admin' %}
+              <a class="btn" href="{{ url_for('admin.dashboard') }}">Admin</a>
+            {% endif %}
+          {% else %}
+            <a class="btn" href="{{ url_for('auth.login') }}">Login</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main id="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer">
+        <div><strong>OVERCOMERS | SLE</strong> — a structured sober living environment focused on safety, routine, and community.</div>
+        <div class="footer-links">
+          <a href="{{ url_for('public.what_we_do') }}">What We Do</a>
+          <a href="{{ url_for('public.resources') }}">Resources</a>
+          <a href="{{ url_for('public.impact') }}">Impact</a>
+          <a href="{{ url_for('public.shop') }}">Shop</a>
+          <a href="{{ url_for('public.contact') }}">Contact</a>
+          <a href="{{ url_for('public.careers') }}">Careers</a>
+          <a href="{{ url_for('public.privacy') }}">Privacy</a>
+          <a href="{{ url_for('public.terms') }}">Terms</a>
+        </div>
+        <div class="disclaimer">
+          Disclaimer: OVERCOMERS | SLE provides peer-based supportive housing and does not provide medical, therapeutic, or detox services.
+          We do not guarantee outcomes. If you need clinical care, consult licensed professionals. We follow fair housing and anti-discrimination rules.
+        </div>
+        <div>© {{ now_year }} OVERCOMERS | SLE. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='assets/app.js') }}"></script>
+</body>
+</html>

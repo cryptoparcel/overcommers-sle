@@ -1,0 +1,44 @@
+from flask import Blueprint, render_template, request, redirect, url_for
+from flask_login import login_user, logout_user, current_user
+from ..models import User
+from .. import db
+
+auth_bp = Blueprint("auth", __name__)
+
+@auth_bp.route("/login", methods=["GET", "POST"])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("public.index"))
+    if request.method == "POST":
+        email = (request.form.get("email") or "").strip().lower()
+        password = request.form.get("password") or ""
+        user = User.query.filter_by(email=email).first()
+        if not user or not user.check_password(password):
+            return render_template("login.html", title="Login — OVERCOMERS | SLE", error="Invalid email or password.")
+        login_user(user)
+        return redirect(url_for("public.index"))
+    return render_template("login.html", title="Login — OVERCOMERS | SLE")
+
+@auth_bp.route("/register", methods=["GET", "POST"])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for("public.index"))
+    if request.method == "POST":
+        email = (request.form.get("email") or "").strip().lower()
+        password = request.form.get("password") or ""
+        if len(password) < 8:
+            return render_template("register.html", title="Create account — OVERCOMERS | SLE", error="Password must be at least 8 characters.")
+        if User.query.filter_by(email=email).first():
+            return render_template("register.html", title="Create account — OVERCOMERS | SLE", error="An account with that email already exists.")
+        u = User(email=email, role="resident")
+        u.set_password(password)
+        db.session.add(u)
+        db.session.commit()
+        login_user(u)
+        return redirect(url_for("public.index"))
+    return render_template("register.html", title="Create account — OVERCOMERS | SLE")
+
+@auth_bp.get("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("public.index"))

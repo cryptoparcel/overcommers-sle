@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>Applications</h2>
+        <p>Newest first. Update status as you review.</p>
+      </div>
+      <div>
+        <a class="btn" href="{{ url_for('admin.export_applications') }}">Export CSV</a>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card" style="grid-column: span 12;">
+        <div class="body" style="min-height:auto;">
+          <div style="overflow:auto;">
+            <table style="width:100%; border-collapse: collapse;">
+              <thead>
+                <tr>
+                  <th style="text-align:left; padding:10px; border-bottom:1px solid rgba(7,25,34,.12);">Created</th>
+                  <th style="text-align:left; padding:10px; border-bottom:1px solid rgba(7,25,34,.12);">Name</th>
+                  <th style="text-align:left; padding:10px; border-bottom:1px solid rgba(7,25,34,.12);">Email</th>
+                  <th style="text-align:left; padding:10px; border-bottom:1px solid rgba(7,25,34,.12);">Phone</th>
+                  <th style="text-align:left; padding:10px; border-bottom:1px solid rgba(7,25,34,.12);">Status</th>
+                  <th style="text-align:left; padding:10px; border-bottom:1px solid rgba(7,25,34,.12);">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for a in applications %}
+                <tr>
+                  <td style="padding:10px; border-bottom:1px solid rgba(7,25,34,.08); white-space:nowrap;">{{ a.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+                  <td style="padding:10px; border-bottom:1px solid rgba(7,25,34,.08);">{{ a.name }}</td>
+                  <td style="padding:10px; border-bottom:1px solid rgba(7,25,34,.08);">{{ a.email }}</td>
+                  <td style="padding:10px; border-bottom:1px solid rgba(7,25,34,.08);">{{ a.phone }}</td>
+                  <td style="padding:10px; border-bottom:1px solid rgba(7,25,34,.08);">{{ a.status }}</td>
+                  <td style="padding:10px; border-bottom:1px solid rgba(7,25,34,.08);">
+                    <form method="post" action="{{ url_for('admin.update_application', app_id=a.id) }}" style="display:flex; gap:8px; flex-wrap:wrap;">
+                      <select name="status">
+                        {% for s in ["New","Reviewed","Approved","Rejected"] %}
+                          <option value="{{ s }}" {% if a.status == s %}selected{% endif %}>{{ s }}</option>
+                        {% endfor %}
+                      </select>
+                      <button class="btn" type="submit">Save</button>
+                    </form>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>Admin dashboard</h2>
+        <p>Manage applications and homepage settings.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card" style="grid-column: span 6;">
+        <div class="body">
+          <h3>Applications</h3>
+          <p>New: <strong>{{ counts.new }}</strong> • Total: <strong>{{ counts.total }}</strong></p>
+          <div class="actions">
+            <a class="btn primary" href="{{ url_for('admin.applications') }}">View applications</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column: span 6;">
+        <div class="body">
+          <h3>Homepage settings</h3>
+          <p>Update featured YouTube + hero text without redeploying.</p>
+          <div class="actions">
+            <a class="btn primary" href="{{ url_for('admin.settings') }}">Edit settings</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

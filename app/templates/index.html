@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="container">
+    <div class="hero-card" role="region" aria-label="Hero">
+      <div class="hero-inner">
+        <div>
+          <h1>{{ home_headline or "A safe, sober place to live while you get back on your feet." }}</h1>
+          <p class="subhead">{{ home_subhead or "Transitional sober living for recovery & reentry — with structure, support, and a plan for what’s next." }}</p>
+          <p class="lead">{{ home_lead or "We focus on daily routines, peer support, and practical life skills. If someone needs medical or clinical treatment, we help connect them to licensed professionals." }}</p>
+          <div class="hero-ctas">
+            <a class="btn primary" href="{{ url_for('public.apply') }}">Apply now</a>
+            <a class="btn" href="{{ url_for('public.what_we_do') }}">What we do</a>
+            <a class="btn" href="{{ url_for('public.resources') }}">Resources</a>
+          </div>
+
+          {% if youtube_embed_url %}
+          <div style="margin-top:16px; background: rgba(255,255,255,.94); border:1px solid rgba(7,25,34,.10); border-radius: 18px; overflow:hidden; box-shadow: 0 12px 24px rgba(2,6,23,.10);">
+            <div style="padding:12px 14px; font-weight:900; color: rgba(6,21,24,.92);">Video of the day</div>
+            <div style="aspect-ratio: 16/9; width:100%;">
+              <iframe
+                title="Featured video"
+                src="{{ youtube_embed_url }}"
+                style="border:0; width:100%; height:100%; display:block;"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        <aside class="hero-side" aria-label="What you can expect">
+          <div class="img" aria-hidden="true"></div>
+          <div class="pad">
+            <h3>What to expect</h3>
+            <p>Clear house rules, respectful community, and support for building stability.</p>
+            <ul>
+              <li>Alcohol- and drug-free living</li>
+              <li>Accountability and peer support</li>
+              <li>Help with routines, jobs, and basic life skills</li>
+              <li>Referrals to licensed care when needed</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>How we help</h2>
+        <p>Simple, clear, and friendly — so anyone can understand what we offer.</p>
+      </div>
+      <div>
+        <a class="btn" href="{{ url_for('public.impact') }}">See our impact</a>
+      </div>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <div class="thumb" style="background-image: var(--img-house);" aria-hidden="true">
+          <div class="label">Stable sober housing</div>
+        </div>
+        <div class="body">
+          <h3>Safe place to live</h3>
+          <p>A calm home with clear expectations and a supportive community.</p>
+          <div class="actions">
+            <a class="btn primary" href="{{ url_for('public.apply') }}">Apply</a>
+            <a class="btn" href="{{ url_for('public.what_we_do') }}">Learn more</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb" style="background-image: var(--img-community);" aria-hidden="true">
+          <div class="label">Peer support</div>
+        </div>
+        <div class="body">
+          <h3>You’re not alone</h3>
+          <p>Support from people who understand — plus accountability that helps you stay on track.</p>
+          <div class="actions">
+            <a class="btn" href="{{ url_for('public.resources') }}">Find resources</a>
+            <a class="btn" href="{{ url_for('public.contact') }}">Talk to us</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb" style="background-image: var(--img-skills);" aria-hidden="true">
+          <div class="label">Life skills</div>
+        </div>
+        <div class="body">
+          <h3>Skills for real life</h3>
+          <p>Help with basics like budgeting, job search, forms, email, and daily routines.</p>
+          <div class="actions">
+            <a class="btn" href="{{ url_for('public.resources') }}">Resource list</a>
+            <a class="btn" href="{{ url_for('public.impact') }}">Why it matters</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb" style="background-image: var(--img-help);" aria-hidden="true">
+          <div class="label">Reentry planning</div>
+        </div>
+        <div class="body">
+          <h3>Step-by-step reentry</h3>
+          <p>Support with plans, schedules, and connections that help reduce overwhelm.</p>
+          <div class="actions">
+            <a class="btn" href="{{ url_for('public.contact') }}">Contact</a>
+            <a class="btn" href="{{ url_for('public.careers') }}">Careers</a>
+          </div>
+        </div>
+      </article>
+
+      <div class="contact-band" style="grid-column: span 12;">
+        <div class="pad">
+          <h2>Need help or have questions?</h2>
+          <p class="small-muted">Reach out — we’ll respond as soon as we can.</p>
+        </div>
+        <div class="contact-row">
+          <div class="contact-line">
+            <span class="contact-pill">Email: <a href="mailto:info@overcomerssle.com">info@overcomerssle.com</a></span>
+          </div>
+          <div class="contact-line">
+            <span class="contact-pill">Phone: (408) 123-4567</span>
+            <span class="contact-pill">General: (805) 202-8473</span>
+          </div>
+          <div class="contact-line">
+            <span class="contact-pill">Lumpia Bros Cafe (ownership entity):<br>1187 W Grand Ave, Grover Beach, CA 93433</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
