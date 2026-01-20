@@ -230,22 +230,22 @@ h1,h2,h3{
   align-items: stretch;
 }
 .hero h1{
-  color: rgba(255,255,255,.96);
+  color: rgba(6,21,24,.96);
   font-size: clamp(2.0rem, 3.2vw, 3.0rem);
   line-height: 1.06;
   letter-spacing: -0.03em;
   margin-bottom: 10px;
 }
 .hero .subhead{
-  color: rgba(255,255,255,.90);
-  font-size: 1.12rem; /* bigger per request */
-  font-weight: 650;
+  color: rgba(11,18,32,.82);
+  font-size: 1.16rem;
+  font-weight: 750;
   margin-bottom: 14px;
   max-width: 64ch;
 }
 .hero .lead{
-  color: rgba(255,255,255,.82);
-  font-size: 1.0rem;
+  color: rgba(11,18,32,.72);
+  font-size: 1.02rem;
   margin-bottom: 18px;
   max-width: 70ch;
 }
@@ -529,4 +529,22 @@ input{
 }
 @media (min-width: 900px){
   .brand-logo{ height: 64px; }
+}
+
+
+/* Contact info box readability */
+.contact-band{
+  max-width: 920px;
+  margin: 0 auto;
+}
+.contact-row{
+  grid-template-columns: 1fr;
+}
+.contact-pill{
+  max-width: 100%;
+  white-space: normal;
+  line-height: 1.35;
+}
+.contact-line{
+  gap: 12px;
 }
