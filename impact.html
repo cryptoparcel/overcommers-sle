@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Impact — OVERCOMMERS | SLE</title>
+
+  <meta name="description" content="OVERCOMMERS | SLE — Transitional sober living supporting recovery and reentry with structure, community, and practical life skills." />
+  <meta name="theme-color" content="#0b5f57" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="topbar">
+    <div class="container">
+      <div class="header">
+        <a class="brand" href="/index.html" aria-label="OVERCOMMERS | SLE home">
+          <!-- Friendly, bright, welcoming logo -->
+          <svg viewBox="0 0 64 64" role="img" aria-label="Overcommers logo" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#0ea5a0"/>
+                <stop offset="0.55" stop-color="#7dd3fc"/>
+                <stop offset="1" stop-color="#ffb4a3"/>
+              </linearGradient>
+              <radialGradient id="rg" cx="0.35" cy="0.25" r="0.9">
+                <stop offset="0" stop-color="rgba(255,255,255,.95)"/>
+                <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+              </radialGradient>
+            </defs>
+            <rect width="64" height="64" rx="18" fill="#0b5f57"/>
+            <rect x="6" y="6" width="52" height="52" rx="16" fill="url(#lg)"/>
+            <circle cx="24" cy="22" r="22" fill="url(#rg)" opacity=".55"/>
+            <!-- simple “path forward” mark -->
+            <path d="M18 36c6 7 14 11 28 11" fill="none" stroke="rgba(255,255,255,.92)" stroke-width="4" stroke-linecap="round"/>
+            <path d="M19 26c7-8 16-10 26-5" fill="none" stroke="rgba(255,255,255,.86)" stroke-width="4" stroke-linecap="round"/>
+            <path d="M41 23l6 2-2 6" fill="none" stroke="rgba(255,255,255,.86)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="brand-title">
+            <strong>OVERCOMMERS | SLE</strong>
+            <span>Transitional sober living • recovery &amp; reentry</span>
+          </div>
+        </a>
+
+        
+      <nav class="nav" aria-label="Primary">
+        <ul>
+          <li><a href="/what-we-do.html">What We Do</a></li>
+          <li><a href="/resources.html">Resources</a></li>
+          <li><a href="/impact.html">Impact</a></li>
+          <li><a href="/shop.html">Shop</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    
+
+        <div class="actions">
+          <a class="btn" href="/shop.html">Shop</a>
+          <a class="btn primary" href="#" data-open-apply>Apply</a>
+          <a class="btn" href="/login">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main id="main">
+    
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>Impact</h2>
+        <p>Clear, honest information about why supportive housing matters. (Use real numbers when you have them.)</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card" style="grid-column: span 4;">
+        <div class="body">
+          <h3>Stability</h3>
+          <p>A stable home helps people focus on recovery and work instead of survival mode.</p>
+        </div>
+      </div>
+      <div class="card" style="grid-column: span 4;">
+        <div class="body">
+          <h3>Consistency</h3>
+          <p>Daily routines reduce stress and help build healthier habits.</p>
+        </div>
+      </div>
+      <div class="card" style="grid-column: span 4;">
+        <div class="body">
+          <h3>Community</h3>
+          <p>Support and accountability can help reduce relapse and isolation.</p>
+        </div>
+      </div>
+
+      <div class="card story" style="grid-column: span 6;">
+        <div class="body">
+          <h3>Resident story</h3>
+          <p>“The structure helped me keep promises to myself. I started showing up for work and for my family again.”</p>
+          <div class="quote">— Example (replace with consented story)</div>
+        </div>
+      </div>
+
+      <div class="card story" style="grid-column: span 6;">
+        <div class="body">
+          <h3>Reentry story</h3>
+          <p>“Learning modern tech step-by-step made jobs and daily life feel possible again.”</p>
+          <div class="quote">— Example (replace with consented story)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  </main>
+
+  <!-- Apply modal (UI only for now) -->
+  <div class="modal-backdrop" id="applyModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Apply / Sign up">
+    <div class="modal">
+      <div class="mhead">
+        <strong>Apply / Create an account</strong>
+        <button class="close" id="applyClose" aria-label="Close">×</button>
+      </div>
+      <div class="mbody">
+        <p class="helptext">This is the design preview. Later, this form can connect to your real sign-up + application system.</p>
+
+        <div class="field">
+          <label for="name">Full name</label>
+          <input id="name" type="text" placeholder="Jane Doe" autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="jane@email.com" autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input id="phone" type="tel" placeholder="(555) 123-4567" autocomplete="tel" />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" type="password" placeholder="Create a password" autocomplete="new-password" />
+        </div>
+
+        <div class="mactions">
+          <button class="btn primary" type="button" disabled title="Hook this up later">Create account</button>
+          <button class="btn" type="button" id="applyClose2" onclick="document.getElementById('applyClose').click()">Not now</button>
+        </div>
+        <p class="helptext">By continuing, you agree to our <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer">
+        <div><strong>OVERCOMMERS | SLE</strong> — a structured sober living environment focused on safety, routine, and community.</div>
+        <div class="footer-links">
+          <a href="/what-we-do.html">What We Do</a>
+          <a href="/resources.html">Resources</a>
+          <a href="/impact.html">Impact</a>
+          <a href="/shop.html">Shop</a>
+          <a href="/contact.html">Contact</a>
+          <a href="/careers.html">Careers</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+        </div>
+        <div class="disclaimer">
+          Disclaimer: OVERCOMMERS | SLE provides peer-based supportive housing and does not provide medical, therapeutic, or detox services.
+          We do not guarantee outcomes. If you need clinical care, consult licensed professionals. We follow fair housing and anti-discrimination rules.
+        </div>
+        <div>© 2026 OVERCOMMERS | SLE. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/app.js"></script>
+</body>
+</html>
