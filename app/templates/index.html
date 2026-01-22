@@ -1,72 +1,136 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="hero">
-  <div class="container">
-    <div class="hero-card" role="region" aria-label="Hero">
-      <div class="hero-inner">
-        <div>
-          <h1>{{ home_headline or "A safe, sober place to live while you get back on your feet." }}</h1>
-          <p class="subhead">{{ home_subhead or "Transitional sober living for recovery & reentry — with structure, support, and a plan for what’s next." }}</p>
-          <p class="lead">{{ home_lead or "We focus on daily routines, peer support, and practical life skills. If someone needs medical or clinical treatment, we help connect them to licensed professionals." }}</p>
-          <div class="hero-ctas">
-            <a class="btn primary" href="{{ url_for(\'public.apply\') }}">Apply now</a>
-          </div>
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <div class="pill">Sober living • recovery • reentry</div>
+      <h1>Stability, structure, and a fresh start.</h1>
+      <p class="lead">
+        Overcomers | SLE is a supportive sober living environment designed around safety, daily routine, and community accountability.
+        We help residents build momentum — one week at a time.
+      </p>
 
-          {% if youtube_embed_url %}
-          <div style="margin-top:16px; background: rgba(255,255,255,.94); border:1px solid rgba(7,25,34,.10); border-radius: 18px; overflow:hidden; box-shadow: 0 12px 24px rgba(2,6,23,.10);">
-            <div style="padding:12px 14px; font-weight:900; color: rgba(6,21,24,.92);">Video of the day</div>
-            <div style="aspect-ratio: 16/9; width:100%;">
-              <iframe
-                title="Featured video"
-                src="{{ youtube_embed_url }}"
-                style="border:0; width:100%; height:100%; display:block;"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen></iframe>
-            </div>
-          </div>
-          {% endif %}
+      <div class="hero__actions">
+        <a class="btn btn--primary btn--lg" href="{{ url_for('public.apply') }}">Apply now</a>
+        <a class="btn btn--ghost btn--lg" href="{{ url_for('public.contact') }}">Contact</a>
+      </div>
+
+      <div class="hero__stats">
+        <div class="stat">
+          <div class="stat__k">Safety first</div>
+          <div class="stat__v">Clear house rules &amp; expectations</div>
+        </div>
+        <div class="stat">
+          <div class="stat__k">Daily routine</div>
+          <div class="stat__v">Structure that supports change</div>
+        </div>
+        <div class="stat">
+          <div class="stat__k">Community</div>
+          <div class="stat__v">Accountability &amp; peer support</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__card">
+      <div class="card">
+        <div class="card__top">
+          <div class="card__title">Quick steps</div>
+          <div class="card__sub">A clean, simple flow</div>
         </div>
 
-        <aside class="hero-side" aria-label="What you can expect">
-          <div class="img" aria-hidden="true"></div>
-          <div class="pad">
-            <h3>What to expect</h3>
-            <p>Clear house rules, respectful community, and support for building stability.</p>
-            <ul>
-              <li>Alcohol- and drug-free living</li>
-              <li>Accountability and peer support</li>
-              <li>Help with routines, jobs, and basic life skills</li>
-              <li>Referrals to licensed care when needed</li>
-            </ul>
-          </div>
-        </aside>
+        <ol class="steps">
+          <li><strong>Apply</strong> — tell us a bit about you.</li>
+          <li><strong>Call</strong> — we confirm fit, timing, and expectations.</li>
+          <li><strong>Move-in plan</strong> — next steps, checklist, and start date.</li>
+        </ol>
+
+        <div class="card__cta">
+          <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Start application</a>
+          <a class="btn btn--ghost" href="{{ url_for('public.resources') }}">See resources</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero__wash"></div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2>Explore</h2>
+      <p class="muted">Everything is aligned, readable, and built to scale.</p>
+    </div>
+
+    <div class="grid grid--cards">
+      <a class="card card--link" href="{{ url_for('public.what_we_do') }}">
+        <div class="card__title">What we do</div>
+        <div class="card__text">Rules, structure, and support systems that keep progress moving.</div>
+        <div class="card__arrow">→</div>
+      </a>
+
+      <a class="card card--link" href="{{ url_for('public.resources') }}">
+        <div class="card__title">Resources</div>
+        <div class="card__text">Recovery tools, community links, and practical reentry help.</div>
+        <div class="card__arrow">→</div>
+      </a>
+
+      <a class="card card--link" href="{{ url_for('public.impact') }}">
+        <div class="card__title">Impact</div>
+        <div class="card__text">How we measure progress, stability, and outcomes over time.</div>
+        <div class="card__arrow">→</div>
+      </a>
+
+      <a class="card card--link" href="{{ url_for('public.shop') }}">
+        <div class="card__title">Shop</div>
+        <div class="card__text">Support the mission — simple products that fund the work.</div>
+        <div class="card__arrow">→</div>
+      </a>
+
+      <a class="card card--link" href="{{ url_for('public.contact') }}">
+        <div class="card__title">Contact</div>
+        <div class="card__text">Questions? We’ll respond fast and keep it straightforward.</div>
+        <div class="card__arrow">→</div>
+      </a>
+    </div>
+
+    <div class="apply-ring">
+      <a class="apply-ring__button" href="{{ url_for('public.apply') }}">
+        <span>Apply</span>
+      </a>
+      <div class="apply-ring__note">
+        <strong>Option A:</strong> Keep the homepage focused on a single primary action — apply.
+        Everything else stays available in the nav and the “Explore” cards above.
       </div>
     </div>
   </div>
 </section>
 
-<section>
+<section class="section section--alt">
   <div class="container">
-    <div class="section-head">
+    <div class="split">
       <div>
-        <h2>Get started</h2>
-        <p>Start with a quick application. We’ll follow up with next steps.</p>
+        <h2>What residents can expect</h2>
+        <p class="muted">
+          A predictable environment makes change easier. Here’s what we emphasize:
+        </p>
+        <ul class="bullets">
+          <li>Respectful, consistent house rules</li>
+          <li>Chore rotation and shared responsibility</li>
+          <li>Support for employment, appointments, and reentry steps</li>
+          <li>Peer accountability and community standards</li>
+        </ul>
       </div>
-    </div>
 
-    <div class="grid">
-      <article class="card">
-        <div class="thumb" style="background-image: var(--img-home);" aria-hidden="true">
-          <div class="label">Apply</div>
+      <div class="card card--soft">
+        <div class="card__title">Ready to talk?</div>
+        <div class="card__text">
+          If you’re not sure whether this is the right fit, send a message and we’ll reply with next steps.
         </div>
-        <div class="body">
-          <h3>Apply for housing</h3>
-          <p>Tell us a bit about your situation and how to reach you.</p>
-          <div class="actions">
-            <a class="btn primary" href="{{ url_for('public.apply') }}">Apply now</a>
-          </div>
+        <div class="card__cta">
+          <a class="btn btn--primary" href="{{ url_for('public.contact') }}">Contact</a>
+          <a class="btn btn--ghost" href="{{ url_for('public.apply') }}">Apply</a>
         </div>
-      </article>
+      </div>
     </div>
   </div>
 </section>

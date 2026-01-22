@@ -1,65 +1,38 @@
 {% extends "base.html" %}
 {% block content %}
-<section>
-  <div class="container">
-    <div class="section-head">
-      <div>
-        <h2>Apply</h2>
-        <p>Tell us a little about what you need. We’ll follow up as soon as we can.</p>
-      </div>
-    </div>
+<section class="section">
+  <div class="container page">
+    <h1>Apply</h1>
+    <p class="muted">
+      This form is intentionally short. If you’re accepted, we’ll confirm details over a call.
+    </p>
 
-    <div class="grid">
-      <div class="card" style="grid-column: span 7;">
-        <div class="body">
-          <form method="post">
-            {{ csrf_token() }}
-            <div class="field">
-              <label for="name">Full name</label>
-              <input id="name" name="name" type="text" required />
-            </div>
-            <div class="field">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" required />
-            </div>
-            <div class="field">
-              <label for="phone">Phone</label>
-              <input id="phone" name="phone" type="tel" required />
-            </div>
-            <div class="field">
-              <label for="message">What should we know?</label>
-              <input id="message" name="message" type="text" placeholder="Goals, timeline, questions…" />
-            </div>
-            {% if turnstile_site_key %}
-            <div class="field">
-              <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div>
-              <div class="helptext">Spam protection is enabled.</div>
-            </div>
-            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-            {% endif %}
-
-            <div class="actions">
-              <button class="btn primary" type="submit">Submit application</button>
-              <a class="btn" href="{{ url_for('public.contact') }}">Contact</a>
-            </div>
-            {% if success %}
-              <p style="color:#0b5f57; font-weight:900; margin:0;">{{ success }}</p>
-            {% endif %}
-            {% if error %}
-              <p style="color:#b91c1c; font-weight:900; margin:0;">{{ error }}</p>
-            {% endif %}
-          </form>
+    <form method="post" class="form">
+      {{ form.csrf_token }}
+      <div class="grid grid--form">
+        <div class="field">
+          <label>{{ form.full_name.label }}</label>
+          {{ form.full_name(class_="input") }}
+        </div>
+        <div class="field">
+          <label>{{ form.email.label }}</label>
+          {{ form.email(class_="input") }}
+        </div>
+        <div class="field grid__span2">
+          <label>{{ form.phone.label }}</label>
+          {{ form.phone(class_="input") }}
+        </div>
+        <div class="field grid__span2">
+          <label>{{ form.message.label }}</label>
+          {{ form.message(class_="textarea", rows="7") }}
         </div>
       </div>
 
-      <div class="card" style="grid-column: span 5;">
-        <div class="body">
-          <h3>What happens next?</h3>
-          <p>We’ll review your message and follow up by email or phone. If you need immediate medical help, call emergency services.</p>
-          <p class="helptext">This form is stored in our database (Postgres on Render).</p>
-        </div>
+      <div class="form__actions">
+        <button class="btn btn--primary" type="submit">Submit application</button>
+        <a class="btn btn--ghost" href="{{ url_for('public.contact') }}">Questions?</a>
       </div>
-    </div>
+    </form>
   </div>
 </section>
 {% endblock %}

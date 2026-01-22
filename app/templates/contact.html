@@ -1,3 +1,35 @@
-{% extends "_page.html" %}
-{% set heading = 'Contact' %}
-{% set sub = 'Questions, opportunities, or support — reach out anytime.' %}
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container page">
+    <h1>Contact</h1>
+    <p class="muted">Send a message and we’ll respond as soon as we can.</p>
+
+    <form method="post" class="form">
+      {{ form.csrf_token }}
+      <div class="grid grid--form">
+        <div class="field">
+          <label>{{ form.name.label }}</label>
+          {{ form.name(class_="input") }}
+        </div>
+        <div class="field">
+          <label>{{ form.email.label }}</label>
+          {{ form.email(class_="input") }}
+        </div>
+        <div class="field grid__span2">
+          <label>{{ form.subject.label }}</label>
+          {{ form.subject(class_="input") }}
+        </div>
+        <div class="field grid__span2">
+          <label>{{ form.message.label }}</label>
+          {{ form.message(class_="textarea", rows="6") }}
+        </div>
+      </div>
+      <div class="form__actions">
+        <button class="btn btn--primary" type="submit">Send</button>
+        <a class="btn btn--ghost" href="{{ url_for('public.index') }}">Back home</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

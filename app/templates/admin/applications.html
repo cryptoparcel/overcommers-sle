@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container page">
+    <h1>Applications</h1>
+    <p class="muted">Latest 200 applications.</p>
+
+    <div class="table">
+      <div class="table__head">
+        <div>Date</div><div>Name</div><div>Email</div><div>Phone</div><div>Status</div>
+      </div>
+      {% for r in rows %}
+        <div class="table__row">
+          <div>{{ r.created_at.strftime("%Y-%m-%d %H:%M") }}</div>
+          <div>{{ r.full_name }}</div>
+          <div>{{ r.email }}</div>
+          <div>{{ r.phone or "-" }}</div>
+          <div>{{ r.status }}</div>
+        </div>
+      {% else %}
+        <div class="muted">No applications yet.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

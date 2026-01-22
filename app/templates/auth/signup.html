@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container page">
+    <h1>Create account</h1>
+    <form method="post" class="form form--narrow">
+      {{ form.csrf_token }}
+      <div class="field">
+        <label>{{ form.name.label }}</label>
+        {{ form.name(class_="input") }}
+      </div>
+      <div class="field">
+        <label>{{ form.email.label }}</label>
+        {{ form.email(class_="input") }}
+      </div>
+      <div class="field">
+        <label>{{ form.username.label }}</label>
+        {{ form.username(class_="input") }}
+      </div>
+      <div class="field">
+        <label>{{ form.phone.label }}</label>
+        {{ form.phone(class_="input") }}
+      </div>
+      <div class="field">
+        <label>{{ form.password.label }}</label>
+        {{ form.password(class_="input") }}
+      </div>
+      <div class="form__actions">
+        <button class="btn btn--primary" type="submit">Create account</button>
+        <a class="btn btn--ghost" href="{{ url_for('auth.login') }}">Login instead</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

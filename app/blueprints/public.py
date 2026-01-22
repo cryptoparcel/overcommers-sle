@@ -1,175 +1,135 @@
-from flask import current_app, Blueprint, render_template, request, send_from_directory
-from ..models import SiteSettings, Application, Page
-from .. import db
-from .. import limiter
-import re
-import os
-import requests
-from markdown import markdown
+from __future__ import annotations
+
+from flask import Blueprint, flash, redirect, render_template, url_for, send_from_directory, current_app
+from flask_login import login_required, current_user
+
+from ..extensions import db, limiter
+from ..forms import ApplyForm, ContactForm
+from ..models import Application, ContactMessage
+from ..utils.mailer import send_email
 
 public_bp = Blueprint("public", __name__)
 
-def youtube_to_embed(url: str) -> str:
-    if not url:
-        return ""
-    url = url.strip()
-    if "youtube.com/embed/" in url:
-        return url
-    m = re.search(r"youtu\.be/([\w-]+)", url)
-    if m:
-        return f"https://www.youtube.com/embed/{m.group(1)}"
-    m = re.search(r"v=([\w-]+)", url)
-    if m:
-        return f"https://www.youtube.com/embed/{m.group(1)}"
-    m = re.search(r"youtube\.com/shorts/([\w-]+)", url)
-    if m:
-        return f"https://www.youtube.com/embed/{m.group(1)}"
-    return url
-
-@public_bp.get("/")
-def index():
-    s = SiteSettings.query.first()
-    embed = youtube_to_embed(s.youtube_url if s else "")
-    return render_template(
-        "index.html",
-        title="OVERCOMERS | SLE — Transitional Sober Living",
-        home_headline=(s.home_headline if s else None),
-        home_subhead=(s.home_subhead if s else None),
-        home_lead=(s.home_lead if s else None),
-        youtube_embed_url=embed,
-        hero_image_url=(s.hero_image_url if s else None)
-    )
 
 @public_bp.get("/favicon.ico")
 def favicon():
-    # Browsers request /favicon.ico automatically. Serve our logo PNG to avoid noisy 404s.
-    return send_from_directory(current_app.static_folder, "images/logo-sunrise.png")
+    return send_from_directory(current_app.static_folder, "favicon.ico")
 
-@public_bp.route("/apply", methods=["GET", "POST"])
-@limiter.limit("5 per hour")
-def apply():
-    if request.method == "POST":
-        name = (request.form.get("name") or "").strip()
-        email = (request.form.get("email") or "").strip()
-        phone = (request.form.get("phone") or "").strip()
-        message = (request.form.get("message") or "").strip()
-        token = request.form.get("cf-turnstile-response") or ""
-        if not verify_turnstile(token, request.remote_addr or ""):
-            return render_template("apply.html", title="Apply — OVERCOMERS | SLE", error="Please verify you’re human and try again.", turnstile_site_key=os.environ.get("TURNSTILE_SITE_KEY",""))
-        if not name or not email or not phone:
-            return render_template("apply.html", title="Apply — OVERCOMERS | SLE", error="Please fill name, email, and phone.")
-        a = Application(name=name, email=email, phone=phone, message=message)
-        db.session.add(a)
-        db.session.commit()
 
-        admin_notify = os.environ.get("ADMIN_NOTIFY_EMAIL", "")
-        subject = "New application received"
-        body = f"New application:\n\nName: {name}\nEmail: {email}\nPhone: {phone}\nMessage: {message}\n"
-        if admin_notify:
-            send_email(subject, body, admin_notify)
-        send_email("We received your application", "Thanks for reaching out. We received your application and will follow up soon.", email)
+@public_bp.get("/")
+def index():
+    return render_template("index.html", title="Overcomers | SLE")
 
-        return render_template("apply.html", title="Apply — OVERCOMERS | SLE", success="Thanks — your application was submitted.", turnstile_site_key=os.environ.get("TURNSTILE_SITE_KEY",""))
-    return render_template("apply.html", title="Apply — OVERCOMERS | SLE", turnstile_site_key=os.environ.get("TURNSTILE_SITE_KEY",""))
 
 @public_bp.get("/what-we-do")
 def what_we_do():
-    p = Page.query.filter_by(slug="what-we-do").first()
-    title = (p.title if p else "What We Do")
-    html = markdown(p.body_md) if p else ""
-    return render_template("what_we_do.html", title=f"{title} — OVERCOMERS | SLE", page_title=title, page_html=html)
+    return render_template("whatwedo.html", title="What We Do")
+
 
 @public_bp.get("/resources")
 def resources():
-    p = Page.query.filter_by(slug="resources").first()
-    title = (p.title if p else "Resources")
-    html = markdown(p.body_md) if p else ""
-    return render_template("resources.html", title=f"{title} — OVERCOMERS | SLE", page_title=title, page_html=html)
+    return render_template("resources.html", title="Resources")
+
 
 @public_bp.get("/impact")
 def impact():
-    p = Page.query.filter_by(slug="impact").first()
-    title = (p.title if p else "Impact")
-    html = markdown(p.body_md) if p else ""
-    return render_template("impact.html", title=f"{title} — OVERCOMERS | SLE", page_title=title, page_html=html)
+    return render_template("impact.html", title="Impact")
+
 
 @public_bp.get("/shop")
 def shop():
-    return render_template("shop.html", title="Shop — OVERCOMERS | SLE")
+    return render_template("shop.html", title="Shop")
+
 
 @public_bp.get("/contact")
 def contact():
-    p = Page.query.filter_by(slug="contact").first()
-    title = (p.title if p else "Contact")
-    html = markdown(p.body_md) if p else ""
-    return render_template("contact.html", title=f"{title} — OVERCOMERS | SLE", page_title=title, page_html=html)
+    form = ContactForm()
+    return render_template("contact.html", form=form, title="Contact")
 
-@public_bp.get("/careers")
-def careers():
-    p = Page.query.filter_by(slug="careers").first()
-    title = (p.title if p else "Careers")
-    html = markdown(p.body_md) if p else ""
-    return render_template("careers.html", title=f"{title} — OVERCOMERS | SLE", page_title=title, page_html=html)
+
+@public_bp.post("/contact")
+@limiter.limit("10 per hour")
+def contact_post():
+    form = ContactForm()
+    if not form.validate_on_submit():
+        flash("Please check the form and try again.", "error")
+        return render_template("contact.html", form=form, title="Contact"), 400
+
+    msg = ContactMessage(
+        name=form.name.data.strip(),
+        email=form.email.data.strip().lower(),
+        subject=form.subject.data.strip(),
+        message=form.message.data.strip(),
+    )
+    db.session.add(msg)
+    db.session.commit()
+
+    # Optional email notification
+    body = (
+        "New contact message\n\n"
+        f"Name: {msg.name}\n"
+        f"Email: {msg.email}\n"
+        f"Subject: {msg.subject}\n\n"
+        f"{msg.message}\n"
+    )
+    send_email(subject=f"[Overcomers] Contact: {msg.subject}", body=body, to_email=current_app.config.get("NOTIFY_EMAIL"))
+
+    flash("Thanks — we got your message.", "success")
+    return redirect(url_for("public.contact"))
+
+
+@public_bp.get("/apply")
+def apply():
+    form = ApplyForm()
+    return render_template("apply.html", form=form, title="Apply")
+
+
+@public_bp.post("/apply")
+@limiter.limit("10 per hour")
+def apply_post():
+    form = ApplyForm()
+    if not form.validate_on_submit():
+        flash("Please check the form and try again.", "error")
+        return render_template("apply.html", form=form, title="Apply"), 400
+
+    app_row = Application(
+        full_name=form.full_name.data.strip(),
+        email=form.email.data.strip().lower(),
+        phone=(form.phone.data.strip() if form.phone.data else None),
+        message=(form.message.data.strip() if form.message.data else None),
+    )
+    db.session.add(app_row)
+    db.session.commit()
+
+    body = (
+        "New application\n\n"
+        f"Name: {app_row.full_name}\n"
+        f"Email: {app_row.email}\n"
+        f"Phone: {app_row.phone or '-'}\n\n"
+        f"Message:\n{app_row.message or '-'}\n"
+    )
+    send_email(subject="[Overcomers] New application", body=body, to_email=current_app.config.get("NOTIFY_EMAIL"))
+
+    flash("Thanks — we’ll reach out soon.", "success")
+    return redirect(url_for("public.apply"))
+
 
 @public_bp.get("/privacy")
 def privacy():
-    return render_template("privacy.html", title="Privacy — OVERCOMERS | SLE")
+    return render_template("legal/privacy.html", title="Privacy Policy")
+
 
 @public_bp.get("/terms")
 def terms():
-    return render_template("terms.html", title="Terms — OVERCOMERS | SLE")
+    return render_template("legal/terms.html", title="Terms of Use")
 
 
-def verify_turnstile(token: str, remoteip: str) -> bool:
-    secret = os.environ.get("TURNSTILE_SECRET_KEY", "")
-    if not secret:
-        return True
-    if not token:
-        return False
-    try:
-        resp = requests.post(
-            "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-            data={"secret": secret, "response": token, "remoteip": remoteip},
-            timeout=6,
-        )
-        data = resp.json()
-        return bool(data.get("success"))
-    except Exception:
-        return False
+@public_bp.get("/admin/applications")
+@login_required
+def admin_applications():
+    if not getattr(current_user, "is_admin", False):
+        flash("Admins only.", "error")
+        return redirect(url_for("public.index"))
 
-def send_email(subject: str, body: str, to_email: str) -> None:
-    host = os.environ.get("SMTP_HOST", "")
-    user = os.environ.get("SMTP_USER", "")
-    password = os.environ.get("SMTP_PASSWORD", "")
-    from_email = os.environ.get("SMTP_FROM", user or "no-reply@overcomerssle.com")
-    port = int(os.environ.get("SMTP_PORT", "587") or 587)
-    if not host or not user or not password:
-        return
-
-    import smtplib
-    from email.message import EmailMessage
-
-    msg = EmailMessage()
-    msg["Subject"] = subject
-    msg["From"] = from_email
-    msg["To"] = to_email
-    msg.set_content(body)
-
-    with smtplib.SMTP(host, port, timeout=10) as s:
-        s.starttls()
-        s.login(user, password)
-        s.send_message(msg)
-
-
-@public_bp.get("/health")
-def health():
-    return {"status": "ok"}
-
-
-@public_bp.get("/robots.txt")
-def robots():
-    return current_app.send_static_file("robots.txt")
-
-@public_bp.get("/sitemap.xml")
-def sitemap():
-    return current_app.send_static_file("sitemap.xml")
+    rows = Application.query.order_by(Application.created_at.desc()).limit(200).all()
+    return render_template("admin/applications.html", rows=rows, title="Applications")

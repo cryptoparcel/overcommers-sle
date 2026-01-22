@@ -1,77 +1,36 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
-from flask_wtf.csrf import CSRFProtect
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
-from werkzeug.middleware.proxy_fix import ProxyFix
+from __future__ import annotations
+
 import os
-import datetime
+from flask import Flask
 
-db = SQLAlchemy()
-login_manager = LoginManager()
-csrf = CSRFProtect()
-limiter = Limiter(key_func=get_remote_address, default_limits=[])
-login_manager.login_view = "auth.login"
-
-
-def normalize_database_url(url: str) -> str:
-    """Normalize DATABASE_URL for SQLAlchemy.
-
-    - Some providers use postgres:// (legacy). SQLAlchemy prefers postgresql://
-    - On Python 3.13, psycopg2 wheels can break. Prefer psycopg (psycopg3).
-    """
-    if not url:
-        return url
-    url = url.strip()
-    if url.startswith("postgres://"):
-        url = "postgresql://" + url[len("postgres://"):]
-    if url.startswith("postgresql://"):
-        url = "postgresql+psycopg://" + url[len("postgresql://"):]
-    return url
+from .extensions import db, login_manager, limiter, csrf
+from . import login  # noqa: F401
+from .config import Config
+from .blueprints.public import public_bp
+from .blueprints.auth import auth_bp
+from .blueprints.errors import errors_bp
 
 
-def create_app():
+def create_app() -> Flask:
+    """Application factory for Overcomers SLE."""
     app = Flask(__name__, instance_relative_config=False)
-    app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
-    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-change-me")
-    app.config["SQLALCHEMY_DATABASE_URI"] = normalize_database_url(os.environ.get("DATABASE_URL", "sqlite:///app.db"))
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    # Load configuration
+    app.config.from_object(Config())
 
-    # Production hardening
-    if os.environ.get("FLASK_ENV") == "production":
-        app.config["SESSION_COOKIE_SECURE"] = True
-        app.config["SESSION_COOKIE_HTTPONLY"] = True
-        app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
-        app.config["REMEMBER_COOKIE_SECURE"] = True
-        app.config["REMEMBER_COOKIE_HTTPONLY"] = True
-        app.config["PREFERRED_URL_SCHEME"] = "https"
-
-
+    # Init extensions
     db.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
     limiter.init_app(app)
 
-    from .models import ensure_default_settings, bootstrap_admin_if_configured
-    from .blueprints.public import public_bp
-    from .blueprints.auth import auth_bp
-    from .blueprints.admin import admin_bp
-    from .blueprints.errors import errors_bp
-
+    # Blueprints
     app.register_blueprint(public_bp)
+    app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(errors_bp)
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(admin_bp, url_prefix="/admin")
 
-    @app.context_processor
-    def inject_globals():
-        return {"now_year": datetime.datetime.utcnow().year}
-
+    # Create tables (simple bootstrap; for production prefer migrations)
     with app.app_context():
         db.create_all()
-        ensure_default_settings()
-        bootstrap_admin_if_configured()
 
     return app

@@ -1,73 +1,29 @@
-# OVERCOMERS | SLE — UI + Flask Backend
+# Overcomers | SLE (Flask)
 
-This repo includes:
-- Frontend UI (templates + static assets)
-- Backend: auth (login/register), Apply form (stored in DB), Admin dashboard
-- Admin-managed homepage settings (including YouTube “video of the day”)
+Production-ready Flask web app for Overcomers | SLE:
+- Public marketing pages
+- Apply + Contact forms (stored in PostgreSQL)
+- Optional email notifications via SMTP
+- Auth (login/signup) + simple admin page for applications
 
-## Local run
+## Local setup
+
 ```bash
 python -m venv .venv
-# Windows: .venv\Scripts\activate
-# mac/linux: source .venv/bin/activate
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-
-export SECRET_KEY="dev"
-export DATABASE_URL="sqlite:///local.db"
-python app.py
+cp .env.example .env
+flask --app wsgi:app run --debug
 ```
 
-Open http://localhost:5000
+## Render setup
 
-## Create the first admin (recommended)
-Set these env vars once, then start the app:
-- `BOOTSTRAP_ADMIN_EMAIL`
-- `BOOTSTRAP_ADMIN_PASSWORD`
+1) Create a **PostgreSQL** database in Render.
+2) In the **Web Service** env vars, set:
+   - `DATABASE_URL` = the Render Postgres **External Database URL** (or Internal if you only access from Render)
+   - `SECRET_KEY` = long random string
 
-```bash
-export BOOTSTRAP_ADMIN_EMAIL="admin@overcomerssle.com"
-export BOOTSTRAP_ADMIN_PASSWORD="ChangeThisPassword123!"
-python app.py
-```
+3) (Optional) Email notifications: set the SMTP env vars from `.env.example`.
 
-Then:
-- `/login` to log in
-- `/admin` to manage applications + homepage settings
-
-## Render deployment
-1) Create a Render **Web Service** from this repo
-2) Add a **Postgres** database
-3) Set env vars:
-- `SECRET_KEY`
-- `DATABASE_URL` (from Render Postgres)
-- optional bootstrap vars above
-
-This repo also includes `render.yaml`.
-
-## Optional spam protection (Cloudflare Turnstile)
-Set:
-- TURNSTILE_SITE_KEY
-- TURNSTILE_SECRET_KEY
-
-## Optional email notifications (SMTP)
-Set:
-- SMTP_HOST
-- SMTP_PORT
-- SMTP_USER
-- SMTP_PASSWORD
-- SMTP_FROM
-- ADMIN_NOTIFY_EMAIL
-
-## Deployment secrets
-Do **not** commit secrets into GitHub. Set these in Render → Environment:
-- SECRET_KEY
-- DATABASE_URL
-
-Optional:
-- BOOTSTRAP_ADMIN_EMAIL / BOOTSTRAP_ADMIN_PASSWORD
-- TURNSTILE_SITE_KEY / TURNSTILE_SECRET_KEY
-- SMTP_* and ADMIN_NOTIFY_EMAIL
-
-## Render note: Python version
-If you prefer to keep psycopg2, pin Render to Python 3.12. This repo uses psycopg (psycopg3) so it works on Python 3.13+.
-
+Start command:
+`gunicorn --bind 0.0.0.0:$PORT wsgi:app`

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container page legal">
+    <h1>Privacy Policy</h1>
+    <p class="muted">Last updated: Jan 2026</p>
+
+    <h3>What we collect</h3>
+    <ul class="bullets">
+      <li>Information you submit (applications and contact messages).</li>
+      <li>Basic analytics (e.g., page views) if enabled later.</li>
+    </ul>
+
+    <h3>How we use it</h3>
+    <ul class="bullets">
+      <li>To respond to your requests and process applications.</li>
+      <li>To improve the site and services.</li>
+    </ul>
+
+    <h3>Sharing</h3>
+    <p class="muted">
+      We do not sell personal information. We may share data only when required by law or to protect safety.
+    </p>
+
+    <h3>Contact</h3>
+    <p class="muted">Questions? <a href="{{ url_for('public.contact') }}">Contact us</a>.</p>
+  </div>
+</section>
+{% endblock %}

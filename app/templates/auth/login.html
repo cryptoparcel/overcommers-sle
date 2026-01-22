@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container page">
+    <h1>Login</h1>
+    <form method="post" class="form form--narrow">
+      {{ form.csrf_token }}
+      <div class="field">
+        <label>{{ form.username_or_email.label }}</label>
+        {{ form.username_or_email(class_="input") }}
+      </div>
+      <div class="field">
+        <label>{{ form.password.label }}</label>
+        {{ form.password(class_="input") }}
+      </div>
+      <div class="form__actions">
+        <button class="btn btn--primary" type="submit">Login</button>
+        <a class="btn btn--ghost" href="{{ url_for('auth.signup') }}">Create account</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
