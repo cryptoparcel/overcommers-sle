@@ -57,3 +57,14 @@ Set:
 - SMTP_PASSWORD
 - SMTP_FROM
 - ADMIN_NOTIFY_EMAIL
+
+## Deployment secrets
+Do **not** commit secrets into GitHub. Set these in Render → Environment:
+- SECRET_KEY
+- DATABASE_URL
+
+Optional:
+- BOOTSTRAP_ADMIN_EMAIL / BOOTSTRAP_ADMIN_PASSWORD
+- TURNSTILE_SITE_KEY / TURNSTILE_SECRET_KEY
+- SMTP_* and ADMIN_NOTIFY_EMAIL
+
