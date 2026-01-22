@@ -68,3 +68,6 @@ Optional:
 - TURNSTILE_SITE_KEY / TURNSTILE_SECRET_KEY
 - SMTP_* and ADMIN_NOTIFY_EMAIL
 
+## Render note: Python version
+If you prefer to keep psycopg2, pin Render to Python 3.12. This repo uses psycopg (psycopg3) so it works on Python 3.13+.
+

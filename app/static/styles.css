@@ -1,0 +1,7 @@
+
+
+/* Alignment polish */
+.grid{align-items:stretch}
+.card{height:100%}
+.card .body{display:flex;flex-direction:column;gap:10px}
+.card .actions{margin-top:auto}

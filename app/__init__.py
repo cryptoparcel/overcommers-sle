@@ -14,12 +14,29 @@ csrf = CSRFProtect()
 limiter = Limiter(key_func=get_remote_address, default_limits=[])
 login_manager.login_view = "auth.login"
 
-def create_app():
+
+def normalize_database_url(url: str) -> str:
+    """Normalize DATABASE_URL for SQLAlchemy.
+
+    - Some providers use postgres:// (legacy). SQLAlchemy prefers postgresql://
+    - On Python 3.13, psycopg2 wheels can break. Prefer psycopg (psycopg3).
+    """
+    if not url:
+        return url
+    url = url.strip()
+    if url.startswith("postgres://"):
+        url = "postgresql://" + url[len("postgres://"):]
+    if url.startswith("postgresql://"):
+        url = "postgresql+psycopg://" + url[len("postgresql://"):]
+    return url
+
+
+\1):
     app = Flask(__name__, instance_relative_config=False)
     app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-change-me")
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///local.db").replace("postgres://", "postgresql://")
+    app.config["SQLALCHEMY_DATABASE_URI"] = normalize_database_url(os.environ.get("DATABASE_URL", "sqlite:///app.db"))
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     # Production hardening
@@ -41,8 +58,10 @@ def create_app():
     from .blueprints.public import public_bp
     from .blueprints.auth import auth_bp
     from .blueprints.admin import admin_bp
+    from .blueprints.errors import errors_bp
 
     app.register_blueprint(public_bp)
+    app.register_blueprint(errors_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(admin_bp, url_prefix="/admin")
 

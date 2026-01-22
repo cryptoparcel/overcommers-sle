@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import current_app, Blueprint, render_template, request
 from ..models import SiteSettings, Application, Page
 from .. import db
 from .. import limiter
@@ -159,3 +159,12 @@ def send_email(subject: str, body: str, to_email: str) -> None:
 @public_bp.get("/health")
 def health():
     return {"status": "ok"}
+
+
+@public_bp.get("/robots.txt")
+def robots():
+    return current_app.send_static_file("robots.txt")
+
+@public_bp.get("/sitemap.xml")
+def sitemap():
+    return current_app.send_static_file("sitemap.xml")
