@@ -1,3 +1,5 @@
+import re
+
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import login_user, logout_user, current_user
 from ..models import User
@@ -12,9 +14,12 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for("public.index"))
     if request.method == "POST":
-        email = (request.form.get("email") or "").strip().lower()
+        full_name = (request.form.get("full_name") or "").strip()
+        identifier = (request.form.get("identifier") or "").strip().lower()
+        username = (request.form.get("username") or "").strip().lower()
+        phone = (request.form.get("phone") or "").strip() or None
         password = request.form.get("password") or ""
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter((User.email == identifier) | (User.username == identifier)).first()
         if not user or not user.check_password(password):
             return render_template("login.html", title="Login — OVERCOMERS | SLE", error="Invalid email or password.")
         login_user(user)
@@ -27,11 +32,19 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for("public.index"))
     if request.method == "POST":
-        email = (request.form.get("email") or "").strip().lower()
+        full_name = (request.form.get("full_name") or "").strip()
+        identifier = (request.form.get("identifier") or "").strip().lower()
+        username = (request.form.get("username") or "").strip().lower()
+        phone = (request.form.get("phone") or "").strip() or None
         password = request.form.get("password") or ""
         if len(password) < 8:
             return render_template("register.html", title="Create account — OVERCOMERS | SLE", error="Password must be at least 8 characters.")
         if User.query.filter_by(email=email).first():
+            return render_template("register.html", title="Create account — OVERCOMERS | SLE", error="That email is already registered.")
+        if User.query.filter_by(username=username).first():
+            return render_template("register.html", title="Create account — OVERCOMERS | SLE", error="That username is already taken.")
+
+        #
             return render_template("register.html", title="Create account — OVERCOMERS | SLE", error="An account with that email already exists.")
         u = User(email=email, role="resident")
         u.set_password(password)

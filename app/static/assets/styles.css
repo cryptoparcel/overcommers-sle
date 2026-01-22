@@ -733,3 +733,15 @@ input{
   margin-top: 14px;
 }
 .prose a{ text-decoration: underline; }
+
+/* Auth pages */
+.auth-form .grid-2{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 720px){
+  .auth-form .grid-2{ grid-template-columns: 1fr; }
+}
+.muted{ color: rgba(11,18,32,.68); font-weight: 650; }
+.tiny{ font-size: .92rem; }

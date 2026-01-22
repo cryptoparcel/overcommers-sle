@@ -12,24 +12,49 @@
     <div class="grid">
       <div class="card" style="grid-column: span 6;">
         <div class="body">
-          <form method="post">
-            {{ csrf_token() }}
-            <div class="field">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" required />
-            </div>
-            <div class="field">
-              <label for="password">Password</label>
-              <input id="password" name="password" type="password" minlength="8" required />
-            </div>
-            <div class="actions">
-              <button class="btn primary" type="submit">Create account</button>
-              <a class="btn" href="{{ url_for('auth.login') }}">Back to login</a>
-            </div>
-            {% if error %}
-              <p style="color:#b91c1c; font-weight:800; margin:0;">{{ error }}</p>
-            {% endif %}
-          </form>
+          <form method="post" class="auth-form">
+  {{ csrf_token() }}
+  <div class="grid-2">
+    <div class="field">
+      <label for="full_name">Full name</label>
+      <input id="full_name" name="full_name" type="text" autocomplete="name" required />
+    </div>
+    <div class="field">
+      <label for="username">Username</label>
+      <input id="username" name="username" type="text" autocomplete="username" required />
+      <div class="helptext">3–40 chars. Letters, numbers, underscore.</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required />
+    </div>
+    <div class="field">
+      <label for="phone">Phone (optional)</label>
+      <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="(555) 555-5555" />
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="new-password" required />
+    </div>
+    <div class="field">
+      <label for="password2">Confirm password</label>
+      <input id="password2" name="password2" type="password" autocomplete="new-password" required />
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn primary" type="submit">Create account</button>
+    <a class="btn ghost" href="{{ url_for('auth.login') }}">I already have an account</a>
+  </div>
+
+  <p class="muted tiny">By creating an account, you agree to our <a href="{{ url_for('public.terms') }}">Terms</a> and acknowledge our <a href="{{ url_for('public.privacy') }}">Privacy Policy</a>.</p>
+</form>
         </div>
       </div>
 
