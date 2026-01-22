@@ -14,7 +14,7 @@ def require_admin():
 @admin_bp.get("/")
 @login_required
 def dashboard():
-    if not require_admin():
+    if not require_staff():
         return redirect(url_for("public.index"))
     total = Application.query.count()
     new = Application.query.filter_by(status="New").count()
@@ -23,7 +23,7 @@ def dashboard():
 @admin_bp.get("/applications")
 @login_required
 def applications():
-    if not require_admin():
+    if not require_staff():
         return redirect(url_for("public.index"))
     apps = Application.query.order_by(Application.created_at.desc()).all()
     return render_template("admin_applications.html", title="Applications — OVERCOMERS | SLE", applications=apps)
@@ -31,7 +31,7 @@ def applications():
 @admin_bp.post("/applications/<int:app_id>")
 @login_required
 def update_application(app_id: int):
-    if not require_admin():
+    if not require_staff():
         return redirect(url_for("public.index"))
     status = request.form.get("status") or "New"
     a = Application.query.get_or_404(app_id)
@@ -63,7 +63,13 @@ def settings():
         s.home_subhead = request.form.get("home_subhead") or s.home_subhead
         s.home_lead = request.form.get("home_lead") or s.home_lead
         s.youtube_url = request.form.get("youtube_url") or ""
+        s.hero_image_url = request.form.get("hero_image_url") or ""
         s.updated_at = datetime.datetime.utcnow()
         db.session.commit()
         return redirect(url_for("admin.settings"))
     return render_template("admin_settings.html", title="Settings — OVERCOMERS | SLE", settings=s)
+
+
+
+def require_staff():
+    return current_user.is_authenticated and current_user.role in ("admin","staff")

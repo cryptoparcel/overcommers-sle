@@ -43,3 +43,17 @@ Then:
 - optional bootstrap vars above
 
 This repo also includes `render.yaml`.
+
+## Optional spam protection (Cloudflare Turnstile)
+Set:
+- TURNSTILE_SITE_KEY
+- TURNSTILE_SECRET_KEY
+
+## Optional email notifications (SMTP)
+Set:
+- SMTP_HOST
+- SMTP_PORT
+- SMTP_USER
+- SMTP_PASSWORD
+- SMTP_FROM
+- ADMIN_NOTIFY_EMAIL

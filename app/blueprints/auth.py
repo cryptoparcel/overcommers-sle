@@ -2,10 +2,12 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import login_user, logout_user, current_user
 from ..models import User
 from .. import db
+from .. import limiter
 
 auth_bp = Blueprint("auth", __name__)
 
 @auth_bp.route("/login", methods=["GET", "POST"])
+@limiter.limit("5 per minute")
 def login():
     if current_user.is_authenticated:
         return redirect(url_for("public.index"))
@@ -20,6 +22,7 @@ def login():
     return render_template("login.html", title="Login — OVERCOMERS | SLE")
 
 @auth_bp.route("/register", methods=["GET", "POST"])
+@limiter.limit("3 per hour")
 def register():
     if current_user.is_authenticated:
         return redirect(url_for("public.index"))

@@ -13,6 +13,7 @@
       <div class="card" style="grid-column: span 8;">
         <div class="body">
           <form method="post">
+            {{ csrf_token() }}
             <div class="field">
               <label for="headline">Homepage headline</label>
               <input id="headline" name="home_headline" type="text" value="{{ settings.home_headline or '' }}" />
@@ -24,6 +25,11 @@
             <div class="field">
               <label for="lead">Homepage lead</label>
               <input id="lead" name="home_lead" type="text" value="{{ settings.home_lead or '' }}" />
+            </div>
+            <div class="field">
+              <label for="hero_image_url">Hero image URL (optional)</label>
+              <input id="hero_image_url" name="hero_image_url" type="text" value="{{ settings.hero_image_url or '' }}" placeholder="https://..." />
+              <div class="helptext">Use a fixed URL so the homepage stays consistent.</div>
             </div>
             <div class="field">
               <label for="youtube">YouTube URL (any format)</label>

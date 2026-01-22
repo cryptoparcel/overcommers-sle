@@ -13,6 +13,7 @@
       <div class="card" style="grid-column: span 7;">
         <div class="body">
           <form method="post">
+            {{ csrf_token() }}
             <div class="field">
               <label for="name">Full name</label>
               <input id="name" name="name" type="text" required />
@@ -29,6 +30,14 @@
               <label for="message">What should we know?</label>
               <input id="message" name="message" type="text" placeholder="Goals, timeline, questions…" />
             </div>
+            {% if turnstile_site_key %}
+            <div class="field">
+              <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div>
+              <div class="helptext">Spam protection is enabled.</div>
+            </div>
+            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+            {% endif %}
+
             <div class="actions">
               <button class="btn primary" type="submit">Submit application</button>
               <a class="btn" href="{{ url_for('public.contact') }}">Contact</a>

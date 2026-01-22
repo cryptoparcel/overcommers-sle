@@ -40,3 +40,25 @@
     sections.forEach(s => io.observe(s));
   }
 })();
+
+
+// Mobile nav toggle
+(() => {
+  const btn = document.querySelector('.nav-toggle');
+  if (!btn) return;
+  const close = () => {
+    document.body.classList.remove('nav-open');
+    btn.setAttribute('aria-expanded', 'false');
+  };
+  btn.addEventListener('click', () => {
+    const open = document.body.classList.toggle('nav-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.addEventListener('click', (e) => {
+    if (!document.body.classList.contains('nav-open')) return;
+    const header = document.querySelector('.header');
+    if (header && header.contains(e.target)) return;
+    close();
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+})();

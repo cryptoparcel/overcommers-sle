@@ -13,7 +13,7 @@
       <div class="card" style="grid-column: span 12;">
         <div class="body">
           <h3>Coming soon</h3>
-          <p>This page is wired and ready. We’ll keep improving content and add backend-managed sections next.</p>
+          {% if page_html %}<div class="prose">{{ page_html|safe }}</div>{% else %}<p>This page is wired and ready. We’ll keep improving content and add backend-managed sections next.</p>{% endif %}
         </div>
       </div>
     </div>
