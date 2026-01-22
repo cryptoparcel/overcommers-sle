@@ -31,7 +31,7 @@ def normalize_database_url(url: str) -> str:
     return url
 
 
-\1):
+def create_app():
     app = Flask(__name__, instance_relative_config=False)
     app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
