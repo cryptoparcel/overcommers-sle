@@ -1,4 +1,4 @@
-from flask import current_app, Blueprint, render_template, request
+from flask import current_app, Blueprint, render_template, request, send_from_directory
 from ..models import SiteSettings, Application, Page
 from .. import db
 from .. import limiter
@@ -39,6 +39,11 @@ def index():
         youtube_embed_url=embed,
         hero_image_url=(s.hero_image_url if s else None)
     )
+
+@public_bp.get("/favicon.ico")
+def favicon():
+    # Browsers request /favicon.ico automatically. Serve our logo PNG to avoid noisy 404s.
+    return send_from_directory(current_app.static_folder, "images/logo-sunrise.png")
 
 @public_bp.route("/apply", methods=["GET", "POST"])
 @limiter.limit("5 per hour")
