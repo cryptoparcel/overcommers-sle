@@ -39,28 +39,64 @@
 
 <section class="section">
   <div class="container">
-    <div class="grid cards three">
-      <article class="card">
-        <div class="card__body">
-          <h3 class="h3">Stable housing</h3>
-          <p class="muted">A consistent place to live that supports sobriety, safety, and daily structure.</p>
-          <a class="link" href="{{ url_for('public.what_we_do') }}">How it works →</a>
+    <div class="section__head">
+      <h2 class="h2">Support that feels human</h2>
+      <p class="muted">A safe, sober place to live—plus structure, encouragement, and clear next steps. Built to be easy to understand for families and youth, too.</p>
+    </div>
+
+    <div class="grid feature-split">
+      <div class="feature-cards">
+        <article class="card feature">
+          <div class="card__body">
+            <h3 class="h3">Stable sober housing</h3>
+            <p class="muted">Consistent, respectful living with clear house rules and a focus on safety.</p>
+            <ul class="bullets">
+              <li>Alcohol- and drug-free environment</li>
+              <li>Quiet hours, shared responsibilities, and boundaries</li>
+              <li>Community that supports progress</li>
+            </ul>
+            <a class="link" href="{{ url_for('public.what_we_do') }}">How it works →</a>
+          </div>
+        </article>
+
+        <article class="card feature">
+          <div class="card__body">
+            <h3 class="h3">Peer support & accountability</h3>
+            <p class="muted">Encouragement, check-ins, and help staying on track—without judgment.</p>
+            <ul class="bullets">
+              <li>Supportive house culture</li>
+              <li>Goal setting and routine building</li>
+              <li>Referrals to licensed care when needed</li>
+            </ul>
+            <a class="link" href="{{ url_for('public.resources') }}">Find support resources →</a>
+          </div>
+        </article>
+
+        <article class="card feature">
+          <div class="card__body">
+            <h3 class="h3">Reentry planning</h3>
+            <p class="muted">Practical planning for work, paperwork, appointments, and a steady next chapter.</p>
+            <ul class="bullets">
+              <li>Job and life-skill routines</li>
+              <li>Reentry steps organized week-by-week</li>
+              <li>Simple plans you can follow</li>
+            </ul>
+            <a class="link" href="{{ url_for('public.impact') }}">Why it matters →</a>
+          </div>
+        </article>
+      </div>
+
+      <aside class="feature-media" aria-label="Image placeholders">
+        <div class="media-stack">
+          <div class="media-frame">
+            <img src="{{ url_for('static', filename='assets/img/phone_mockup.svg') }}" alt="Phone preview placeholder">
+          </div>
+          <div class="media-frame">
+            <img src="{{ url_for('static', filename='assets/img/community_photo.svg') }}" alt="Community photo placeholder">
+          </div>
         </div>
-      </article>
-      <article class="card">
-        <div class="card__body">
-          <h3 class="h3">Recovery support</h3>
-          <p class="muted">Accountability, peer support, and encouragement—built for long-term progress.</p>
-          <a class="link" href="{{ url_for('public.resources') }}">Browse resources →</a>
-        </div>
-      </article>
-      <article class="card">
-        <div class="card__body">
-          <h3 class="h3">Reentry planning</h3>
-          <p class="muted">Practical help with routines, job steps, and rebuilding stability one week at a time.</p>
-          <a class="link" href="{{ url_for('public.impact') }}">Why it matters →</a>
-        </div>
-      </article>
+        <p class="muted small" style="margin-top:10px;">Swap these placeholders with real photos (phone screenshots, events, programs) whenever you’re ready.</p>
+      </aside>
     </div>
   </div>
 </section>
