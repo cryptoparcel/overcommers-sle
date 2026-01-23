@@ -54,3 +54,12 @@ class Config:
         self.SMTP_USE_TLS = os.environ.get("SMTP_USE_TLS", "1") == "1"
         self.FROM_EMAIL = os.environ.get("FROM_EMAIL", "no-reply@overcomerssle.com")
         self.NOTIFY_EMAIL = os.environ.get("NOTIFY_EMAIL", "info@overcomerssle.com")
+
+
+    # Email notifications (optional)
+    ADMIN_NOTIFY_EMAIL = os.getenv("ADMIN_NOTIFY_EMAIL", "")
+    SMTP_HOST = os.getenv("SMTP_HOST", "")
+    SMTP_PORT = os.getenv("SMTP_PORT", "587")
+    SMTP_USER = os.getenv("SMTP_USER", "")
+    SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
+    SMTP_FROM = os.getenv("SMTP_FROM", "")

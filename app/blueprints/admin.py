@@ -1,75 +1,92 @@
-from flask import Blueprint, render_template, redirect, url_for, request, Response
-from flask_login import login_required, current_user
-from ..models import Application, SiteSettings
-from .. import db
-import csv
-import io
-import datetime
+from __future__ import annotations
 
-admin_bp = Blueprint("admin", __name__)
+from datetime import datetime
 
-def require_admin():
-    return current_user.is_authenticated and current_user.role == "admin"
+from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask_login import login_required
 
-@admin_bp.get("/")
+from ..extensions import db
+from ..models import Application, ContactMessage, Story, User
+from ..utils import admin_required
+
+admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
+
+
+@admin_bp.route("/")
 @login_required
+@admin_required
 def dashboard():
-    if not require_staff():
-        return redirect(url_for("public.index"))
-    total = Application.query.count()
-    new = Application.query.filter_by(status="New").count()
-    return render_template("admin_dashboard.html", title="Admin — OVERCOMERS | SLE", counts={"total": total, "new": new})
-
-@admin_bp.get("/applications")
-@login_required
-def applications():
-    if not require_staff():
-        return redirect(url_for("public.index"))
-    apps = Application.query.order_by(Application.created_at.desc()).all()
-    return render_template("admin_applications.html", title="Applications — OVERCOMERS | SLE", applications=apps)
-
-@admin_bp.post("/applications/<int:app_id>")
-@login_required
-def update_application(app_id: int):
-    if not require_staff():
-        return redirect(url_for("public.index"))
-    status = request.form.get("status") or "New"
-    a = Application.query.get_or_404(app_id)
-    a.status = status
-    db.session.commit()
     return redirect(url_for("admin.applications"))
 
-@admin_bp.get("/applications/export.csv")
+
+@admin_bp.route("/applications")
 @login_required
-def export_applications():
-    if not require_admin():
-        return redirect(url_for("public.index"))
-    output = io.StringIO()
-    writer = csv.writer(output)
-    writer.writerow(["id", "created_at", "name", "email", "phone", "message", "status"])
-    for a in Application.query.order_by(Application.created_at.desc()).all():
-        writer.writerow([a.id, a.created_at.isoformat(), a.name, a.email, a.phone, (a.message or ""), a.status])
-    output.seek(0)
-    return Response(output.getvalue(), mimetype="text/csv", headers={"Content-Disposition": "attachment; filename=applications.csv"})
+@admin_required
+def applications():
+    items = Application.query.order_by(Application.created_at.desc()).limit(200).all()
+    return render_template("admin/applications.html", applications=items)
 
-@admin_bp.route("/settings", methods=["GET", "POST"])
+
+@admin_bp.route("/messages")
 @login_required
-def settings():
-    if not require_admin():
-        return redirect(url_for("public.index"))
-    s = SiteSettings.query.first()
-    if request.method == "POST":
-        s.home_headline = request.form.get("home_headline") or s.home_headline
-        s.home_subhead = request.form.get("home_subhead") or s.home_subhead
-        s.home_lead = request.form.get("home_lead") or s.home_lead
-        s.youtube_url = request.form.get("youtube_url") or ""
-        s.hero_image_url = request.form.get("hero_image_url") or ""
-        s.updated_at = datetime.datetime.utcnow()
-        db.session.commit()
-        return redirect(url_for("admin.settings"))
-    return render_template("admin_settings.html", title="Settings — OVERCOMERS | SLE", settings=s)
+@admin_required
+def messages():
+    items = ContactMessage.query.order_by(ContactMessage.created_at.desc()).limit(300).all()
+    return render_template("admin/messages.html", messages=items)
 
 
+@admin_bp.route("/users")
+@login_required
+@admin_required
+def users():
+    items = User.query.order_by(User.created_at.desc()).limit(300).all()
+    return render_template("admin/users.html", users=items)
 
-def require_staff():
-    return current_user.is_authenticated and current_user.role in ("admin","staff")
+
+@admin_bp.route("/stories")
+@login_required
+@admin_required
+def stories():
+    status = request.args.get("status", "pending")
+    q = Story.query
+    if status in {"pending", "approved", "rejected"}:
+        q = q.filter_by(status=status)
+    items = q.order_by(Story.created_at.desc()).limit(300).all()
+    return render_template("admin/stories.html", stories=items, status=status)
+
+
+@admin_bp.post("/stories/<int:story_id>/approve")
+@login_required
+@admin_required
+def approve_story(story_id: int):
+    story = Story.query.get_or_404(story_id)
+    story.status = "approved"
+    story.reviewed_at = datetime.utcnow()
+    story.reviewed_by = current_user.id
+    # prefer current_user if available
+    db.session.commit()
+    flash("Story approved.", "success")
+    return redirect(url_for("admin.stories", status="pending"))
+
+
+@admin_bp.post("/stories/<int:story_id>/reject")
+@login_required
+@admin_required
+def reject_story(story_id: int):
+    story = Story.query.get_or_404(story_id)
+    story.status = "rejected"
+    story.reviewed_at = datetime.utcnow()
+    db.session.commit()
+    flash("Story rejected.", "info")
+    return redirect(url_for("admin.stories", status="pending"))
+
+
+@admin_bp.post("/stories/<int:story_id>/delete")
+@login_required
+@admin_required
+def delete_story(story_id: int):
+    story = Story.query.get_or_404(story_id)
+    db.session.delete(story)
+    db.session.commit()
+    flash("Story deleted.", "info")
+    return redirect(url_for("admin.stories", status="pending"))

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="admin-head">
+      <h1 class="h1">{{ title }}</h1>
+      <nav class="admin-nav">
+        <a class="btn {% if active=='applications' %}primary{% endif %}" href="{{ url_for('admin.applications') }}">Applications</a>
+        <a class="btn {% if active=='messages' %}primary{% endif %}" href="{{ url_for('admin.messages') }}">Messages</a>
+        <a class="btn {% if active=='stories' %}primary{% endif %}" href="{{ url_for('admin.stories') }}">Stories</a>
+        <a class="btn {% if active=='users' %}primary{% endif %}" href="{{ url_for('admin.users') }}">Users</a>
+      </nav>
+      <p class="muted">Admin-only area. No “make yourself admin” UI exists by design.</p>
+    </div>
+
+    {% block admin_content %}{% endblock %}
+  </div>
+</section>
+{% endblock %}

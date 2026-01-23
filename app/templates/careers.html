@@ -1,3 +1,31 @@
-{% extends "_page.html" %}
-{% set heading = 'Careers' %}
-{% set sub = 'Open roles and ways to help — staff, mentors, and volunteers.' %}
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h1 class="h1">Careers</h1>
+      <p class="muted">Help us build a safer, more supportive community. Open roles will appear here.</p>
+    </div>
+
+    <div class="grid cards">
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Resident Support Coordinator</h3>
+          <p class="muted">Support day-to-day routines, accountability, and respectful community living.</p>
+          <p class="muted"><strong>Location:</strong> California • <strong>Type:</strong> Part-time / Full-time</p>
+          <a class="btn primary" href="{{ url_for('public.contact') }}">Ask about this role</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Volunteer: Peer Mentor</h3>
+          <p class="muted">Offer practical support, encouragement, and connection to resources.</p>
+          <p class="muted"><strong>Location:</strong> Remote / On-site • <strong>Type:</strong> Volunteer</p>
+          <a class="btn" href="{{ url_for('public.contact') }}">Get involved</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+{% endblock %}

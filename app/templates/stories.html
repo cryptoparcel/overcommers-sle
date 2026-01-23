@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h1 class="h1">Stories</h1>
+      <p class="muted">Real progress happens one step at a time. These are example stories for now—swap in real stories whenever you're ready.</p>
+      <div class="actions">
+        <a class="btn primary" href="{{ url_for('public.story_submit') }}">Share your story</a>
+      </div>
+    </div>
+
+    <div class="grid cards">
+      {% for s in stories %}
+      <article class="card">
+        <a class="card__media" href="{{ url_for('public.story_detail', slug=s.slug) }}">
+          <img src="{{ s.image_url or 'https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&w=1600&q=80' }}" alt="{{ s.title|e }}">
+        </a>
+        <div class="card__body">
+          <h3 class="h3"><a class="link" href="{{ url_for('public.story_detail', slug=s.slug) }}">{{ s.title }}</a></h3>
+          <p class="muted">{{ s.summary or (s.body[:140] ~ '…') }}</p>
+          <div class="card__meta">
+            <span class="pill">Approved</span>
+            <span class="muted">{{ (s.author_name or 'Overcomers community') }}</span>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

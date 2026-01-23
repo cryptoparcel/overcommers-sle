@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <a class="link muted" href="{{ url_for('public.stories') }}">&larr; Back to stories</a>
+
+    <div class="story">
+      <div class="story__media">
+        <img src="{{ story.image_url or 'https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&w=1800&q=80' }}" alt="{{ story.title|e }}">
+      </div>
+
+      <div class="story__body">
+        <h1 class="h1">{{ story.title }}</h1>
+        <p class="muted">By {{ story.author_name or "Overcomers community" }} • {{ story.created_at.strftime('%b %d, %Y') }}</p>
+        {% if story.summary %}<p class="lead">{{ story.summary }}</p>{% endif %}
+        <div class="prose">
+          {{ story.body | replace('\n', '<br>') | safe }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

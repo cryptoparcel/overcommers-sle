@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField
-from wtforms.validators import DataRequired, Email, Length, Optional, Regexp
+from wtforms.validators import DataRequired, Email, Length, Optional, Regexp, URL
 
 
 username_re = Regexp(
@@ -36,3 +36,12 @@ class ContactForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email(), Length(max=255)])
     subject = StringField("Subject", validators=[DataRequired(), Length(max=200)])
     message = TextAreaField("Message", validators=[DataRequired(), Length(max=4000)])
+
+
+class StorySubmitForm(FlaskForm):
+    title = StringField("Story title", validators=[DataRequired(), Length(min=5, max=180)])
+    author_name = StringField("Your name (optional)", validators=[Optional(), Length(max=120)])
+    summary = StringField("Short summary (optional)", validators=[Optional(), Length(max=320)])
+    image_url = StringField("Photo URL (optional)", validators=[Optional(), Length(max=500), URL()])
+    body = TextAreaField("Your story", validators=[DataRequired(), Length(min=50, max=8000)])
+    submit = SubmitField("Submit story for review")

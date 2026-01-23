@@ -4,8 +4,10 @@ from flask import Blueprint, flash, redirect, render_template, url_for, send_fro
 from flask_login import login_required, current_user
 
 from ..extensions import db, limiter
-from ..forms import ApplyForm, ContactForm
-from ..models import Application, ContactMessage
+from ..utils import slugify
+from ..emailer import send_email
+from ..forms import ApplyForm, ContactForm, StorySubmitForm
+from ..models import Application, ContactMessage, Story
 from ..utils.mailer import send_email
 
 public_bp = Blueprint("public", __name__)
@@ -133,3 +135,62 @@ def admin_applications():
 
     rows = Application.query.order_by(Application.created_at.desc()).limit(200).all()
     return render_template("admin/applications.html", rows=rows, title="Applications")
+
+
+@public_bp.route("/stories")
+def stories():
+    items = Story.query.filter_by(status="approved").order_by(Story.created_at.desc()).limit(50).all()
+    return render_template("stories.html", stories=items)
+
+
+@public_bp.route("/stories/<slug>")
+def story_detail(slug: str):
+    story = Story.query.filter_by(slug=slug, status="approved").first_or_404()
+    return render_template("story_detail.html", story=story)
+
+
+@public_bp.route("/stories/submit", methods=["GET", "POST"])
+@limiter.limit("5 per hour")
+def story_submit():
+    form = StorySubmitForm()
+    if form.validate_on_submit():
+        title = form.title.data.strip()
+        slug = slugify(title)
+        # ensure uniqueness
+        base = slug
+        i = 2
+        while Story.query.filter_by(slug=slug).first() is not None:
+            slug = f"{base}-{i}"
+            i += 1
+
+        story = Story(
+            title=title,
+            slug=slug,
+            summary=(form.summary.data or "").strip() or None,
+            body=form.body.data.strip(),
+            image_url=(form.image_url.data or "").strip() or None,
+            author_name=(form.author_name.data or "").strip() or None,
+            status="pending",
+        )
+        db.session.add(story)
+        db.session.commit()
+        admin_email = current_app.config.get("ADMIN_NOTIFY_EMAIL") or current_app.config.get("NOTIFY_EMAIL")
+        if admin_email:
+            send_email(
+                admin_email,
+                "New story submission (Overcomers SLE)",
+                f"Title: {story.title}\nAuthor: {story.author_name or '(not provided)'}\n\nReview in /admin/stories",
+            )
+        flash("Thanks! Your story was submitted for review.", "success")
+        return redirect(url_for("public.stories"))
+    return render_template("story_submit.html", form=form)
+
+
+@public_bp.route("/careers")
+def careers():
+    return render_template("careers.html")
+
+
+@public_bp.route("/checkout")
+def checkout():
+    return render_template("checkout.html")

@@ -1,0 +1,45 @@
+{% extends "admin/_base.html" %}
+{% set title = "Stories" %}
+{% set active = "stories" %}
+{% block admin_content %}
+<div class="actions" style="margin-bottom:12px;">
+  <a class="btn {% if status=='pending' %}primary{% endif %}" href="{{ url_for('admin.stories', status='pending') }}">Pending</a>
+  <a class="btn {% if status=='approved' %}primary{% endif %}" href="{{ url_for('admin.stories', status='approved') }}">Approved</a>
+  <a class="btn {% if status=='rejected' %}primary{% endif %}" href="{{ url_for('admin.stories', status='rejected') }}">Rejected</a>
+</div>
+
+<div class="card">
+  <div class="card__body">
+    {% if stories|length == 0 %}
+      <p class="muted">No stories in this category.</p>
+    {% else %}
+      <div class="table">
+        <div class="row head" style="grid-template-columns: 110px 2fr 1fr 120px 240px;">
+          <div>When</div><div>Title</div><div>Author</div><div>Status</div><div>Actions</div>
+        </div>
+        {% for s in stories %}
+        <div class="row" style="grid-template-columns: 110px 2fr 1fr 120px 240px;">
+          <div class="muted">{{ s.created_at.strftime('%Y-%m-%d') }}</div>
+          <div>{{ s.title }}</div>
+          <div class="muted">{{ s.author_name or "—" }}</div>
+          <div><span class="pill">{{ s.status }}</span></div>
+          <div class="actions-inline">
+            {% if s.status == 'pending' %}
+            <form method="POST" action="{{ url_for('admin.approve_story', story_id=s.id) }}">
+              <button class="btn primary" type="submit">Approve</button>
+            </form>
+            <form method="POST" action="{{ url_for('admin.reject_story', story_id=s.id) }}">
+              <button class="btn" type="submit">Reject</button>
+            </form>
+            {% endif %}
+            <form method="POST" action="{{ url_for('admin.delete_story', story_id=s.id) }}" onsubmit="return confirm('Delete this story?');">
+              <button class="btn danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

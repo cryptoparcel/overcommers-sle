@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h1 class="h1">Share a story</h1>
+      <p class="muted">Your submission goes to our admin team for review before it appears publicly.</p>
+    </div>
+
+    <div class="card form-card">
+      <form method="POST" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="form-row">
+          <label class="label">{{ form.title.label }}</label>
+          {{ form.title(class="input", placeholder="Example: Finding stability with support") }}
+          {% for e in form.title.errors %}<div class="error">{{ e }}</div>{% endfor %}
+        </div>
+
+        <div class="form-grid">
+          <div class="form-row">
+            <label class="label">{{ form.author_name.label }}</label>
+            {{ form.author_name(class="input", placeholder="Optional") }}
+            {% for e in form.author_name.errors %}<div class="error">{{ e }}</div>{% endfor %}
+          </div>
+
+          <div class="form-row">
+            <label class="label">{{ form.image_url.label }}</label>
+            {{ form.image_url(class="input", placeholder="Optional: paste an image URL") }}
+            {% for e in form.image_url.errors %}<div class="error">{{ e }}</div>{% endfor %}
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="label">{{ form.summary.label }}</label>
+          {{ form.summary(class="input", placeholder="Optional: one sentence summary") }}
+          {% for e in form.summary.errors %}<div class="error">{{ e }}</div>{% endfor %}
+        </div>
+
+        <div class="form-row">
+          <label class="label">{{ form.body.label }}</label>
+          {{ form.body(class="textarea", rows="10", placeholder="Write your story...") }}
+          {% for e in form.body.errors %}<div class="error">{{ e }}</div>{% endfor %}
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" type="submit">{{ form.submit.label.text }}</button>
+          <a class="btn" href="{{ url_for('public.stories') }}">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

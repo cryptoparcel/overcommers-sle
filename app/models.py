@@ -69,3 +69,23 @@ class ContactMessage(db.Model):
     email = db.Column(db.String(255), nullable=False)
     subject = db.Column(db.String(200), nullable=False)
     message = db.Column(db.Text, nullable=False)
+
+
+class Story(db.Model):
+    __tablename__ = "stories"
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(180), nullable=False)
+    slug = db.Column(db.String(220), unique=True, index=True, nullable=False)
+    summary = db.Column(db.String(320), nullable=True)
+    body = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(500), nullable=True)
+    author_name = db.Column(db.String(120), nullable=True)
+
+    status = db.Column(db.String(20), nullable=False, default="pending")  # pending | approved | rejected
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    reviewed_at = db.Column(db.DateTime, nullable=True)
+    reviewed_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
+
+    def __repr__(self) -> str:
+        return f"<Story {self.id} {self.status} {self.slug}>"

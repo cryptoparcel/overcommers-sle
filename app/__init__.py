@@ -9,6 +9,7 @@ from .config import Config
 from .blueprints.public import public_bp
 from .blueprints.auth import auth_bp
 from .blueprints.errors import errors_bp
+from .blueprints.admin import admin_bp
 
 
 def create_app() -> Flask:
@@ -28,9 +29,74 @@ def create_app() -> Flask:
     app.register_blueprint(public_bp)
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(errors_bp)
+    app.register_blueprint(admin_bp)
 
     # Create tables (simple bootstrap; for production prefer migrations)
     with app.app_context():
         db.create_all()
 
     return app
+
+
+def seed_sample_stories(app):
+    """Create a few high-quality sample stories (approved) so the site doesn't look empty.
+    These are clearly marked as examples and can be replaced later.
+    """
+    from .extensions import db
+    from .models import Story
+
+    sample = [
+        {
+            "title": "A fresh start with community support",
+            "summary": "Stability, structure, and people who genuinely care made the difference.",
+            "author_name": "Example story (replace later)",
+            "image_url": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1600&q=80",
+            "body": (
+                "I came in feeling overwhelmed and unsure where to begin. The most helpful thing was having "
+                "a consistent routine and a respectful environment. Little steps—showing up on time, planning meals, "
+                "and practicing healthy boundaries—added up.\n\n"
+                "What surprised me was how much encouragement mattered. When you feel seen, it's easier to keep going. "
+                "This is an example story to demonstrate the layout; you can replace it with a real story anytime."
+            ),
+        },
+        {
+            "title": "Finding my footing after reentry",
+            "summary": "With the right plan, reentry can become a bridge to long-term stability.",
+            "author_name": "Example story (replace later)",
+            "image_url": "https://images.unsplash.com/photo-1520975958225-4ed07d6c0f47?auto=format&fit=crop&w=1600&q=80",
+            "body": (
+                "Reentry can be isolating. Having a place that is substance-free, predictable, and supportive helped me "
+                "focus on the next right choice. I worked on job applications, practiced interview skills, and learned "
+                "how to organize my week.\n\n"
+                "This is an example story to demonstrate the layout; you can replace it with a real story anytime."
+            ),
+        },
+        {
+            "title": "Peer support that actually helped",
+            "summary": "Accountability doesn't have to feel harsh—sometimes it feels like hope.",
+            "author_name": "Example story (replace later)",
+            "image_url": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1600&q=80",
+            "body": (
+                "I didn't need someone to lecture me—I needed people who understood the work. The peer support here "
+                "was practical and respectful. We checked in, shared resources, and stayed focused.\n\n"
+                "This is an example story to demonstrate the layout; you can replace it with a real story anytime."
+            ),
+        },
+    ]
+
+    with app.app_context():
+        if Story.query.count() == 0:
+            from .utils import slugify
+            for item in sample:
+                slug = slugify(item["title"])
+                story = Story(
+                    title=item["title"],
+                    slug=slug,
+                    summary=item["summary"],
+                    body=item["body"],
+                    image_url=item["image_url"],
+                    author_name=item["author_name"],
+                    status="approved",
+                )
+                db.session.add(story)
+            db.session.commit()
