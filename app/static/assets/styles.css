@@ -16,7 +16,7 @@
 }
 
 *{box-sizing:border-box}
-html,html{height:100%}
+html,body{height:100%}
 body{min-height:100vh;display:flex;flex-direction:column}
 main{flex:1 0 auto}
 .footer{flex-shrink:0}
@@ -125,7 +125,7 @@ a{color:inherit;text-decoration:none}
 
 /* Better breathing room between primary CTAs and the topic pills */
 .hero__pills{margin-top:14px}
-.pills{display:flex; flex-wrap:wrap; gap:10px}
+.pills{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px}
 .pill{display:inline-flex; align-items:center; justify-content:center; white-space:nowrap}
 
 .hero__stats{
@@ -159,7 +159,8 @@ a{color:inherit;text-decoration:none}
 .card__sub{color:var(--muted); font-size:13px}
 .card__text{color:var(--muted); font-size:14px; line-height:1.55; margin-top:8px}
 .card__cta{display:flex; gap:10px; margin-top:14px; flex-wrap:wrap}
-.card__footer{margin-top:auto; padding-top:16px}
+.card__footer{margin-top:auto; padding: 6px 22px 22px;}
+.card__footer .actions-inline{margin-bottom:0}
 .card__footer .card__cta{margin-top:0}
 .card--soft{background: rgba(255,255,255,.75)}
 .steps{margin:12px 0 0; padding-left:18px; color:rgba(15,23,42,.88); font-size:14px; line-height:1.55}
@@ -296,10 +297,10 @@ label{font-weight:800; font-size:13px}
 }
 
 .footer{
-  padding:28px 0 36px;
+  padding:56px 0 48px;
   border-top:1px solid rgba(15,23,42,.10);
   background: rgba(255,255,255,.35);
-  margin-top:30px;
+  margin-top:44px;
 }
 .footer__inner{
   display:grid;
@@ -422,7 +423,7 @@ label{font-weight:800; font-size:13px}
 .table{ display:flex; flex-direction:column; gap:8px; }
 .table .row{ display:grid; grid-template-columns: 160px 1fr 1fr 2fr; gap:10px; align-items:start; padding:10px 12px; border:1px solid rgba(2,6,23,.08); border-radius:12px; background:#fff; }
 .table .row.head{ background:rgba(2,6,23,.02); font-weight:600; }
-.actions-inline{ display:flex; gap:8px; flex-wrap:wrap; }
+.actions-inline{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:14px; }
 .btn.danger{ border-color: rgba(220,38,38,.35); color:#b91c1c; }
 .btn.danger:hover{ background: rgba(220,38,38,.08); }
 .admin-nav{ display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 6px; }
