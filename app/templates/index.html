@@ -136,19 +136,27 @@
         <div class="card__body">
           <h2 class="h2">Resources</h2>
           <p class="muted">Simple, kid-friendly and family-friendly links to get help, learn next steps, and find local support.</p>
-          <a class="btn primary" href="{{ url_for('public.resources') }}">Go to resources</a>
         </div>
+	        <div class="card__footer">
+	          <div class="card__cta">
+	            <a class="btn primary" href="{{ url_for('public.resources') }}">Go to resources</a>
+	          </div>
+	        </div>
       </div>
       <div class="card">
         <div class="card__body">
           <h2 class="h2">Shop & support</h2>
           <p class="muted">Placeholder shop page for sponsorship, donations, and community support items. We can add real checkout later.</p>
-          <div class="actions">
-            <a class="btn primary" href="{{ url_for('public.shop') }}">Visit shop</a>
-            <a class="btn" href="{{ url_for('public.checkout') }}">Checkout</a>
-          </div>
-          <p class="muted small">This is not legal advice or medical advice. Always call 911 in an emergency.</p>
         </div>
+	        <div class="card__footer">
+	          <div class="card__cta">
+	            <div class="actions">
+	              <a class="btn primary" href="{{ url_for('public.shop') }}">Visit shop</a>
+	              <a class="btn" href="{{ url_for('public.checkout') }}">Checkout</a>
+	            </div>
+	          </div>
+	          <p class="muted small">This is not legal advice or medical advice. Always call 911 in an emergency.</p>
+	        </div>
       </div>
     </div>
   </div>
