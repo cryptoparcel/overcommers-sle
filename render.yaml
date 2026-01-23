@@ -6,6 +6,9 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn --bind 0.0.0.0:$PORT wsgi:app
     envVars:
+      # psycopg2-binary is stable on Python 3.12; 3.13 currently breaks wheels.
+      - key: PYTHON_VERSION
+        value: "3.12.7"
       - key: PYTHONUNBUFFERED
         value: "1"
       - key: SESSION_COOKIE_SECURE

@@ -5,10 +5,10 @@ from flask_login import login_required, current_user
 
 from ..extensions import db, limiter
 from ..utils import slugify
-from ..emailer import send_email
+from ..utils.mailer import send_email
 from ..forms import ApplyForm, ContactForm, StorySubmitForm
 from ..models import Application, ContactMessage, Story
-from ..utils.mailer import send_email
+# (send_email imported above)
 
 public_bp = Blueprint("public", __name__)
 
