@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField
+from wtforms import StringField, PasswordField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired, Email, Length, Optional, Regexp, URL
 
 
@@ -17,11 +17,13 @@ class SignupForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired(), username_re])
     phone = StringField("Phone (optional)", validators=[Optional(), Length(max=40)])
     password = PasswordField("Password", validators=[DataRequired(), Length(min=8, max=128)])
+    submit = SubmitField("Create account")
 
 
 class LoginForm(FlaskForm):
     username_or_email = StringField("Username or Email", validators=[DataRequired(), Length(max=255)])
     password = PasswordField("Password", validators=[DataRequired(), Length(min=1, max=128)])
+    submit = SubmitField("Log in")
 
 
 class ApplyForm(FlaskForm):
@@ -29,6 +31,7 @@ class ApplyForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email(), Length(max=255)])
     phone = StringField("Phone (optional)", validators=[Optional(), Length(max=40)])
     message = TextAreaField("Anything you'd like us to know (optional)", validators=[Optional(), Length(max=2000)])
+    submit = SubmitField("Submit")
 
 
 class ContactForm(FlaskForm):
@@ -36,6 +39,7 @@ class ContactForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email(), Length(max=255)])
     subject = StringField("Subject", validators=[DataRequired(), Length(max=200)])
     message = TextAreaField("Message", validators=[DataRequired(), Length(max=4000)])
+    submit = SubmitField("Send")
 
 
 class StorySubmitForm(FlaskForm):
