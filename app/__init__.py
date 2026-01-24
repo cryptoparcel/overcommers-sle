@@ -53,39 +53,30 @@ def _ensure_default_page_layouts() -> None:
         return
 
     default = {
-        "version": 1,
-        "canvas": {"minHeight": 520},
         "blocks": [
             {
-                "id": "resources",
+                "id": "res",
                 "type": "card",
                 "x": 0,
                 "y": 0,
-                "w": 48,
-                "h": 220,
-                "content": {
-                    "title": "Resources",
-                    "body": "Simple, kid-friendly and family-friendly links to get help, learn next steps, and find local support.",
-                    "button_label": "Go to resources",
-                    "button_url": "/resources",
-                },
+                "w": 49,
+                "h": 250,
+                "title": "Resources",
+                "body": "Simple, kid-friendly and family-friendly links to get help, learn next steps, and find local support.",
+                "button_label": "Go to resources",
+                "button_link": "/resources",
             },
             {
                 "id": "shop",
                 "type": "card",
-                "x": 52,
+                "x": 51,
                 "y": 0,
-                "w": 48,
-                "h": 220,
-                "content": {
-                    "title": "Shop & support",
-                    "body": "Placeholder shop page for sponsorship, donations, and community support items. We can add real checkout later.",
-                    "button_label": "Visit shop",
-                    "button_url": "/shop",
-                    "secondary_label": "Checkout",
-                    "secondary_url": "/checkout",
-                    "note": "This is not legal advice or medical advice. Always call 911 in an emergency.",
-                },
+                "w": 49,
+                "h": 250,
+                "title": "Shop & support",
+                "body": "Placeholder shop page for sponsorship, donations, and community support items. We can add real checkout later.",
+                "button_label": "Visit shop",
+                "button_link": "/shop",
             },
         ],
     }
@@ -93,6 +84,8 @@ def _ensure_default_page_layouts() -> None:
     layout = PageLayout(page="home", layout_json=json.dumps(default))
     db.session.add(layout)
     db.session.commit()
+
+
 def seed_sample_stories(app):
     """Create a few high-quality sample stories (approved) so the site doesn't look empty.
     These are clearly marked as examples and can be replaced later.

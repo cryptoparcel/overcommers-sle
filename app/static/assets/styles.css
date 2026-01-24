@@ -88,6 +88,16 @@ a{color:inherit;text-decoration:none}
 .btn--ghost{background:rgba(255,255,255,.55)}
 .btn--lg{padding:12px 18px; font-size:15px}
 
+/* Layout helpers used across pages (hero actions, card footers, etc.) */
+.actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:18px;}
+.actions.tight{margin-top:12px;}
+.pills{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;}
+ (max-width: 680px){
+  .actions{gap:8px;}
+  .pills{gap:8px;}
+}
+
+
 .pill{
   display:inline-flex;
   align-items:center;
