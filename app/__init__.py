@@ -6,6 +6,7 @@ import os
 from flask import Flask
 
 from .extensions import db, login_manager, limiter, csrf
+from .cli import register_cli
 from . import login  # noqa: F401
 from .config import Config
 from .blueprints.public import public_bp
@@ -39,9 +40,9 @@ def create_app() -> Flask:
         db.create_all()
         _ensure_default_page_layouts()
 
+    register_cli(app)
+
     return app
-
-
 def _ensure_default_page_layouts() -> None:
     """Create default PageLayout records if they don't exist.
 
@@ -92,8 +93,6 @@ def _ensure_default_page_layouts() -> None:
     layout = PageLayout(page="home", layout_json=json.dumps(default))
     db.session.add(layout)
     db.session.commit()
-
-
 def seed_sample_stories(app):
     """Create a few high-quality sample stories (approved) so the site doesn't look empty.
     These are clearly marked as examples and can be replaced later.

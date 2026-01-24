@@ -43,7 +43,10 @@ class Config:
 
         # Security / cookies
         self.SESSION_COOKIE_HTTPONLY = True
-        self.SESSION_COOKIE_SAMESITE = "Lax"
+        self.SESSION_COOKIE_SAMESITE = os.environ.get("SESSION_COOKIE_SAMESITE", "Lax")
+
+        # Render terminates TLS and forwards HTTPS; secure cookies are recommended.
+        # Locally, set SESSION_COOKIE_SECURE=0 if you run http://
         self.SESSION_COOKIE_SECURE = os.environ.get("SESSION_COOKIE_SECURE", "1") == "1"
 
         # Email notifications (optional)
@@ -55,11 +58,3 @@ class Config:
         self.FROM_EMAIL = os.environ.get("FROM_EMAIL", "no-reply@overcomerssle.com")
         self.NOTIFY_EMAIL = os.environ.get("NOTIFY_EMAIL", "info@overcomerssle.com")
 
-
-    # Email notifications (optional)
-    ADMIN_NOTIFY_EMAIL = os.getenv("ADMIN_NOTIFY_EMAIL", "")
-    SMTP_HOST = os.getenv("SMTP_HOST", "")
-    SMTP_PORT = os.getenv("SMTP_PORT", "587")
-    SMTP_USER = os.getenv("SMTP_USER", "")
-    SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
-    SMTP_FROM = os.getenv("SMTP_FROM", "")

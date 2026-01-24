@@ -3,7 +3,7 @@ from __future__ import annotations
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_user, logout_user, login_required, current_user
 
-from ..extensions import db
+from ..extensions import db, limiter
 from ..forms import SignupForm, LoginForm
 from ..models import User
 
@@ -19,6 +19,7 @@ def login():
 
 
 @auth_bp.post("/login")
+@limiter.limit("10 per minute")
 def login_post():
     if current_user.is_authenticated:
         return redirect(url_for("public.index"))
@@ -51,6 +52,7 @@ def signup():
 
 
 @auth_bp.post("/signup")
+@limiter.limit("5 per minute")
 def signup_post():
     if current_user.is_authenticated:
         return redirect(url_for("public.index"))
