@@ -568,3 +568,185 @@ label{font-weight:800; font-size:13px}
 
 /* Footer: push legal text lower for breathing room */
 .footer__fine{margin-top:34px;padding-bottom:46px;}
+
+
+
+/* =======================================================================
+   POLISH PASS (micro-spacing, typography rhythm, button sizing)
+   Scoped mostly to <main> so header/footer stay as-is.
+   ======================================================================= */
+
+/* Keep top nav labels on one line (e.g., “What We Do”) */
+.nav a{
+  white-space: nowrap;
+  display:inline-flex;
+  align-items:center;
+  line-height: 1;
+}
+
+/* Type rhythm */
+main{
+  --text: 16.5px;
+  --lh: 1.65;
+  --space-1: 6px;
+  --space-2: 10px;
+  --space-3: 14px;
+  --space-4: 18px;
+  --space-5: 24px;
+  --space-6: 32px;
+  font-size: var(--text);
+  line-height: var(--lh);
+}
+
+main h1, main h2, main h3{
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-3);
+}
+
+main h4, main h5{
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--space-2);
+}
+
+main p{
+  margin: 0 0 var(--space-3);
+}
+
+main .muted,
+main .lead{
+  line-height: 1.6;
+}
+
+/* Section spacing & grid/card consistency */
+main .section{
+  padding-block: clamp(22px, 4vw, 56px);
+}
+
+main .stack > * + *{
+  margin-top: var(--space-3);
+}
+
+main .grid{
+  gap: clamp(14px, 2vw, 24px);
+}
+
+main .card{
+  padding: clamp(16px, 2vw, 22px);
+}
+
+main .card > * + *{
+  margin-top: var(--space-2);
+}
+
+/* Button sizing + alignment */
+main .btn,
+main a.btn,
+main button.btn,
+main input[type="submit"]{
+  min-height: 42px;
+  padding: 10px 16px;
+  font-weight: 800;
+  border-radius: 999px;
+}
+
+main .btn--sm{
+  min-height: 36px;
+  padding: 8px 14px;
+  font-size: 13.5px;
+}
+
+main .btn-row,
+main .actions,
+main .home-actions,
+main .card__actions{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: var(--space-3);
+}
+
+/* Micro-spacing fixes for home hero pills + actions */
+main .pill-row,
+main .pills,
+main .home-pills{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: var(--space-2);
+}
+
+main .pill{
+  padding: 7px 12px;
+  line-height: 1;
+}
+
+/* Prevent cards from looking “crowded” */
+main .feature-card,
+main .story-card,
+main .shop-card{
+  padding: clamp(16px, 2vw, 22px);
+}
+
+/* Responsive nudges to keep header nav from wrapping too early */
+@media (max-width: 980px){
+  .nav{ gap: 12px; }
+  .nav a{ font-size: 14px; padding: 8px 10px; }
+}
+
+
+
+
+/* --- Homepage card action alignment fixes --- */
+.feature-card{
+  display:flex;
+  flex-direction:column;
+}
+.feature-card__body{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  flex:1;
+}
+.feature-card__actions{
+  margin-top:auto;
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:10px;
+  padding-top:14px;
+}
+.feature-card__actions .pill{
+  width:100%;
+  justify-content:center;
+}
+@media (max-width: 720px){
+  .feature-card__actions{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+  .feature-card__actions .pill:nth-child(3){
+    grid-column:1 / -1;
+  }
+}
+
+/* "What to expect" action row should sit at the bottom of the card */
+.card--padded{
+  display:flex;
+  flex-direction:column;
+}
+.card--padded .home-actions{
+  margin-top:auto;
+  padding-top:16px;
+}
+
+/* Ensure images in feature cards fill nicely */
+.feature-card__media{
+  border-radius:18px;
+  overflow:hidden;
+}
+.feature-card__media img{
+  width:100%;
+  height:auto;
+  display:block;
+}
