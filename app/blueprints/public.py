@@ -30,20 +30,7 @@ def index():
             blocks = data.get("blocks") if isinstance(data, dict) else None
         except Exception:
             blocks = None
-    # Homepage highlights: a few approved community stories
-    featured = (
-        Story.query.filter_by(status="approved")
-        .order_by(Story.created_at.desc())
-        .limit(3)
-        .all()
-    )
-
-    return render_template(
-        "index.html",
-        title="Overcomers | SLE",
-        page_blocks=blocks,
-        stories=featured,
-    )
+    return render_template("index.html", title="Overcomers | SLE", page_blocks=blocks)
 
 
 @public_bp.get("/what-we-do")

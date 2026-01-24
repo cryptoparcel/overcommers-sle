@@ -3,10 +3,12 @@ from __future__ import annotations
 import json
 import os
 
+import click
+from flask.cli import with_appcontext
+
 from flask import Flask
 
 from .extensions import db, login_manager, limiter, csrf
-from .cli import register_cli
 from . import login  # noqa: F401
 from .config import Config
 from .blueprints.public import public_bp
@@ -40,9 +42,32 @@ def create_app() -> Flask:
         db.create_all()
         _ensure_default_page_layouts()
 
-    register_cli(app)
+    _register_cli_commands(app)
 
     return app
+
+
+def _register_cli_commands(app: Flask) -> None:
+    """Register safe maintenance commands (not exposed as web routes)."""
+
+    @app.cli.command("make-admin")
+    @click.argument("email")
+    @with_appcontext
+    def make_admin(email: str) -> None:
+        """Promote an existing user to admin by email."""
+
+        from .models import User
+
+        user = User.query.filter_by(email=email.strip().lower()).first()
+        if not user:
+            click.echo(f"No user found for {email}")
+            raise SystemExit(1)
+
+        user.is_admin = True
+        db.session.commit()
+        click.echo(f"{user.email} is now an admin")
+
+
 def _ensure_default_page_layouts() -> None:
     """Create default PageLayout records if they don't exist.
 
@@ -53,30 +78,39 @@ def _ensure_default_page_layouts() -> None:
         return
 
     default = {
+        "version": 1,
+        "canvas": {"minHeight": 520},
         "blocks": [
             {
-                "id": "res",
+                "id": "resources",
                 "type": "card",
                 "x": 0,
                 "y": 0,
-                "w": 49,
-                "h": 250,
-                "title": "Resources",
-                "body": "Simple, kid-friendly and family-friendly links to get help, learn next steps, and find local support.",
-                "button_label": "Go to resources",
-                "button_link": "/resources",
+                "w": 48,
+                "h": 220,
+                "content": {
+                    "title": "Resources",
+                    "body": "Simple, kid-friendly and family-friendly links to get help, learn next steps, and find local support.",
+                    "button_label": "Go to resources",
+                    "button_url": "/resources",
+                },
             },
             {
                 "id": "shop",
                 "type": "card",
-                "x": 51,
+                "x": 52,
                 "y": 0,
-                "w": 49,
-                "h": 250,
-                "title": "Shop & support",
-                "body": "Placeholder shop page for sponsorship, donations, and community support items. We can add real checkout later.",
-                "button_label": "Visit shop",
-                "button_link": "/shop",
+                "w": 48,
+                "h": 220,
+                "content": {
+                    "title": "Shop & support",
+                    "body": "Placeholder shop page for sponsorship, donations, and community support items. We can add real checkout later.",
+                    "button_label": "Visit shop",
+                    "button_url": "/shop",
+                    "secondary_label": "Checkout",
+                    "secondary_url": "/checkout",
+                    "note": "This is not legal advice or medical advice. Always call 911 in an emergency.",
+                },
             },
         ],
     }
@@ -84,8 +118,6 @@ def _ensure_default_page_layouts() -> None:
     layout = PageLayout(page="home", layout_json=json.dumps(default))
     db.session.add(layout)
     db.session.commit()
-
-
 def seed_sample_stories(app):
     """Create a few high-quality sample stories (approved) so the site doesn't look empty.
     These are clearly marked as examples and can be replaced later.
