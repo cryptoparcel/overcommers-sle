@@ -40,63 +40,170 @@
 <section class="section">
   <div class="container">
     <div class="section__head">
-      <h2 class="h2">Support that feels human</h2>
-      <p class="muted">A safe, sober place to live—plus structure, encouragement, and clear next steps. Built to be easy to understand for families and youth, too.</p>
+      <h2 class="h2">How we help</h2>
+      <div class="section__headRow">
+        <p class="muted">Simple, clear, and friendly — so anyone can understand what we offer.</p>
+        <a class="btn" href="{{ url_for('public.impact') }}">See our impact</a>
+      </div>
     </div>
 
-    <div class="grid feature-split">
-      <div class="feature-cards">
-        <article class="card feature">
-          <div class="card__body">
-            <h3 class="h3">Stable sober housing</h3>
-            <p class="muted">Consistent, respectful living with clear house rules and a focus on safety.</p>
-            <ul class="bullets">
-              <li>Alcohol- and drug-free environment</li>
-              <li>Quiet hours, shared responsibilities, and boundaries</li>
-              <li>Community that supports progress</li>
-            </ul>
-            <a class="link" href="{{ url_for('public.what_we_do') }}">How it works →</a>
-          </div>
-        </article>
-
-        <article class="card feature">
-          <div class="card__body">
-            <h3 class="h3">Peer support & accountability</h3>
-            <p class="muted">Encouragement, check-ins, and help staying on track—without judgment.</p>
-            <ul class="bullets">
-              <li>Supportive house culture</li>
-              <li>Goal setting and routine building</li>
-              <li>Referrals to licensed care when needed</li>
-            </ul>
-            <a class="link" href="{{ url_for('public.resources') }}">Find support resources →</a>
-          </div>
-        </article>
-
-        <article class="card feature">
-          <div class="card__body">
-            <h3 class="h3">Reentry planning</h3>
-            <p class="muted">Practical planning for work, paperwork, appointments, and a steady next chapter.</p>
-            <ul class="bullets">
-              <li>Job and life-skill routines</li>
-              <li>Reentry steps organized week-by-week</li>
-              <li>Simple plans you can follow</li>
-            </ul>
-            <a class="link" href="{{ url_for('public.impact') }}">Why it matters →</a>
-          </div>
-        </article>
-      </div>
-
-      <aside class="feature-media" aria-label="Image placeholders">
-        <div class="media-stack">
-          <div class="media-frame">
-            <img src="{{ url_for('static', filename='assets/img/phone_mockup.svg') }}" alt="Phone preview placeholder">
-          </div>
-          <div class="media-frame">
-            <img src="{{ url_for('static', filename='assets/img/community_photo.svg') }}" alt="Community photo placeholder">
+    <div class="grid help-cards">
+      <article class="card help-card">
+        <div class="help-card__media" style="background-image:url('https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=1200&q=80');"></div>
+        <div class="help-card__tag">Stable sober housing</div>
+        <div class="card__body">
+          <h3 class="h3">Safe place to live</h3>
+          <p class="muted">A calm home with clear expectations and a supportive community.</p>
+        </div>
+        <div class="card__footer">
+          <div class="actions">
+            <a class="btn" href="{{ url_for('public.shop') }}">Shop</a>
+            <a class="btn primary" href="{{ url_for('public.apply') }}">Apply</a>
+            <a class="btn" href="{{ url_for('auth.login') }}">Login</a>
           </div>
         </div>
-        <p class="muted small" style="margin-top:10px;">Swap these placeholders with real photos (phone screenshots, events, programs) whenever you’re ready.</p>
-      </aside>
+      </article>
+
+      <article class="card help-card">
+        <div class="help-card__media" style="background-image:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80');"></div>
+        <div class="help-card__tag">Peer support</div>
+        <div class="card__body">
+          <h3 class="h3">You’re not alone</h3>
+          <p class="muted">Support from people who understand — plus accountability that helps you stay on track.</p>
+        </div>
+        <div class="card__footer">
+          <div class="actions">
+            <a class="btn" href="{{ url_for('public.shop') }}">Shop</a>
+            <a class="btn primary" href="{{ url_for('public.apply') }}">Apply</a>
+            <a class="btn" href="{{ url_for('auth.login') }}">Login</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card help-card">
+        <div class="help-card__media" style="background-image:url('https://images.unsplash.com/photo-1522071901873-411886a10004?auto=format&fit=crop&w=1200&q=80');"></div>
+        <div class="help-card__tag">Life skills</div>
+        <div class="card__body">
+          <h3 class="h3">Skills for real life</h3>
+          <p class="muted">Help with basics like budgeting, job search, forms, email, and daily routines.</p>
+        </div>
+        <div class="card__footer">
+          <div class="actions">
+            <a class="btn" href="{{ url_for('public.shop') }}">Shop</a>
+            <a class="btn primary" href="{{ url_for('public.apply') }}">Apply</a>
+            <a class="btn" href="{{ url_for('auth.login') }}">Login</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card help-card">
+        <div class="help-card__media" style="background-image:url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=80');"></div>
+        <div class="help-card__tag">Reentry planning</div>
+        <div class="card__body">
+          <h3 class="h3">Step‑by‑step reentry</h3>
+          <p class="muted">Support with plans, schedules, and connections that help reduce overwhelm.</p>
+        </div>
+        <div class="card__footer">
+          <div class="actions">
+            <a class="btn" href="{{ url_for('public.shop') }}">Shop</a>
+            <a class="btn primary" href="{{ url_for('public.apply') }}">Apply</a>
+            <a class="btn" href="{{ url_for('auth.login') }}">Login</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="grid value-grid" style="margin-top:18px;">
+      <div class="card value-card">
+        <div class="card__body">
+          <h3 class="h3">Friendly and simple</h3>
+          <p class="muted">Our website and language are made to be easy to read — even for kids looking for help for their family.</p>
+        </div>
+      </div>
+      <div class="card value-card">
+        <div class="card__body">
+          <h3 class="h3">Respect and privacy</h3>
+          <p class="muted">We protect personal information and treat residents with dignity.</p>
+        </div>
+      </div>
+      <div class="card value-card">
+        <div class="card__body">
+          <h3 class="h3">Clear boundaries</h3>
+          <p class="muted">We are supportive housing. We are not a medical clinic, therapy provider, or detox program.</p>
+        </div>
+      </div>
+      <div class="card value-card">
+        <div class="card__body">
+          <h3 class="h3">Community connection</h3>
+          <p class="muted">Recovery gets stronger when people feel supported and included.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="grid split">
+      <article class="card quote">
+        <div class="card__body">
+          <h3 class="h3">Impact story</h3>
+          <p class="muted">“I came in overwhelmed. The routines and support helped me focus on work, rebuild trust, and stay sober day by day.”</p>
+          <p class="small muted" style="margin-top:10px;"><span class="quoteMark">—</span> Example story (replace with a consented resident story)</p>
+        </div>
+      </article>
+      <article class="card quote">
+        <div class="card__body">
+          <h3 class="h3">Reentry story</h3>
+          <p class="muted">“After years away, everything felt new. Step‑by‑step help with phones, email, and jobs made life feel possible again.”</p>
+          <p class="small muted" style="margin-top:10px;"><span class="quoteMark">—</span> Example story (replace with a consented resident story)</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="h2">Shop to support the mission</h2>
+      <p class="muted">Merch helps support operations. Purchases do not guarantee outcomes.</p>
+    </div>
+
+    <div class="grid shop-grid">
+      <article class="card product">
+        <a class="card__media" href="{{ url_for('public.shop') }}">
+          <img src="https://images.unsplash.com/photo-1520975869018-5c7b03f0d3af?auto=format&fit=crop&w=1200&q=80" alt="Support T-Shirt">
+        </a>
+        <div class="card__body">
+          <h3 class="h3">Support T‑Shirt</h3>
+          <p class="muted">Comfortable, simple, and mission‑aligned.</p>
+        </div>
+        <div class="card__footer">
+          <div class="actions">
+            <a class="btn" href="{{ url_for('public.shop') }}">Shop</a>
+            <a class="btn primary" href="{{ url_for('public.apply') }}">Apply</a>
+            <a class="btn" href="{{ url_for('auth.login') }}">Login</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card product">
+        <a class="card__media" href="{{ url_for('public.shop') }}">
+          <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80" alt="Recovery Journal">
+        </a>
+        <div class="card__body">
+          <h3 class="h3">Recovery Journal</h3>
+          <p class="muted">A place to write goals, routines, and reflections.</p>
+        </div>
+        <div class="card__footer">
+          <div class="actions">
+            <a class="btn" href="{{ url_for('public.shop') }}">Shop</a>
+            <a class="btn primary" href="{{ url_for('public.apply') }}">Apply</a>
+            <a class="btn" href="{{ url_for('auth.login') }}">Login</a>
+          </div>
+        </div>
+      </article>
     </div>
   </div>
 </section>
@@ -131,38 +238,34 @@
 
 <section class="section">
   <div class="container">
-    {% if layout_blocks %}
-      {% include "partials/page_builder_render.html" %}
-    {% else %}
-      <div class="grid split">
-        <div class="card">
-          <div class="card__body">
-            <h2 class="h2">Resources</h2>
-            <p class="muted">Simple, kid-friendly and family-friendly links to get help, learn next steps, and find local support.</p>
-          </div>
-	          <div class="card__footer">
-	            <div class="card__cta">
-	              <a class="btn primary" href="{{ url_for('public.resources') }}">Go to resources</a>
-	            </div>
-	          </div>
+    <div class="grid split">
+      <div class="card">
+        <div class="card__body">
+          <h2 class="h2">Resources</h2>
+          <p class="muted">Simple, kid-friendly and family-friendly links to get help, learn next steps, and find local support.</p>
         </div>
-        <div class="card">
-          <div class="card__body">
-            <h2 class="h2">Shop &amp; support</h2>
-            <p class="muted">Placeholder shop page for sponsorship, donations, and community support items. We can add real checkout later.</p>
-            <p class="muted small" style="margin-top:10px">This is not legal advice or medical advice. Always call 911 in an emergency.</p>
+        <div class="card__footer">
+          <div class="card__cta">
+            <a class="btn primary" href="{{ url_for('public.resources') }}">Go to resources</a>
           </div>
-	          <div class="card__footer">
-	            <div class="card__cta">
-	              <div class="actions">
-	                <a class="btn primary" href="{{ url_for('public.shop') }}">Visit shop</a>
-	                <a class="btn" href="{{ url_for('public.checkout') }}">Checkout</a>
-	              </div>
-	            </div>
-	          </div>
         </div>
       </div>
-    {% endif %}
+      <div class="card">
+        <div class="card__body">
+          <h2 class="h2">Shop &amp; support</h2>
+          <p class="muted">Placeholder shop page for sponsorship, donations, and community support items. We can add real checkout later.</p>
+          <p class="muted small" style="margin-top:10px">This is not legal advice or medical advice. Always call 911 in an emergency.</p>
+        </div>
+        <div class="card__footer">
+          <div class="card__cta">
+            <div class="actions">
+              <a class="btn primary" href="{{ url_for('public.shop') }}">Visit shop</a>
+              <a class="btn" href="{{ url_for('public.checkout') }}">Checkout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 {% endblock %}

@@ -92,7 +92,7 @@ a{color:inherit;text-decoration:none}
 .actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:18px;}
 .actions.tight{margin-top:12px;}
 .pills{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;}
- (max-width: 680px){
+@media (max-width: 680px){
   .actions{gap:8px;}
   .pills{gap:8px;}
 }
@@ -323,6 +323,7 @@ label{font-weight:800; font-size:13px}
   grid-template-columns: 1.25fr .75fr;
   gap:18px;
   align-items:start;
+  margin-top:56px;
 }
 .footer__brand{font-weight:900; letter-spacing:.5px}
 .footer__desc{margin:8px 0 0; color:var(--muted); line-height:1.6}
@@ -434,6 +435,83 @@ label{font-weight:800; font-size:13px}
 @media (max-width: 900px){
   .feature-split{grid-template-columns:1fr;}
 }
+
+/* Home: mid-page layout (cards + spacing) */
+.grid.cards{display:grid; gap:18px;}
+.grid.cards.four{grid-template-columns: repeat(4, minmax(0, 1fr));}
+.grid.cards.two{grid-template-columns: repeat(2, minmax(0, 1fr));}
+
+@media (max-width: 1100px){
+  .grid.cards.four{grid-template-columns: repeat(2, minmax(0, 1fr));}
+}
+@media (max-width: 640px){
+  .grid.cards.four,
+  .grid.cards.two{grid-template-columns: 1fr;}
+}
+
+/* Hero media card */
+.hero__mediaCard{
+  border:1px solid rgba(2,6,23,.08);
+  border-radius:26px;
+  background:#fff;
+  box-shadow: 0 14px 34px rgba(2,6,23,.10);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  height:100%;
+}
+.hero__mediaCard img{width:100%; height:170px; object-fit:cover; display:block;}
+.hero__mediaBody{padding:16px 16px 18px; flex:1; display:flex; flex-direction:column;}
+.hero__mediaTitle{margin:0 0 6px; font-weight:800; font-size:16px;}
+.hero__mediaText{margin:0 0 14px; color:var(--muted); line-height:1.5;}
+.hero__mediaActions{margin-top:auto; display:flex; gap:12px; flex-wrap:wrap;}
+
+/* Help cards */
+.help-card{padding:0; overflow:hidden; display:flex; flex-direction:column;}
+.help-card__media{position:relative; height:160px;}
+.help-card__media img{width:100%; height:100%; object-fit:cover; display:block;}
+.help-card__tag{
+  position:absolute;
+  left:14px;
+  bottom:14px;
+  padding:8px 12px;
+  border-radius:999px;
+  background:rgba(15,23,42,.55);
+  color:#fff;
+  font-weight:700;
+  font-size:13px;
+  letter-spacing:.1px;
+  backdrop-filter: blur(8px);
+}
+.help-card__body{padding:16px; display:flex; flex-direction:column; flex:1;}
+.help-card__body h3{margin:0 0 8px; font-size:16px;}
+.help-card__body p{margin:0 0 14px; color:var(--muted); line-height:1.5;}
+.help-card__actions{margin-top:auto; display:flex; gap:12px; flex-wrap:wrap;}
+
+/* Values + quotes */
+.value-card{padding:16px;}
+.value-card h3{margin:0 0 6px; font-size:15px;}
+.value-card p{margin:0; color:var(--muted); line-height:1.55;}
+
+.quote-card{padding:18px;}
+.quote-card h3{margin:0 0 10px; font-size:15px;}
+.quote-card blockquote{margin:0 0 12px; color:var(--text); line-height:1.6;}
+.quote-card .muted{margin:0;}
+
+/* Shop cards */
+.product-card{padding:0; overflow:hidden; display:flex; flex-direction:column;}
+.product__media{height:190px; overflow:hidden;}
+.product__media img{width:100%; height:100%; object-fit:cover; display:block;}
+.product__body{padding:16px; display:flex; flex-direction:column; flex:1;}
+.product__body h3{margin:0 0 6px; font-size:15px;}
+.product__body p{margin:0 0 14px; color:var(--muted); line-height:1.5;}
+.product__actions{margin-top:auto; display:flex; gap:12px; flex-wrap:wrap;}
+
+/* Promo cards (resources/shop/support blocks) */
+.promo-card{padding:18px; display:flex; flex-direction:column; min-height:172px;}
+.promo-card h3{margin:0 0 8px;}
+.promo-card p{margin:0 0 14px; color:var(--muted); line-height:1.5;}
+.promo-card__cta{margin-top:auto; display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
 
 /* Admin table styles */
 .table{ display:flex; flex-direction:column; gap:8px; }
