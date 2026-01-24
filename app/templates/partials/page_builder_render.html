@@ -1,0 +1,59 @@
+{#
+  Simple renderer for admin-created PageLayout blocks.
+  Blocks are positioned on desktop and auto-stack on mobile.
+
+  Expected structure for each block:
+    {
+      "id": "b1",
+      "type": "card" | "text" | "button" | "image" | "spacer",
+      "x": 0, "y": 0, "w": 48, "h": 240,  (percent)
+      "content": {...}
+    }
+#}
+
+<div class="pb-canvas" aria-label="Custom content">
+  {% for b in layout_blocks %}
+    {% set style = "left:" ~ b.x ~ "%;top:" ~ b.y ~ "%;width:" ~ b.w ~ "%;height:" ~ b.h ~ "%;" %}
+    <div class="pb-block pb-{{ b.type }}" style="{{ style }}" data-block-id="{{ b.id }}">
+      {% if b.type == 'spacer' %}
+        <div class="pb-spacer"></div>
+      {% elif b.type == 'text' %}
+        <div class="pb-text">
+          {% if b.content.title %}<h2 class="h2">{{ b.content.title }}</h2>{% endif %}
+          {% if b.content.body %}<p class="muted">{{ b.content.body }}</p>{% endif %}
+        </div>
+      {% elif b.type == 'button' %}
+        <div class="pb-button">
+          <a class="btn primary" href="{{ b.content.href or '#' }}">{{ b.content.label or 'Button' }}</a>
+        </div>
+      {% elif b.type == 'image' %}
+        <div class="pb-image">
+          {% if b.content.src %}
+            <img src="{{ b.content.src }}" alt="{{ b.content.alt or '' }}">
+          {% else %}
+            <div class="pb-image-placeholder">Image placeholder</div>
+          {% endif %}
+        </div>
+      {% else %}
+        <div class="card pb-card">
+          <div class="card__body">
+            {% if b.content.title %}<h2 class="h2">{{ b.content.title }}</h2>{% endif %}
+            {% if b.content.body %}<p class="muted">{{ b.content.body }}</p>{% endif %}
+            {% if b.content.note %}<p class="muted small" style="margin-top:10px">{{ b.content.note }}</p>{% endif %}
+          </div>
+          {% if b.content.buttons %}
+          <div class="card__footer">
+            <div class="card__cta">
+              <div class="actions">
+                {% for btn in b.content.buttons %}
+                  <a class="btn {{ 'primary' if btn.primary else '' }}" href="{{ btn.href or '#' }}">{{ btn.label or 'Learn more' }}</a>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>

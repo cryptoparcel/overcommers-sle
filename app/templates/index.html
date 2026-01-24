@@ -131,35 +131,38 @@
 
 <section class="section">
   <div class="container">
-    <div class="grid split">
-      <div class="card">
-        <div class="card__body">
-          <h2 class="h2">Resources</h2>
-          <p class="muted">Simple, kid-friendly and family-friendly links to get help, learn next steps, and find local support.</p>
-        </div>
-	        <div class="card__footer">
-	          <div class="card__cta">
-	            <a class="btn primary" href="{{ url_for('public.resources') }}">Go to resources</a>
-	          </div>
-	        </div>
-      </div>
-      <div class="card">
-        <div class="card__body">
-          <h2 class="h2">Shop &amp; support</h2>
-          <p class="muted">Placeholder shop page for sponsorship, donations, and community support items. We can add real checkout later.</p>
-          <p class="muted small" style="margin-top:10px">This is not legal advice or medical advice. Always call 911 in an emergency.</p>
-        </div>
-	        <div class="card__footer">
-	          <div class="card__cta">
-	            <div class="actions">
-	              <a class="btn primary" href="{{ url_for('public.shop') }}">Visit shop</a>
-	              <a class="btn" href="{{ url_for('public.checkout') }}">Checkout</a>
+    {% if layout_blocks %}
+      {% include "partials/page_builder_render.html" %}
+    {% else %}
+      <div class="grid split">
+        <div class="card">
+          <div class="card__body">
+            <h2 class="h2">Resources</h2>
+            <p class="muted">Simple, kid-friendly and family-friendly links to get help, learn next steps, and find local support.</p>
+          </div>
+	          <div class="card__footer">
+	            <div class="card__cta">
+	              <a class="btn primary" href="{{ url_for('public.resources') }}">Go to resources</a>
 	            </div>
 	          </div>
-
-	        </div>
+        </div>
+        <div class="card">
+          <div class="card__body">
+            <h2 class="h2">Shop &amp; support</h2>
+            <p class="muted">Placeholder shop page for sponsorship, donations, and community support items. We can add real checkout later.</p>
+            <p class="muted small" style="margin-top:10px">This is not legal advice or medical advice. Always call 911 in an emergency.</p>
+          </div>
+	          <div class="card__footer">
+	            <div class="card__cta">
+	              <div class="actions">
+	                <a class="btn primary" href="{{ url_for('public.shop') }}">Visit shop</a>
+	                <a class="btn" href="{{ url_for('public.checkout') }}">Checkout</a>
+	              </div>
+	            </div>
+	          </div>
+        </div>
       </div>
-    </div>
+    {% endif %}
   </div>
 </section>
 {% endblock %}

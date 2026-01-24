@@ -427,3 +427,14 @@ label{font-weight:800; font-size:13px}
 .btn.danger{ border-color: rgba(220,38,38,.35); color:#b91c1c; }
 .btn.danger:hover{ background: rgba(220,38,38,.08); }
 .admin-nav{ display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 6px; }
+
+/* --- Page Builder (admin-authored layouts) --- */
+.pb-canvas{ position:relative; width:100%; min-height:280px; }
+.pb-block{ position:absolute; box-sizing:border-box; }
+.pb-block .card{ height:100%; }
+.pb-block--spacer{ background:transparent; }
+
+@media (max-width: 900px){
+  .pb-canvas{ position:relative; min-height:unset; }
+  .pb-block{ position:relative !important; left:auto !important; top:auto !important; width:100% !important; height:auto !important; margin:0 0 14px; }
+}

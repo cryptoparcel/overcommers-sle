@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 from datetime import datetime
+import json
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 
 from ..extensions import db
-from ..models import Application, ContactMessage, Story, User
+from ..models import Application, ContactMessage, Story, User, PageLayout
 from ..utils import admin_required
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
@@ -90,3 +91,96 @@ def delete_story(story_id: int):
     db.session.commit()
     flash("Story deleted.", "info")
     return redirect(url_for("admin.stories", status="pending"))
+
+
+def _default_home_layout_json() -> str:
+    """Starter layout the user can move around in the Page Builder."""
+    payload = {
+        "version": 1,
+        "canvas": {"minHeight": 520},
+        "blocks": [
+            {
+                "id": "resources",
+                "type": "card",
+                "x": 0,
+                "y": 0,
+                "w": 49,
+                "h": 220,
+                "content": {
+                    "title": "Resources",
+                    "body": "Simple, kid-friendly and family-friendly links to get help, learn next steps, and find local support.",
+                    "buttons": [{"label": "Go to resources", "href": "/resources"}],
+                },
+            },
+            {
+                "id": "shop",
+                "type": "card",
+                "x": 51,
+                "y": 0,
+                "w": 49,
+                "h": 220,
+                "content": {
+                    "title": "Shop & support",
+                    "body": "Placeholder shop page for sponsorship, donations, and community support items. We can add real checkout later.",
+                    "buttons": [
+                        {"label": "Visit shop", "href": "/shop"},
+                        {"label": "Checkout", "href": "/checkout"},
+                    ],
+                    "note": "This is not legal advice or medical advice. Always call 911 in an emergency.",
+                },
+            },
+        ],
+    }
+    return json.dumps(payload, ensure_ascii=False)
+
+
+@admin_bp.route("/page-builder", methods=["GET", "POST"])
+@admin_required
+def page_builder():
+    """Lightweight drag-and-drop page builder for the homepage."""
+
+    layout = PageLayout.query.filter_by(page="home").first()
+    if not layout:
+        layout = PageLayout(page="home", layout_json=_default_home_layout_json())
+        db.session.add(layout)
+        db.session.commit()
+
+    if request.method == "POST":
+        action = request.form.get("action", "save")
+        if action == "reset":
+            layout.layout_json = _default_home_layout_json()
+            db.session.commit()
+            flash("Page layout reset to the default starter layout.", "info")
+            return redirect(url_for("admin.page_builder"))
+
+        raw = (request.form.get("layout_json") or "").strip()
+        try:
+            parsed = json.loads(raw)
+            if not isinstance(parsed, dict) or "blocks" not in parsed or not isinstance(parsed["blocks"], list):
+                raise ValueError("Invalid layout format")
+        except Exception:
+            flash("Could not save layout: invalid JSON.", "error")
+            return redirect(url_for("admin.page_builder"))
+
+        layout.layout_json = raw
+        layout.updated_at = datetime.utcnow()
+        db.session.commit()
+        flash("Page layout saved.", "success")
+        return redirect(url_for("admin.page_builder"))
+
+    # GET
+    try:
+        parsed = json.loads(layout.layout_json or "{}")
+    except Exception:
+        parsed = json.loads(_default_home_layout_json())
+
+    raw = layout.layout_json or _default_home_layout_json()
+    return render_template(
+        "admin/page_builder.html",
+        raw_json=raw,
+        parsed=parsed,
+        active="builder",
+    )
+
+
+

@@ -89,3 +89,21 @@ class Story(db.Model):
 
     def __repr__(self) -> str:
         return f"<Story {self.id} {self.status} {self.slug}>"
+
+
+class PageLayout(db.Model):
+    """Stores a simple draggable layout JSON for a given page key (e.g. 'home').
+
+    The admin "Page Builder" saves JSON that the public site can render into
+    positioned blocks.
+    """
+
+    __tablename__ = "page_layouts"
+
+    id = db.Column(db.Integer, primary_key=True)
+    page = db.Column(db.String(64), unique=True, nullable=False, index=True)
+    layout_json = db.Column(db.Text, nullable=False, default="{}")
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def __repr__(self) -> str:
+        return f"<PageLayout {self.page}>"

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+
 from flask import Blueprint, flash, redirect, render_template, url_for, send_from_directory, current_app
 from flask_login import login_required, current_user
 
@@ -7,7 +9,7 @@ from ..extensions import db, limiter
 from ..utils import slugify
 from ..utils.mailer import send_email
 from ..forms import ApplyForm, ContactForm, StorySubmitForm
-from ..models import Application, ContactMessage, Story
+from ..models import Application, ContactMessage, Story, PageLayout
 # (send_email imported above)
 
 public_bp = Blueprint("public", __name__)
@@ -20,7 +22,15 @@ def favicon():
 
 @public_bp.get("/")
 def index():
-    return render_template("index.html", title="Overcomers | SLE")
+    layout = PageLayout.query.filter_by(page="home").first()
+    blocks = None
+    if layout and layout.layout_json:
+        try:
+            data = json.loads(layout.layout_json)
+            blocks = data.get("blocks") if isinstance(data, dict) else None
+        except Exception:
+            blocks = None
+    return render_template("index.html", title="Overcomers | SLE", page_blocks=blocks)
 
 
 @public_bp.get("/what-we-do")

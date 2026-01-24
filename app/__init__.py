@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import os
+
 from flask import Flask
 
 from .extensions import db, login_manager, limiter, csrf
@@ -10,6 +12,7 @@ from .blueprints.public import public_bp
 from .blueprints.auth import auth_bp
 from .blueprints.errors import errors_bp
 from .blueprints.admin import admin_bp
+from .models import PageLayout
 
 
 def create_app() -> Flask:
@@ -34,8 +37,61 @@ def create_app() -> Flask:
     # Create tables (simple bootstrap; for production prefer migrations)
     with app.app_context():
         db.create_all()
+        _ensure_default_page_layouts()
 
     return app
+
+
+def _ensure_default_page_layouts() -> None:
+    """Create default PageLayout records if they don't exist.
+
+    This enables the 'Option C' admin Page Builder out of the box.
+    """
+
+    if PageLayout.query.filter_by(page="home").first():
+        return
+
+    default = {
+        "version": 1,
+        "canvas": {"minHeight": 520},
+        "blocks": [
+            {
+                "id": "resources",
+                "type": "card",
+                "x": 0,
+                "y": 0,
+                "w": 48,
+                "h": 220,
+                "content": {
+                    "title": "Resources",
+                    "body": "Simple, kid-friendly and family-friendly links to get help, learn next steps, and find local support.",
+                    "button_label": "Go to resources",
+                    "button_url": "/resources",
+                },
+            },
+            {
+                "id": "shop",
+                "type": "card",
+                "x": 52,
+                "y": 0,
+                "w": 48,
+                "h": 220,
+                "content": {
+                    "title": "Shop & support",
+                    "body": "Placeholder shop page for sponsorship, donations, and community support items. We can add real checkout later.",
+                    "button_label": "Visit shop",
+                    "button_url": "/shop",
+                    "secondary_label": "Checkout",
+                    "secondary_url": "/checkout",
+                    "note": "This is not legal advice or medical advice. Always call 911 in an emergency.",
+                },
+            },
+        ],
+    }
+
+    layout = PageLayout(page="home", layout_json=json.dumps(default))
+    db.session.add(layout)
+    db.session.commit()
 
 
 def seed_sample_stories(app):
