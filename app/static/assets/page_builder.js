@@ -21,6 +21,34 @@
 
   function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
 
+  // ===== Grid snapping (Option B) =====
+  // Geometry is stored as percentages but snapped to a grid so blocks align.
+  const GRID_COLS = 12;
+  const GRID_ROWS = 12;
+  const STEP_X = 100 / GRID_COLS;
+  const STEP_Y = 100 / GRID_ROWS;
+  const MIN_W = STEP_X * 3; // minimum ~3 columns
+  const MIN_H = STEP_Y * 2; // minimum ~2 rows
+
+  // expose grid settings to CSS (for grid overlay)
+  try {
+    surface.style.setProperty('--cols', String(GRID_COLS));
+    surface.style.setProperty('--rows', String(GRID_ROWS));
+  } catch (e) {}
+
+  function snapPct(value, step){
+    if (!step || step <= 0) return value;
+    return Math.round(value / step) * step;
+  }
+
+  function snap(value, step){
+    return Math.round(value / step) * step;
+  }
+
+  // Tell the surface to draw a grid (CSS uses these vars).
+  surface.style.setProperty('--cols', String(GRID_COLS));
+  surface.style.setProperty('--rows', String(GRID_ROWS));
+
   function toPct(px, total){ return (px / total) * 100; }
   function toPx(pct, total){ return (pct / 100) * total; }
 
@@ -267,8 +295,14 @@
       const dy = e.clientY - drag.startY;
       const left = clamp(drag.startLeft + dx, 0, W - 20);
       const top = clamp(drag.startTop + dy, 0, H - 20);
-      b.x = clamp(toPct(left, W), 0, 95);
-      b.y = clamp(toPct(top, H), 0, 95);
+      // Snap to the grid in percentage space
+      const snappedX = snapPct(toPct(left, W), STEP_X);
+      const snappedY = snapPct(toPct(top, H), STEP_Y);
+      // Keep inside bounds based on current snapped size
+      const bw = snapPct(b.w || 0, STEP_X);
+      const bh = snapPct(b.h || 0, STEP_Y);
+      b.x = clamp(snappedX, 0, 100 - bw);
+      b.y = clamp(snappedY, 0, 100 - bh);
       render();
     }
 
@@ -279,8 +313,16 @@
       const dy = e.clientY - resize.startY;
       const newW = clamp(resize.startW + dx, 80, W);
       const newH = clamp(resize.startH + dy, 60, H);
-      b.w = clamp(toPct(newW, W), 5, 100);
-      b.h = clamp(toPct(newH, H), 6, 100);
+      // Snap size to the grid
+      const rawW = toPct(newW, W);
+      const rawH = toPct(newH, H);
+      const snappedW = clamp(snapPct(rawW, STEP_X), MIN_W, 100);
+      const snappedH = clamp(snapPct(rawH, STEP_Y), MIN_H, 100);
+      b.w = snappedW;
+      b.h = snappedH;
+      // Also clamp position so resize doesn't push it outside
+      b.x = clamp(snapPct(b.x || 0, STEP_X), 0, 100 - b.w);
+      b.y = clamp(snapPct(b.y || 0, STEP_Y), 0, 100 - b.h);
       render();
     }
   });
