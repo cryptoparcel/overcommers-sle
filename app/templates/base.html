@@ -39,13 +39,24 @@
               <a class="nav__link" href="{{ url_for('admin.dashboard') }}">Admin</a>
             {% endif %}
             {% if current_user.is_authenticated %}
-            <form method="post" action="{{ url_for('auth.logout') }}">
+        <div class="menu-wrap" data-menu>
+          <button class="btn btn--ghost menu-btn" type="button" aria-haspopup="true" aria-expanded="false">
+            Account
+          </button>
+          <div class="menu" role="menu">
+            <a class="menu__item" role="menuitem" href="{{ url_for('auth.account') }}">Account settings</a>
+            {% if current_user.is_admin %}
+              <a class="menu__item" role="menuitem" href="{{ url_for('admin.dashboard') }}">Admin</a>
+            {% endif %}
+            <form method="post" action="{{ url_for('auth.logout') }}" class="menu__form">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-              <button class="btn btn--ghost" type="submit">Logout</button>
+              <button class="menu__item menu__item--button" type="submit">Logout</button>
             </form>
-          {% else %}
-            <a class="btn btn--ghost" href="{{ url_for('auth.login') }}">Login</a>
-          {% endif %}
+          </div>
+        </div>
+      {% else %}
+        <a class="btn btn--ghost" href="{{ url_for('auth.login') }}">Login</a>
+      {% endif %}
         </div>
       </div>
     </header>

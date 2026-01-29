@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, SubmitField
-from wtforms.validators import DataRequired, Email, Length, Optional, Regexp, URL
+from wtforms.validators import DataRequired, Email, Length, Optional, Regexp, URL, EqualTo
 
 
 username_re = Regexp(
@@ -49,3 +49,17 @@ class StorySubmitForm(FlaskForm):
     image_url = StringField("Photo URL (optional)", validators=[Optional(), Length(max=500), URL()])
     body = TextAreaField("Your story", validators=[DataRequired(), Length(min=50, max=8000)])
     submit = SubmitField("Submit story for review")
+class ProfileForm(FlaskForm):
+    name = StringField("Name", validators=[DataRequired(), Length(max=120)])
+    phone = StringField("Phone (optional)", validators=[Optional(), Length(max=40)])
+    submit_profile = SubmitField("Save changes")
+
+
+class PasswordChangeForm(FlaskForm):
+    current_password = PasswordField("Current password", validators=[DataRequired()])
+    new_password = PasswordField("New password", validators=[DataRequired(), Length(min=8, max=128)])
+    confirm_new_password = PasswordField(
+        "Confirm new password",
+        validators=[DataRequired(), EqualTo("new_password", message="Passwords must match.")]
+    )
+    submit_password = SubmitField("Update password")

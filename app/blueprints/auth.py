@@ -94,3 +94,41 @@ def logout():
     logout_user()
     flash("Logged out.", "success")
     return redirect(url_for("public.index"))
+
+
+@auth_bp.route("/account", methods=["GET", "POST"])
+@login_required
+def account():
+    """Account settings: update profile + change password."""
+    profile_form = ProfileForm(prefix="profile")
+    password_form = PasswordChangeForm(prefix="password")
+
+    # Pre-fill profile fields on GET
+    if request.method == "GET":
+        profile_form.name.data = current_user.name or ""
+        profile_form.phone.data = getattr(current_user, "phone", "") or ""
+
+    # Handle profile update
+    if profile_form.submit_profile.data and profile_form.validate_on_submit():
+        current_user.name = profile_form.name.data.strip()
+        current_user.phone = (profile_form.phone.data or "").strip() or None
+        db.session.commit()
+        flash("Profile updated.", "success")
+        return redirect(url_for("auth.account"))
+
+    # Handle password update
+    if password_form.submit_password.data and password_form.validate_on_submit():
+        if not current_user.check_password(password_form.current_password.data):
+            flash("Current password is incorrect.", "error")
+        else:
+            current_user.set_password(password_form.new_password.data)
+            db.session.commit()
+            flash("Password updated.", "success")
+            return redirect(url_for("auth.account"))
+
+    return render_template(
+        "auth/account.html",
+        profile_form=profile_form,
+        password_form=password_form,
+        title="Account settings",
+    )

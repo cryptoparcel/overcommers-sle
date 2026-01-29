@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container container--narrow">
+    <div class="page-head">
+      <h1 class="h2">Account settings</h1>
+      <p class="muted">Update your profile and password.</p>
+    </div>
+
+    <div class="grid grid--2">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="h3">Profile</h2>
+          <form method="post" novalidate>
+            {{ profile_form.csrf_token }}
+            <div class="form-row">
+              <label class="label" for="{{ profile_form.name.id }}">{{ profile_form.name.label.text }}</label>
+              {{ profile_form.name(class_="input", placeholder="Your name") }}
+              {% for e in profile_form.name.errors %}<p class="form-error">{{ e }}</p>{% endfor %}
+            </div>
+
+            <div class="form-row">
+              <label class="label" for="{{ profile_form.phone.id }}">{{ profile_form.phone.label.text }}</label>
+              {{ profile_form.phone(class_="input", placeholder="(805) 202-8473") }}
+              {% for e in profile_form.phone.errors %}<p class="form-error">{{ e }}</p>{% endfor %}
+            </div>
+
+            <div class="actions">
+              {{ profile_form.submit_profile(class_="btn primary") }}
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h2 class="h3">Password</h2>
+          <form method="post" novalidate>
+            {{ password_form.csrf_token }}
+            <div class="form-row">
+              <label class="label" for="{{ password_form.current_password.id }}">{{ password_form.current_password.label.text }}</label>
+              {{ password_form.current_password(class_="input", placeholder="Current password") }}
+              {% for e in password_form.current_password.errors %}<p class="form-error">{{ e }}</p>{% endfor %}
+            </div>
+
+            <div class="form-row">
+              <label class="label" for="{{ password_form.new_password.id }}">{{ password_form.new_password.label.text }}</label>
+              {{ password_form.new_password(class_="input", placeholder="New password (min 8 characters)") }}
+              {% for e in password_form.new_password.errors %}<p class="form-error">{{ e }}</p>{% endfor %}
+            </div>
+
+            <div class="form-row">
+              <label class="label" for="{{ password_form.confirm_new_password.id }}">{{ password_form.confirm_new_password.label.text }}</label>
+              {{ password_form.confirm_new_password(class_="input", placeholder="Repeat new password") }}
+              {% for e in password_form.confirm_new_password.errors %}<p class="form-error">{{ e }}</p>{% endfor %}
+            </div>
+
+            <div class="actions">
+              {{ password_form.submit_password(class_="btn") }}
+            </div>
+          </form>
+
+          <div class="divider"></div>
+
+          <form method="post" action="{{ url_for('auth.logout') }}">
+            {{ profile_form.csrf_token }}
+            <button class="btn ghost" type="submit">Logout</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
