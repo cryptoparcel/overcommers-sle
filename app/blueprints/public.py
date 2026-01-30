@@ -136,17 +136,6 @@ def terms():
     return render_template("legal/terms.html", title="Terms of Use")
 
 
-@public_bp.get("/admin/applications")
-@login_required
-def admin_applications():
-    if not getattr(current_user, "is_admin", False):
-        flash("Admins only.", "error")
-        return redirect(url_for("public.index"))
-
-    rows = Application.query.order_by(Application.created_at.desc()).limit(200).all()
-    return render_template("admin/applications.html", rows=rows, title="Applications")
-
-
 @public_bp.route("/stories")
 def stories():
     items = Story.query.filter_by(status="approved").order_by(Story.created_at.desc()).limit(50).all()

@@ -135,6 +135,7 @@ def _default_home_layout_json() -> str:
 
 
 @admin_bp.route("/page-builder", methods=["GET", "POST"])
+@login_required
 @admin_required
 def page_builder():
     """Lightweight drag-and-drop page builder for the homepage."""

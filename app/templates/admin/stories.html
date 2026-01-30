@@ -26,13 +26,16 @@
           <div class="actions-inline">
             {% if s.status == 'pending' %}
             <form method="POST" action="{{ url_for('admin.approve_story', story_id=s.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <button class="btn primary" type="submit">Approve</button>
             </form>
             <form method="POST" action="{{ url_for('admin.reject_story', story_id=s.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <button class="btn" type="submit">Reject</button>
             </form>
             {% endif %}
             <form method="POST" action="{{ url_for('admin.delete_story', story_id=s.id) }}" onsubmit="return confirm('Delete this story?');">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <button class="btn danger" type="submit">Delete</button>
             </form>
           </div>

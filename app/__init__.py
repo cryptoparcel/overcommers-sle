@@ -37,10 +37,12 @@ def create_app() -> Flask:
     app.register_blueprint(errors_bp)
     app.register_blueprint(admin_bp)
 
-    # Create tables (simple bootstrap; for production prefer migrations)
-    with app.app_context():
-        db.create_all()
-        _ensure_default_page_layouts()
+    # Database bootstrap (opt-in).
+    # In production, prefer `flask db upgrade` migrations and run `flask bootstrap-db` once if needed.
+    if os.environ.get("BOOTSTRAP_DB", "0") == "1":
+        with app.app_context():
+            db.create_all()
+            _ensure_default_page_layouts()
 
     _register_cli_commands(app)
 

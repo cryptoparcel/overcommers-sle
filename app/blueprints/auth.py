@@ -4,7 +4,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_user, logout_user, login_required, current_user
 
 from ..extensions import db, limiter
-from ..forms import SignupForm, LoginForm
+from ..forms import SignupForm, LoginForm, ProfileForm, PasswordChangeForm
 from ..models import User
 
 auth_bp = Blueprint("auth", __name__)
