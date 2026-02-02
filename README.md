@@ -1,29 +1,57 @@
 # Overcomers | SLE (Flask)
 
-Production-ready Flask web app for Overcomers | SLE:
+Production-ready Flask app with:
 - Public marketing pages
-- Apply + Contact forms (stored in PostgreSQL)
+- Apply + Contact forms (stored in DB)
 - Optional email notifications via SMTP
-- Auth (login/signup) + simple admin page for applications
+- Auth (login/signup) + admin area (applications/messages/stories/users)
+- Homepage Page Builder (drag/drop) + layout saved to DB
+- Optional reCAPTCHA (enabled only if keys are set)
+- Basic route tests (pytest)
 
-## Local setup
+## Local setup (Windows PowerShell)
 
-```bash
+```powershell
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
+.\.venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env
+copy .env.example .env
 flask --app wsgi:app run --debug
 ```
 
-## Render setup
+Then open http://127.0.0.1:5000
 
-1) Create a **PostgreSQL** database in Render.
-2) In the **Web Service** env vars, set:
-   - `DATABASE_URL` = the Render Postgres **External Database URL** (or Internal if you only access from Render)
-   - `SECRET_KEY` = long random string
+## First time database setup
 
-3) (Optional) Email notifications: set the SMTP env vars from `.env.example`.
+For SQLite local dev:
+
+```powershell
+.\.venv\Scripts\activate
+python manage.py bootstrap-db
+```
+
+## Create your first admin
+
+1) Register a normal account in the UI.
+2) Promote it to admin:
+
+```powershell
+.\.venv\Scripts\activate
+python manage.py make-admin you@example.com
+```
+
+Log out and log back in, then visit `/admin/`.
+
+## Render deployment
+
+- Create a PostgreSQL database on Render.
+- Set env vars on the Web Service:
+  - `DATABASE_URL` = Render Postgres URL
+  - `SECRET_KEY` = long random string
+
+Optional:
+- SMTP vars from `.env.example`
+- `RECAPTCHA_SITE_KEY` + `RECAPTCHA_SECRET_KEY`
 
 Start command:
 `gunicorn --bind 0.0.0.0:$PORT wsgi:app`

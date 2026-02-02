@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>Create account</h2>
+        <p>This is the backend-ready version of the sign-up flow.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card" style="grid-column: span 6;">
+        <div class="body">
+          <form method="post" class="auth-form" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="grid-2">
+              <div class="field">
+                <label>{{ form.name.label }}</label>
+                {{ form.name(class_="input", autocomplete="name") }}
+                {% for e in form.name.errors %}<div class="error">{{ e }}</div>{% endfor %}
+              </div>
+              <div class="field">
+                <label>{{ form.username.label }}</label>
+                {{ form.username(class_="input") }}
+                {% for e in form.username.errors %}<div class="error">{{ e }}</div>{% endfor %}
+              </div>
+              <div class="field grid__span2">
+                <label>{{ form.email.label }}</label>
+                {{ form.email(class_="input", autocomplete="email") }}
+                {% for e in form.email.errors %}<div class="error">{{ e }}</div>{% endfor %}
+              </div>
+              <div class="field grid__span2">
+                <label>{{ form.phone.label }}</label>
+                {{ form.phone(class_="input", autocomplete="tel") }}
+                {% for e in form.phone.errors %}<div class="error">{{ e }}</div>{% endfor %}
+              </div>
+              <div class="field grid__span2">
+                <label>{{ form.password.label }}</label>
+                {{ form.password(class_="input", type="password", autocomplete="new-password") }}
+                {% for e in form.password.errors %}<div class="error">{{ e }}</div>{% endfor %}
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn btn--primary" type="submit">Create account</button>
+              <a class="btn btn--ghost" href="{{ url_for('auth.login') }}">I already have an account</a>
+            </div>
+
+            <p class="muted tiny">By creating an account, you agree to our <a href="{{ url_for('public.terms') }}">Terms</a> and acknowledge our <a href="{{ url_for('public.privacy') }}">Privacy Policy</a>.</p>
+          </form>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column: span 6;">
+        <div class="body">
+          <h3>Admin access</h3>
+          <p class="muted">Create a normal account first, then run <code>python manage.py make-admin you@example.com</code>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

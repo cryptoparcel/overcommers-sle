@@ -1,26 +1,70 @@
-{% extends "base.html" %}
-{% block content %}
-<section class="section">
-  <div class="container page">
-    <h1>Applications</h1>
-    <p class="muted">Latest 200 applications.</p>
+{% extends "admin/_base.html" %}
+{% set title = "Applications" %}
+{% set active = "applications" %}
 
-    <div class="table">
-      <div class="table__head">
-        <div>Date</div><div>Name</div><div>Email</div><div>Phone</div><div>Status</div>
+{% block admin_content %}
+<div class="card">
+  <div class="body" style="overflow:auto;">
+    <div class="section-head" style="margin-bottom:12px;">
+      <div>
+        <h3>Latest applications</h3>
+        <p class="muted">Newest first. Update status as you review.</p>
       </div>
-      {% for r in rows %}
-        <div class="table__row">
-          <div>{{ r.created_at.strftime("%Y-%m-%d %H:%M") }}</div>
-          <div>{{ r.full_name }}</div>
-          <div>{{ r.email }}</div>
-          <div>{{ r.phone or "-" }}</div>
-          <div>{{ r.status }}</div>
-        </div>
-      {% else %}
-        <div class="muted">No applications yet.</div>
-      {% endfor %}
+      <div class="actions">
+        <a class="btn" href="{{ url_for('admin.export_applications') }}">Export CSV</a>
+      </div>
     </div>
+
+    {% if applications|length == 0 %}
+      <p class="muted">No applications yet.</p>
+    {% else %}
+      <table style="width:100%; border-collapse:collapse;">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding:10px; border-bottom:1px solid rgba(0,0,0,.1);">When</th>
+            <th style="text-align:left; padding:10px; border-bottom:1px solid rgba(0,0,0,.1);">Name</th>
+            <th style="text-align:left; padding:10px; border-bottom:1px solid rgba(0,0,0,.1);">Email</th>
+            <th style="text-align:left; padding:10px; border-bottom:1px solid rgba(0,0,0,.1);">Phone</th>
+            <th style="text-align:left; padding:10px; border-bottom:1px solid rgba(0,0,0,.1);">Message</th>
+            <th style="text-align:left; padding:10px; border-bottom:1px solid rgba(0,0,0,.1);">Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for a in applications %}
+          <tr>
+            <td style="padding:10px; border-bottom:1px solid rgba(0,0,0,.08); white-space:nowrap;">
+              {{ a.created_at.strftime("%Y-%m-%d %H:%M") }}
+            </td>
+            <td style="padding:10px; border-bottom:1px solid rgba(0,0,0,.08);">
+              <strong>{{ a.full_name }}</strong>
+            </td>
+            <td style="padding:10px; border-bottom:1px solid rgba(0,0,0,.08);">
+              <a class="link" href="mailto:{{ a.email }}">{{ a.email }}</a>
+            </td>
+            <td style="padding:10px; border-bottom:1px solid rgba(0,0,0,.08);">
+              {{ a.phone or "-" }}
+            </td>
+            <td style="padding:10px; border-bottom:1px solid rgba(0,0,0,.08); max-width:520px;">
+              <div style="white-space:normal;">{{ a.message or "-" }}</div>
+            </td>
+
+            <td style="padding:10px; border-bottom:1px solid rgba(0,0,0,.08);">
+              <form method="POST" action="{{ url_for('admin.update_application', app_id=a.id) }}" style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <select name="status">
+                  {% for s in ["new","reviewed","approved","rejected"] %}
+                    <option value="{{ s }}" {% if (a.status or "")|lower == s %}selected{% endif %}>{{ s|capitalize }}</option>
+                  {% endfor %}
+                </select>
+                <button class="btn" type="submit">Save</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
   </div>
-</section>
+</div>
 {% endblock %}

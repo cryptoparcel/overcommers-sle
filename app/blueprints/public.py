@@ -1,24 +1,52 @@
 from __future__ import annotations
 
 import json
-
-from flask import Blueprint, flash, redirect, render_template, url_for, send_from_directory, current_app
-from flask_login import login_required, current_user
+from flask import Blueprint, flash, redirect, render_template, url_for, send_from_directory, current_app, request, Response
+from flask_login import current_user
 
 from ..extensions import db, limiter
 from ..utils import slugify
 from ..utils.mailer import send_email
 from ..forms import ApplyForm, ContactForm, StorySubmitForm
 from ..models import Application, ContactMessage, Story, PageLayout
-# (send_email imported above)
 
 public_bp = Blueprint("public", __name__)
 
-
 @public_bp.get("/favicon.ico")
 def favicon():
-    return send_from_directory(current_app.static_folder, "favicon.ico")
+    return send_from_directory(current_app.static_folder, "assets/favicon.ico")
 
+@public_bp.get("/robots.txt")
+def robots():
+    body = "User-agent: *\nAllow: /\nSitemap: /sitemap.xml\n"
+    return Response(body, mimetype="text/plain")
+
+@public_bp.get("/sitemap.xml")
+def sitemap():
+    # Lightweight sitemap with priorities/changefreq
+    # Note: <loc> should be absolute in perfect SEO, but relative works behind reverse proxies.
+    pages = [
+        ("/", "daily", "1.0"),
+        ("/what-we-do", "monthly", "0.8"),
+        ("/resources", "weekly", "0.7"),
+        ("/impact", "monthly", "0.6"),
+        ("/shop", "monthly", "0.5"),
+        ("/contact", "weekly", "0.7"),
+        ("/apply", "weekly", "0.8"),
+        ("/stories", "weekly", "0.6"),
+        ("/privacy", "yearly", "0.3"),
+        ("/terms", "yearly", "0.3"),
+    ]
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>',
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for loc, freq, pr in pages:
+        xml.append("<url>")
+        xml.append(f"  <loc>{loc}</loc>")
+        xml.append(f"  <changefreq>{freq}</changefreq>")
+        xml.append(f"  <priority>{pr}</priority>")
+        xml.append("</url>")
+    xml.append("</urlset>")
+    return Response("\n".join(xml), mimetype="application/xml")
 
 @public_bp.get("/")
 def index():
@@ -32,32 +60,26 @@ def index():
             blocks = None
     return render_template("index.html", title="Overcomers | SLE", page_blocks=blocks)
 
-
 @public_bp.get("/what-we-do")
 def what_we_do():
     return render_template("whatwedo.html", title="What We Do")
-
 
 @public_bp.get("/resources")
 def resources():
     return render_template("resources.html", title="Resources")
 
-
 @public_bp.get("/impact")
 def impact():
     return render_template("impact.html", title="Impact")
-
 
 @public_bp.get("/shop")
 def shop():
     return render_template("shop.html", title="Shop")
 
-
 @public_bp.get("/contact")
 def contact():
     form = ContactForm()
     return render_template("contact.html", form=form, title="Contact")
-
 
 @public_bp.post("/contact")
 @limiter.limit("10 per hour")
@@ -76,7 +98,6 @@ def contact_post():
     db.session.add(msg)
     db.session.commit()
 
-    # Optional email notification
     body = (
         "New contact message\n\n"
         f"Name: {msg.name}\n"
@@ -84,17 +105,15 @@ def contact_post():
         f"Subject: {msg.subject}\n\n"
         f"{msg.message}\n"
     )
-    send_email(subject=f"[Overcomers] Contact: {msg.subject}", body=body, to_email=current_app.config.get("NOTIFY_EMAIL"))
+    send_email(to_email=current_app.config.get("NOTIFY_EMAIL"), subject=f"[Overcomers] Contact: {msg.subject}", body=body)
 
     flash("Thanks — we got your message.", "success")
     return redirect(url_for("public.contact"))
-
 
 @public_bp.get("/apply")
 def apply():
     form = ApplyForm()
     return render_template("apply.html", form=form, title="Apply")
-
 
 @public_bp.post("/apply")
 @limiter.limit("10 per hour")
@@ -120,33 +139,28 @@ def apply_post():
         f"Phone: {app_row.phone or '-'}\n\n"
         f"Message:\n{app_row.message or '-'}\n"
     )
-    send_email(subject="[Overcomers] New application", body=body, to_email=current_app.config.get("NOTIFY_EMAIL"))
+    send_email(to_email=current_app.config.get("NOTIFY_EMAIL"), subject="[Overcomers] New application", body=body)
 
     flash("Thanks — we’ll reach out soon.", "success")
     return redirect(url_for("public.apply"))
-
 
 @public_bp.get("/privacy")
 def privacy():
     return render_template("legal/privacy.html", title="Privacy Policy")
 
-
 @public_bp.get("/terms")
 def terms():
     return render_template("legal/terms.html", title="Terms of Use")
 
-
-@public_bp.route("/stories")
+@public_bp.get("/stories")
 def stories():
     items = Story.query.filter_by(status="approved").order_by(Story.created_at.desc()).limit(50).all()
-    return render_template("stories.html", stories=items)
+    return render_template("stories.html", stories=items, title="Stories")
 
-
-@public_bp.route("/stories/<slug>")
+@public_bp.get("/stories/<slug>")
 def story_detail(slug: str):
     story = Story.query.filter_by(slug=slug, status="approved").first_or_404()
-    return render_template("story_detail.html", story=story)
-
+    return render_template("story_detail.html", story=story, title=story.title)
 
 @public_bp.route("/stories/submit", methods=["GET", "POST"])
 @limiter.limit("5 per hour")
@@ -155,7 +169,6 @@ def story_submit():
     if form.validate_on_submit():
         title = form.title.data.strip()
         slug = slugify(title)
-        # ensure uniqueness
         base = slug
         i = 2
         while Story.query.filter_by(slug=slug).first() is not None:
@@ -173,23 +186,22 @@ def story_submit():
         )
         db.session.add(story)
         db.session.commit()
-        admin_email = current_app.config.get("ADMIN_NOTIFY_EMAIL") or current_app.config.get("NOTIFY_EMAIL")
+
+        admin_email = current_app.config.get("NOTIFY_EMAIL")
         if admin_email:
             send_email(
-                admin_email,
-                "New story submission (Overcomers SLE)",
-                f"Title: {story.title}\nAuthor: {story.author_name or '(not provided)'}\n\nReview in /admin/stories",
+                to_email=admin_email,
+                subject="New story submission (Overcomers SLE)",
+                body=f"Title: {story.title}\nAuthor: {story.author_name or '(not provided)'}\n\nReview in /admin/stories",
             )
         flash("Thanks! Your story was submitted for review.", "success")
         return redirect(url_for("public.stories"))
-    return render_template("story_submit.html", form=form)
+    return render_template("story_submit.html", form=form, title="Share a story")
 
-
-@public_bp.route("/careers")
+@public_bp.get("/careers")
 def careers():
-    return render_template("careers.html")
+    return render_template("careers.html", title="Careers")
 
-
-@public_bp.route("/checkout")
+@public_bp.get("/checkout")
 def checkout():
-    return render_template("checkout.html")
+    return render_template("checkout.html", title="Checkout")

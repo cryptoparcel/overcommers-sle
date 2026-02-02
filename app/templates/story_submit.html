@@ -26,29 +26,46 @@
 
           <div class="form-row">
             <label class="label">{{ form.image_url.label }}</label>
-            {{ form.image_url(class="input", placeholder="Optional: paste an image URL") }}
+            {{ form.image_url(class="input", placeholder="Optional image URL") }}
             {% for e in form.image_url.errors %}<div class="error">{{ e }}</div>{% endfor %}
           </div>
-        </div>
 
-        <div class="form-row">
-          <label class="label">{{ form.summary.label }}</label>
-          {{ form.summary(class="input", placeholder="Optional: one sentence summary") }}
-          {% for e in form.summary.errors %}<div class="error">{{ e }}</div>{% endfor %}
-        </div>
+          <div class="form-row">
+            <label class="label">{{ form.summary.label }}</label>
+            {{ form.summary(class="input", placeholder="Optional: one sentence summary") }}
+            {% for e in form.summary.errors %}<div class="error">{{ e }}</div>{% endfor %}
+          </div>
 
-        <div class="form-row">
-          <label class="label">{{ form.body.label }}</label>
-          {{ form.body(class="textarea", rows="10", placeholder="Write your story...") }}
-          {% for e in form.body.errors %}<div class="error">{{ e }}</div>{% endfor %}
-        </div>
+          <div class="form-row">
+            <label class="label">{{ form.body.label }}</label>
+            {{ form.body(class="textarea", rows="10", placeholder="Write your story...") }}
+            {% for e in form.body.errors %}<div class="error">{{ e }}</div>{% endfor %}
+          </div>
 
-        <div class="actions">
-          <button class="btn primary" type="submit">{{ form.submit.label.text }}</button>
-          <a class="btn" href="{{ url_for('public.stories') }}">Cancel</a>
+          {{ form.recaptcha_token(id="recaptcha_token") }}
+          {% for e in form.recaptcha_token.errors %}<div class="error">{{ e }}</div>{% endfor %}
+
+          <div class="actions">
+            <button class="btn primary" type="submit" data-track="submit_story">{{ form.submit.label.text }}</button>
+            <a class="btn" href="{{ url_for('public.stories') }}">Cancel</a>
+          </div>
         </div>
       </form>
     </div>
   </div>
 </section>
+
+{% if config.get('RECAPTCHA_SITE_KEY') %}
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  if (typeof grecaptcha === 'undefined') return;
+  grecaptcha.ready(function() {
+    grecaptcha.execute('{{ config.get("RECAPTCHA_SITE_KEY") }}', {action: 'story'}).then(function(token) {
+      var el = document.getElementById('recaptcha_token');
+      if (el) el.value = token;
+    });
+  });
+});
+</script>
+{% endif %}
 {% endblock %}

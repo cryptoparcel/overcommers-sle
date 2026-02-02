@@ -1,86 +1,33 @@
 {% extends "admin/_base.html" %}
-
-{% block title %}Page Builder{% endblock %}
-
+{% set title = "Page Builder" %}
+{% set active = "builder" %}
 {% block admin_content %}
-<div class="stack">
-  <div class="row row--between row--wrap">
-    <h1 class="h2">Page Builder</h1>
-    <div class="row row--wrap" style="gap:10px">
-      <form method="post" action="{{ url_for('admin.page_builder') }}" style="margin:0">
-        {{ csrf_token() }}
-        <input type="hidden" name="action" value="reset">
-        <button class="btn" type="submit" onclick="return confirm('Reset layout to defaults?')">Reset to default</button>
+<div class="pb-admin">
+  <div class="pb-admin__canvas">
+    <div class="pb-admin__toolbar">
+      <form id="pbSaveForm" method="post" style="display:flex; gap:10px; align-items:center;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="layout_json" id="layout_json" value="">
+        <button class="btn primary" type="submit">Save layout</button>
+        <button class="btn" type="submit" name="action" value="reset" onclick="return confirm('Reset layout to default?');">Reset</button>
+        <span class="muted tiny">Tip: drag blocks; use handles to resize.</span>
       </form>
-      <button class="btn primary" type="button" id="pbSaveBtn">Save layout</button>
     </div>
+    <div id="pbSurface" class="pb-admin__surface" aria-label="Homepage layout canvas"></div>
   </div>
 
-  <p class="muted">Drag blocks around, resize them, and edit their text. This is a simple in-app editor (not Webflow), but it lets you move content without touching code.</p>
-
-  <div class="pb-admin">
-    <div class="pb-admin__canvas">
-      <div id="pbCanvas" class="pb-admin__surface" aria-label="Page builder canvas"></div>
+  <div class="pb-admin__panel">
+    <div class="card">
+      <div class="card__body">
+        <h3 class="h3">Blocks</h3>
+        <p class="muted">Select a block to edit title/body/buttons.</p>
+        <div id="pbPanel"></div>
+      </div>
     </div>
-    <aside class="pb-admin__panel">
-      <h2 class="h3" style="margin-top:0">Blocks</h2>
-      <div class="row row--wrap" style="gap:8px; margin-bottom:12px">
-        <button class="btn" type="button" id="pbAddText">Add text</button>
-        <button class="btn" type="button" id="pbAddCard">Add card</button>
-        <button class="btn" type="button" id="pbAddButton">Add button</button>
-        <button class="btn" type="button" id="pbAddImage">Add image</button>
-        <button class="btn" type="button" id="pbAddSpacer">Add spacer</button>
-      </div>
-
-      <div class="card" style="margin-bottom:12px">
-        <div class="card__body">
-          <h3 class="h3" style="margin-top:0">Selected</h3>
-          <div class="field">
-            <label class="label">Type</label>
-            <input class="input" id="pbType" type="text" readonly>
-          </div>
-          <div class="field">
-            <label class="label">Title</label>
-            <input class="input" id="pbTitle" type="text" placeholder="Title">
-          </div>
-          <div class="field">
-            <label class="label">Body</label>
-            <textarea class="input" id="pbBody" rows="5" placeholder="Body text"></textarea>
-          </div>
-          <div class="field">
-            <label class="label">Button label</label>
-            <input class="input" id="pbBtnLabel" type="text" placeholder="Button label">
-          </div>
-          <div class="field">
-            <label class="label">Button link</label>
-            <input class="input" id="pbBtnHref" type="text" placeholder="/path or https://...">
-          </div>
-          <div class="field">
-            <label class="label">Image URL</label>
-            <input class="input" id="pbImageUrl" type="text" placeholder="https://...">
-          </div>
-          <div class="row" style="gap:10px; margin-top:10px">
-            <button class="btn" type="button" id="pbDelete">Delete</button>
-          </div>
-          <p class="tiny muted" style="margin-bottom:0">Tip: On mobile, blocks auto-stack in the order shown here.</p>
-        </div>
-      </div>
-
-      <h3 class="h3">Order</h3>
-      <ol id="pbOrder" class="pb-order"></ol>
-    </aside>
   </div>
-
-  <form id="pbSaveForm" method="post" action="{{ url_for('admin.page_builder') }}" style="display:none">
-    {{ csrf_token() }}
-    <input type="hidden" name="action" value="save">
-    <input type="hidden" name="layout_json" id="pbLayoutJson">
-  </form>
-
-  <script>
-    window.__PB_LAYOUT__ = {{ layout_json | safe }};
-  </script>
-  <script src="{{ url_for('static', filename='assets/page_builder.js') }}"></script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='assets/page_builder.css') }}">
 </div>
+
+<script id="pbInitialJson" type="application/json">{{ raw_json|tojson }}</script>
+<script src="{{ url_for('static', filename='assets/page_builder.js') }}" defer></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='assets/page_builder.css') }}" />
 {% endblock %}

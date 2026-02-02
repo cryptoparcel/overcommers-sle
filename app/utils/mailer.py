@@ -4,39 +4,30 @@ import smtplib
 from email.message import EmailMessage
 from flask import current_app
 
-
-def send_email(subject: str, body: str, to_email: str) -> bool:
-    """Send an email if SMTP is configured. Returns True if sent."""
+def send_email(to_email: str, subject: str, body: str) -> None:
+    """Send an email if SMTP is configured. Safe no-op if missing."""
     cfg = current_app.config
-    host = cfg.get("SMTP_HOST", "")
-    if not host:
-        return False
+    host = cfg.get("SMTP_HOST")
+    port = int(cfg.get("SMTP_PORT") or 587)
+    user = cfg.get("SMTP_USERNAME")
+    password = cfg.get("SMTP_PASSWORD")
+    from_email = cfg.get("SMTP_FROM") or user
+
+    if not host or not from_email:
+        current_app.logger.info("SMTP not configured; skipping email.")
+        return
 
     msg = EmailMessage()
-    msg["Subject"] = subject
-    msg["From"] = cfg.get("FROM_EMAIL")
+    msg["From"] = from_email
     msg["To"] = to_email
+    msg["Subject"] = subject
     msg.set_content(body)
 
-    port = int(cfg.get("SMTP_PORT", 587))
-    username = cfg.get("SMTP_USERNAME", "")
-    password = cfg.get("SMTP_PASSWORD", "")
-    use_tls = bool(cfg.get("SMTP_USE_TLS", True))
-
     try:
-        if use_tls:
-            server = smtplib.SMTP(host, port, timeout=20)
-            server.starttls()
-        else:
-            server = smtplib.SMTP(host, port, timeout=20)
-
-        if username and password:
-            server.login(username, password)
-
-        server.send_message(msg)
-        server.quit()
-        return True
-    except Exception:
-        # Don't crash the request path on email failures.
-        current_app.logger.exception("Email send failed")
-        return False
+        with smtplib.SMTP(host, port, timeout=15) as smtp:
+            smtp.starttls()
+            if user and password:
+                smtp.login(user, password)
+            smtp.send_message(msg)
+    except Exception as e:
+        current_app.logger.warning(f"Email send failed: {e}")

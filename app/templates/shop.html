@@ -3,7 +3,12 @@
 <section class="section">
   <div class="container page">
     <h1>Shop</h1>
-    <p class='muted'>This is a placeholder shop page. You can connect Shopify, Stripe, or a simple product checkout later.</p><p class='muted'>For now, use this page to describe what proceeds fund (beds, supplies, transportation, etc.).</p>
+    <p class="muted">This is a placeholder shop page. You can connect Shopify, Stripe, or a simple product checkout later.</p>
+    <p class="muted">For now, use this page to describe what proceeds fund (beds, supplies, transportation, etc.).</p>
+
+    <div class="actions" style="margin-top:16px;">
+      <a class="btn primary" href="{{ url_for('public.checkout') }}">Checkout (placeholder)</a>
+    </div>
   </div>
 </section>
 {% endblock %}

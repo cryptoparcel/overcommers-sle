@@ -5,31 +5,53 @@
     <h1>Contact</h1>
     <p class="muted">Send a message and we’ll respond as soon as we can.</p>
 
-    <form method="post" class="form">
-      {{ form.csrf_token }}
+    <form method="post" class="form" novalidate>
+      {{ form.hidden_tag() }}
       <div class="grid grid--form">
         <div class="field">
           <label>{{ form.name.label }}</label>
           {{ form.name(class_="input") }}
+          {% for e in form.name.errors %}<div class="error">{{ e }}</div>{% endfor %}
         </div>
         <div class="field">
           <label>{{ form.email.label }}</label>
           {{ form.email(class_="input") }}
+          {% for e in form.email.errors %}<div class="error">{{ e }}</div>{% endfor %}
         </div>
         <div class="field grid__span2">
           <label>{{ form.subject.label }}</label>
           {{ form.subject(class_="input") }}
+          {% for e in form.subject.errors %}<div class="error">{{ e }}</div>{% endfor %}
         </div>
         <div class="field grid__span2">
           <label>{{ form.message.label }}</label>
           {{ form.message(class_="textarea", rows="6") }}
+          {% for e in form.message.errors %}<div class="error">{{ e }}</div>{% endfor %}
         </div>
       </div>
+
+      {{ form.recaptcha_token(id="recaptcha_token") }}
+      {% for e in form.recaptcha_token.errors %}<div class="error">{{ e }}</div>{% endfor %}
+
       <div class="form__actions">
-        <button class="btn btn--primary" type="submit">Send</button>
+        <button class="btn btn--primary" type="submit" data-track="submit_contact">Send</button>
         <a class="btn btn--ghost" href="{{ url_for('public.index') }}">Back home</a>
       </div>
     </form>
   </div>
 </section>
+
+{% if config.get('RECAPTCHA_SITE_KEY') %}
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  if (typeof grecaptcha === 'undefined') return;
+  grecaptcha.ready(function() {
+    grecaptcha.execute('{{ config.get("RECAPTCHA_SITE_KEY") }}', {action: 'contact'}).then(function(token) {
+      var el = document.getElementById('recaptcha_token');
+      if (el) el.value = token;
+    });
+  });
+});
+</script>
+{% endif %}
 {% endblock %}

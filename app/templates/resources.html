@@ -3,7 +3,13 @@
 <section class="section">
   <div class="container page">
     <h1>Resources</h1>
-    <p class='muted'>If you need immediate help, call 988 (U.S.) for mental health crisis support.</p><p class='muted'>We’re building a curated list of local recovery meetings, job support, and reentry resources.</p><p class='muted'>If you have a resource you want listed, contact us.</p>
+    <p class="muted">If you need immediate help, call <strong>988</strong> (U.S.) for mental health crisis support.</p>
+    <p class="muted">We’re building a curated list of local recovery meetings, job support, and reentry resources.</p>
+    <p class="muted">If you have a resource you want listed, contact us.</p>
+
+    <div class="actions" style="margin-top:16px;">
+      <a class="btn primary" href="{{ url_for('public.contact') }}">Suggest a resource</a>
+    </div>
   </div>
 </section>
 {% endblock %}

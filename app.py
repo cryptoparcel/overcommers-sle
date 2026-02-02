@@ -1,3 +1,4 @@
+# Local dev runner (optional). In production, use wsgi.py.
 from app import create_app
 
 app = create_app()

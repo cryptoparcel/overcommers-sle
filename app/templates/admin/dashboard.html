@@ -1,0 +1,47 @@
+{% extends "admin/_base.html" %}
+{% set title = "Admin dashboard" %}
+{% set active = "dashboard" %}
+
+{% block admin_content %}
+<div class="grid cards">
+  <div class="card" style="grid-column: span 6;">
+    <div class="card__body">
+      <h3 class="h3">Applications</h3>
+      <p>New: <strong>{{ counts.new }}</strong> • Total: <strong>{{ counts.total }}</strong></p>
+      <div class="actions">
+        <a class="btn primary" href="{{ url_for('admin.applications') }}">View applications</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="grid-column: span 6;">
+    <div class="card__body">
+      <h3 class="h3">Stories</h3>
+      <p>Pending: <strong>{{ counts.pending_stories }}</strong></p>
+      <div class="actions">
+        <a class="btn primary" href="{{ url_for('admin.stories', status='pending') }}">Review stories</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="grid-column: span 6;">
+    <div class="card__body">
+      <h3 class="h3">Messages</h3>
+      <p>Total: <strong>{{ counts.messages }}</strong></p>
+      <div class="actions">
+        <a class="btn primary" href="{{ url_for('admin.messages') }}">View messages</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="grid-column: span 6;">
+    <div class="card__body">
+      <h3 class="h3">Homepage layout</h3>
+      <p class="muted">Drag-and-drop blocks and save.</p>
+      <div class="actions">
+        <a class="btn primary" href="{{ url_for('admin.page_builder') }}">Open page builder</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

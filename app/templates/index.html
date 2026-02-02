@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 <main class="home">
-  <!-- HERO -->
   <section class="home-hero">
     <div class="container">
       <div class="home-hero__card">
@@ -9,216 +8,25 @@
           <h1 class="home-hero__title">A safe, sober place to live while you get back on your feet.</h1>
           <p class="home-hero__lead">Transitional sober living for recovery &amp; reentry — with structure, peer support, <strong>life‑skills workshops</strong>, and a plan for what’s next.</p>
           <p class="home-hero__body">
-            <strong>Overcomers | SLE</strong> is a supportive living environment. We focus on clear house rules, respectful community,
-            and practical steps that help residents build stability.
-            <br><br>
-            <strong>Life‑skills workshops</strong> are a core part of what we provide — including transformative thinking, sober living routines,
-            job readiness (applications, resumes, interviews), social etiquette, emotional intelligence, anger management, help navigating FAFSA/college grants,
-            and practical steps like getting a driver’s license.
-          </p>
-
-          <div class="home-actions">
-            <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply now</a>
-            <a class="btn" href="{{ url_for('public.what_we_do') }}">What we do</a>
-            <a class="btn" href="{{ url_for('public.resources') }}">Resources</a>
-          </div>
-
-          <div class="home-chips" aria-label="Key areas of support">
-            <span class="chip">Alcohol &amp; drug‑free living</span>
-            <span class="chip">Peer support</span>
-            <span class="chip">Life‑skills workshops</span>
-            <span class="chip">Reentry planning</span>
-          </div>
-        </div>
-
-        <div class="home-hero__media">
-          <div class="media-frame">
-            <img class="media-img" src="{{ url_for('static', filename='assets/img/community_photo.svg') }}" alt="Community support" loading="lazy">
-            <div class="media-note">
-              <div class="media-note__title">Replace this image</div>
-              <div class="media-note__text">Swap the file in <code>app/static/assets/img/</code> with your own photo when you’re ready.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW WE HELP -->
-  <section class="home-section">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2 class="section-title">How we help</h2>
-          <p class="section-sub">Simple, clear, and friendly — so anyone can understand what we offer.</p>
-        </div>
-        <a class="btn" href="{{ url_for('public.impact') }}">See our impact</a>
-      </div>
-
-      <div class="grid grid--4">
-        <article class="card feature-card">
-          <div class="feature-card__media">
-            <img src="{{ url_for('static', filename='assets/img/house.svg') }}" alt="" loading="lazy">
-          </div>
-          <div class="feature-card__body">
-            <h3>Safe place to live</h3>
-            <p>A calm home with clear expectations and a supportive community.</p>
-            <div class="feature-card__actions">
-              <a class="pill" href="{{ url_for('public.shop') }}">Shop</a>
-              <a class="pill pill--primary" href="{{ url_for('public.apply') }}">Apply</a>
-              <a class="pill" href="{{ url_for('auth.login') }}">Login</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="card feature-card">
-          <div class="feature-card__media">
-            <img src="{{ url_for('static', filename='assets/img/people.svg') }}" alt="" loading="lazy">
-          </div>
-          <div class="feature-card__body">
-            <h3>You’re not alone</h3>
-            <p>Support from people who understand — plus accountability that helps you stay on track.</p>
-            <div class="feature-card__actions">
-              <a class="pill" href="{{ url_for('public.shop') }}">Shop</a>
-              <a class="pill pill--primary" href="{{ url_for('public.apply') }}">Apply</a>
-              <a class="pill" href="{{ url_for('auth.login') }}">Login</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="card feature-card">
-          <div class="feature-card__media">
-            <img src="{{ url_for('static', filename='assets/img/skills.svg') }}" alt="" loading="lazy">
-          </div>
-          <div class="feature-card__body">
-            <h3>Skills for real life</h3>
-            <p>Life‑skills workshops covering budgeting, job search, forms, email, routines — plus transformative thinking, social etiquette, emotional intelligence, anger management, FAFSA/college grant basics, and more.</p>
-            <div class="feature-card__actions">
-              <a class="pill" href="{{ url_for('public.shop') }}">Shop</a>
-              <a class="pill pill--primary" href="{{ url_for('public.apply') }}">Apply</a>
-              <a class="pill" href="{{ url_for('auth.login') }}">Login</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="card feature-card">
-          <div class="feature-card__media">
-            <img src="{{ url_for('static', filename='assets/img/planning.svg') }}" alt="" loading="lazy">
-          </div>
-          <div class="feature-card__body">
-            <h3>Step‑by‑step reentry</h3>
-            <p>Support with plans, schedules, and connections that help reduce overwhelm.</p>
-            <div class="feature-card__actions">
-              <a class="pill" href="{{ url_for('public.shop') }}">Shop</a>
-              <a class="pill pill--primary" href="{{ url_for('public.apply') }}">Apply</a>
-              <a class="pill" href="{{ url_for('auth.login') }}">Login</a>
-            </div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- WHAT TO EXPECT + VALUES -->
-  <section class="home-section home-section--soft">
-    <div class="container">
-      <div class="grid grid--2">
-        <div class="card card--padded">
-          <h2 class="section-title">What to expect</h2>
-          <p class="muted">Clear house rules, a respectful community, and support for building stability.</p>
-          <ul class="bullets">
-            <li>Alcohol‑ and drug‑free living</li>
-            <li>Accountability and peer support</li>
-            <li>Help with routines, jobs, and basic life skills</li>
-            <li>Referrals to licensed care when needed</li>
-          </ul>
-          <p class="muted" style="margin-top: 14px;">
-            <strong>Life‑skills workshops</strong> are a core part of our approach: transformative thinking, employment readiness, emotional intelligence,
-            anger management, social etiquette, and practical steps like FAFSA and driver’s license planning.
+            <strong>Overcomers | SLE</strong> is a supportive living environment. We focus on clear house rules, respectful community, and practical steps that help residents build stability.
           </p>
           <div class="home-actions">
-            <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Start application</a>
-            <a class="btn" href="{{ url_for('public.contact') }}">Talk to us</a>
+            <a class="btn btn--primary" href="{{ url_for('public.apply') }}" data-track="cta_apply">Apply</a>
+            <a class="btn btn--ghost" href="{{ url_for('public.contact') }}" data-track="cta_contact">Ask a question</a>
           </div>
+          <p class="muted small" style="margin-top:10px;">Not medical advice. If you need clinical care or detox, contact licensed providers.</p>
         </div>
 
-        <div class="card card--padded">
-          <h2 class="section-title">Respect and privacy</h2>
-          <p class="muted">We protect personal information and treat residents with dignity.</p>
-
-          <div class="grid grid--2 grid--tight">
-            <div class="mini-card">
-              <h3>Friendly and simple</h3>
-              <p>Language that’s easy to read — for residents, families, and youth.</p>
-            </div>
-            <div class="mini-card">
-              <h3>Clear boundaries</h3>
-              <p>Supportive housing — not a medical clinic, therapy provider, or detox program.</p>
-            </div>
-            <div class="mini-card">
-              <h3>Consent first</h3>
-              <p>Stories and photos should only be shared with consent and permission.</p>
-            </div>
-            <div class="mini-card">
-              <h3>Community connection</h3>
-              <p>Recovery gets stronger when people feel supported and included.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- STORIES -->
-  <section class="home-section">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2 class="section-title">Community stories</h2>
-          <p class="section-sub">Examples below show how stories will look. Replace them with real stories later.</p>
-        </div>
-        <div class="home-actions">
-          <a class="btn" href="{{ url_for('public.stories') }}">Read stories</a>
-          <a class="btn btn--primary" href="{{ url_for('public.story_submit') }}">Share a story</a>
-        </div>
-      </div>
-
-      <div class="grid grid--2">
-        <article class="card quote-card">
-          <div class="quote-card__avatar" aria-hidden="true"></div>
-          <div class="quote-card__text">
-            <h3>Impact story</h3>
-            <p class="quote">“I came in overwhelmed. The routines and support helped me focus on work, rebuild trust, and stay sober day by day.”</p>
-            <p class="muted small">— Example story (replace with a consented resident story)</p>
-          </div>
-        </article>
-
-        <article class="card quote-card">
-          <div class="quote-card__avatar" aria-hidden="true"></div>
-          <div class="quote-card__text">
-            <h3>Reentry story</h3>
-            <p class="quote">“After years away, everything felt new. Step‑by‑step help with phones, email, and jobs made life feel possible again.”</p>
-            <p class="muted small">— Example story (replace with a consented resident story)</p>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- RESOURCES + SHOP -->
-  <section class="home-section home-section--soft">
-    <div class="container">
-      <div class="grid grid--2">
         <div class="card card--padded card--stretch">
           <h2 class="section-title">Resources</h2>
-          <p class="muted">Simple, kid‑friendly and family‑friendly links to get help, learn next steps, and find local support.</p>
+          <p class="muted">Simple, family‑friendly links to get help, learn next steps, and find local support.</p>
           <div class="spacer"></div>
           <a class="btn btn--primary" href="{{ url_for('public.resources') }}">Go to resources</a>
         </div>
 
         <div class="card card--padded card--stretch">
           <h2 class="section-title">Shop &amp; support</h2>
-          <p class="muted">Support items, sponsorship, and donations. (Checkout is a placeholder — we can connect payments later.)</p>
+          <p class="muted">Support items, sponsorship, and donations. (Checkout can be connected later.)</p>
           <p class="muted small">This is not legal advice or medical advice. Always call 911 in an emergency.</p>
           <div class="spacer"></div>
           <div class="home-actions">
@@ -227,6 +35,31 @@
           </div>
         </div>
       </div>
+
+      {% if page_blocks %}
+      <section class="section" style="margin-top:22px;">
+        <div class="grid cards">
+          {% for b in page_blocks %}
+            <article class="card">
+              <div class="card__body">
+                <h3 class="h3">{{ b.content.title if b.content and b.content.title else b.id }}</h3>
+                <p class="muted">{{ b.content.body if b.content and b.content.body else "" }}</p>
+                {% if b.content and b.content.buttons %}
+                  <div class="actions">
+                    {% for btn in b.content.buttons %}
+                      <a class="btn {% if loop.first %}primary{% endif %}" href="{{ btn.href }}">{{ btn.label }}</a>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                {% if b.content and b.content.note %}
+                  <p class="muted tiny">{{ b.content.note }}</p>
+                {% endif %}
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </section>
+      {% endif %}
     </div>
   </section>
 </main>
