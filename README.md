@@ -66,3 +66,30 @@ Now you’ll see the **Admin** link in the navbar when you’re logged in.
 - Set `DATABASE_URL` to your Render Postgres URL
 - Set `SECRET_KEY` to a strong random string
 - Set `BOOTSTRAP_DB=1` only once for the first deploy, then remove it
+
+## Make yourself an admin (so you can access /admin)
+
+There is **no** UI button to become admin (by design).
+
+1) Sign up normally on the site.
+2) Create the database tables once:
+
+```bash
+# Local dev:
+BOOTSTRAP_DB=1 flask --app wsgi:app bootstrap-db
+
+# Or on Render Shell:
+BOOTSTRAP_DB=1 flask --app wsgi:app bootstrap-db
+```
+
+3) Promote your user to admin:
+
+```bash
+# Local dev:
+python manage.py make-admin you@example.com
+
+# Or using Flask CLI:
+flask --app wsgi:app make-admin you@example.com
+```
+
+Now refresh the site while logged in — you will see the **Admin** link.

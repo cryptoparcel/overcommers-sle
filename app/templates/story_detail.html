@@ -11,7 +11,7 @@
 
       <div class="story__body">
         <h1 class="h1">{{ story.title }}</h1>
-        <p class="muted">By {{ story.author_name or "Overcomers community" }} • {{ story.created_at.strftime('%b %d, %Y') }}</p>
+        <p class="muted">By {{ story.author_name or "OVERCOMERS community" }} • {{ story.created_at.strftime('%b %d, %Y') }}</p>
         {% if story.summary %}<p class="lead">{{ story.summary }}</p>{% endif %}
         <div class="prose">
           {{ story.body | replace('\n', '<br>') | safe }}
