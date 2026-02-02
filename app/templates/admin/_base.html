@@ -7,6 +7,7 @@
       <nav class="admin-nav">
         <a class="btn {% if active=='dashboard' %}primary{% endif %}" href="{{ url_for('admin.dashboard') }}">Dashboard</a>
         <a class="btn {% if active=='applications' %}primary{% endif %}" href="{{ url_for('admin.applications') }}">Applications</a>
+        <a class="btn {% if active=='openings' %}primary{% endif %}" href="{{ url_for('admin.openings') }}">Openings</a>
         <a class="btn {% if active=='messages' %}primary{% endif %}" href="{{ url_for('admin.messages') }}">Messages</a>
         <a class="btn {% if active=='stories' %}primary{% endif %}" href="{{ url_for('admin.stories') }}">Stories</a>
         <a class="btn {% if active=='users' %}primary{% endif %}" href="{{ url_for('admin.users') }}">Users</a>

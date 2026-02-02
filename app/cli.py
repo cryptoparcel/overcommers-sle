@@ -4,7 +4,7 @@ import click
 from flask import Flask
 from .extensions import db
 from .models import User
-from .seed import seed_defaults
+from .seed import seed_content
 
 @click.command("make-admin")
 @click.argument("email")
@@ -19,7 +19,7 @@ def make_admin(email: str) -> None:
 @click.command("bootstrap-db")
 def bootstrap_db() -> None:
     db.create_all()
-    seed_defaults()
+    seed_content()
     click.echo("✅ Database bootstrapped (tables created + defaults seeded).")
 
 def register_cli(app: Flask) -> None:

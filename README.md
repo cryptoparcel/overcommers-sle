@@ -1,57 +1,68 @@
-# Overcomers | SLE (Flask)
+# Overcomers | SLE
 
-Production-ready Flask app with:
-- Public marketing pages
-- Apply + Contact forms (stored in DB)
-- Optional email notifications via SMTP
-- Auth (login/signup) + admin area (applications/messages/stories/users)
-- Homepage Page Builder (drag/drop) + layout saved to DB
-- Optional reCAPTCHA (enabled only if keys are set)
-- Basic route tests (pytest)
+A premium, structured sober-living / supportive-housing website built with Flask.
 
-## Local setup (Windows PowerShell)
+## Features
 
-```powershell
+- Public pages: Home, What We Do, Resources, Impact, Shop, Contact, Apply
+- Accounts: signup/login, account settings, logout
+- Admin area (admins only):
+  - Applications
+  - Contact messages
+  - Stories (approve / reject / delete)
+  - Users
+  - Page Builder (homepage blocks)
+  - **Openings** (create & publish “Upcoming Openings” listings)
+
+## Local setup (easy)
+
+1) Create a virtualenv and install deps:
+
+```bash
 python -m venv .venv
-.\.venv\Scripts\activate
+# Windows:
+.venv\Scripts\activate
 pip install -r requirements.txt
-copy .env.example .env
-flask --app wsgi:app run --debug
 ```
 
-Then open http://127.0.0.1:5000
+2) Set environment variables (example):
 
-## First time database setup
-
-For SQLite local dev:
-
-```powershell
-.\.venv\Scripts\activate
-python manage.py bootstrap-db
+```bash
+# Windows PowerShell
+$env:FLASK_APP="manage.py"
+$env:FLASK_ENV="development"
+$env:SECRET_KEY="change-me"
+$env:DATABASE_URL="sqlite:///app.db"
+$env:BOOTSTRAP_DB="1"
 ```
 
-## Create your first admin
+3) Run the app:
 
-1) Register a normal account in the UI.
-2) Promote it to admin:
-
-```powershell
-.\.venv\Scripts\activate
-python manage.py make-admin you@example.com
+```bash
+flask run
 ```
 
-Log out and log back in, then visit `/admin/`.
+On first boot (with `BOOTSTRAP_DB=1`) it will create tables + seed starter content.
 
-## Render deployment
+## Making yourself admin
 
-- Create a PostgreSQL database on Render.
-- Set env vars on the Web Service:
-  - `DATABASE_URL` = Render Postgres URL
-  - `SECRET_KEY` = long random string
+1) Create an account on the site (Signup)
+2) In a terminal, run:
 
-Optional:
-- SMTP vars from `.env.example`
-- `RECAPTCHA_SITE_KEY` + `RECAPTCHA_SECRET_KEY`
+```bash
+flask make-admin your@email.com
+```
 
-Start command:
-`gunicorn --bind 0.0.0.0:$PORT wsgi:app`
+Now you’ll see the **Admin** link in the navbar when you’re logged in.
+
+## Openings (Upcoming Openings)
+
+- Admin → Openings → “New opening”
+- Set **Status = Published** to show it on `/openings`
+- Recommended: leave **Hide pricing publicly** checked (pricing is shared after application)
+
+## Deploying (Render)
+
+- Set `DATABASE_URL` to your Render Postgres URL
+- Set `SECRET_KEY` to a strong random string
+- Set `BOOTSTRAP_DB=1` only once for the first deploy, then remove it

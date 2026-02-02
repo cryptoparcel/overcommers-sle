@@ -75,3 +75,46 @@ class PageLayout(db.Model):
     page = db.Column(db.String(64), unique=True, nullable=False, index=True)
     layout_json = db.Column(db.Text, nullable=False, default="{}")
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class Opening(db.Model):
+    """A published listing for available beds/rooms.
+
+    Admins create these in /admin/openings. The public site lists published
+    openings at /openings.
+    """
+
+    __tablename__ = "openings"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    title = db.Column(db.String(180), nullable=False)
+    slug = db.Column(db.String(220), unique=True, index=True, nullable=False)
+
+    # Location (simple for now)
+    city = db.Column(db.String(120), nullable=True)
+    state = db.Column(db.String(64), nullable=True, default="CA")
+
+    beds_available = db.Column(db.Integer, nullable=False, default=1)
+    available_on = db.Column(db.Date, nullable=True)
+
+    # Pricing
+    price_monthly = db.Column(db.String(60), nullable=True)  # e.g. "$1,100 / month"
+    deposit = db.Column(db.String(60), nullable=True)        # e.g. "$300 deposit"
+    hide_price = db.Column(db.Boolean, nullable=False, default=True)
+
+    # Content
+    summary = db.Column(db.String(320), nullable=True)
+    details = db.Column(db.Text, nullable=True)
+    house_rules = db.Column(db.Text, nullable=True)
+    included = db.Column(db.Text, nullable=True)  # amenities / included
+
+    contact_name = db.Column(db.String(120), nullable=True)
+    contact_email = db.Column(db.String(255), nullable=True)
+    contact_phone = db.Column(db.String(60), nullable=True)
+
+    status = db.Column(db.String(20), nullable=False, default="draft")  # draft | published | archived
+
+    def __repr__(self) -> str:
+        return f"<Opening {self.id} {self.status} {self.slug}>"

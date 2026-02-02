@@ -115,3 +115,18 @@ h3{font-size:18px;margin:0 0 6px}
 .table .row{display:grid;gap:10px;align-items:start;padding:10px 12px;border:1px solid rgba(0,0,0,.06);border-radius:14px;background:#fff}
 .table .row.head{background:rgba(11,95,87,.06);border-color:rgba(11,95,87,.12);font-weight:800}
 .pill{display:inline-flex;align-items:center;justify-content:center;padding:4px 10px;border-radius:999px;border:1px solid rgba(0,0,0,.12);background:#fff;font-weight:800;font-size:12px}
+
+
+/* Simple section header (title + actions) */
+.section-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.section-head .actions{ margin-left:auto; }
+@media (max-width: 720px){
+  .section-head{ align-items:flex-start; flex-direction: column; }
+  .section-head .actions{ margin-left:0; }
+}

@@ -6,61 +6,219 @@
       <div class="home-hero__card">
         <div class="home-hero__copy">
           <h1 class="home-hero__title">A safe, sober place to live while you get back on your feet.</h1>
-          <p class="home-hero__lead">Transitional sober living for recovery &amp; reentry — with structure, peer support, <strong>life‑skills workshops</strong>, and a plan for what’s next.</p>
+          <p class="home-hero__lead">Premium, structured sober living for recovery &amp; reentry — with clear routines, accountability, and practical next steps.</p>
           <p class="home-hero__body">
-            <strong>Overcomers | SLE</strong> is a supportive living environment. We focus on clear house rules, respectful community, and practical steps that help residents build stability.
+            <strong>Overcomers | SLE</strong> is peer‑based supportive housing. We focus on safety, respect, and stability.
+            If someone needs detox, therapy, or medical care, we help connect them to licensed providers.
           </p>
           <div class="home-actions">
             <a class="btn btn--primary" href="{{ url_for('public.apply') }}" data-track="cta_apply">Apply</a>
+            <a class="btn btn--ghost" href="{{ url_for('public.openings') }}" data-track="cta_openings">View openings</a>
             <a class="btn btn--ghost" href="{{ url_for('public.contact') }}" data-track="cta_contact">Ask a question</a>
           </div>
-          <p class="muted small" style="margin-top:10px;">Not medical advice. If you need clinical care or detox, contact licensed providers.</p>
+          <p class="muted small" style="margin-top:10px;">Emergency? Call 911. This site is informational and not medical advice.</p>
+        </div>
+
+        <div class="card card--padded card--stretch">
+          <h2 class="section-title">Upcoming openings</h2>
+          <p class="muted">See what’s available around Grover Beach. Apply first — we confirm fit and share exact pricing &amp; next steps.</p>
+          <div class="spacer"></div>
+          <a class="btn btn--primary" href="{{ url_for('public.openings') }}">View openings</a>
         </div>
 
         <div class="card card--padded card--stretch">
           <h2 class="section-title">Resources</h2>
-          <p class="muted">Simple, family‑friendly links to get help, learn next steps, and find local support.</p>
+          <p class="muted">Simple, family‑friendly links for help, hotlines, and local support options.</p>
           <div class="spacer"></div>
           <a class="btn btn--primary" href="{{ url_for('public.resources') }}">Go to resources</a>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <div class="card card--padded card--stretch">
-          <h2 class="section-title">Shop &amp; support</h2>
-          <p class="muted">Support items, sponsorship, and donations. (Checkout can be connected later.)</p>
-          <p class="muted small">This is not legal advice or medical advice. Always call 911 in an emergency.</p>
-          <div class="spacer"></div>
-          <div class="home-actions">
-            <a class="btn" href="{{ url_for('public.shop') }}">Visit shop</a>
-            <a class="btn btn--primary" href="{{ url_for('public.checkout') }}">Checkout</a>
-          </div>
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>What we offer</h2>
+          <p class="muted">Meaningful support that helps people rebuild stability — one week at a time.</p>
+        </div>
+        <div class="actions">
+          <a class="btn" href="{{ url_for('public.what_we_do') }}">What we do</a>
+          <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
         </div>
       </div>
 
-      {% if page_blocks %}
-      <section class="section" style="margin-top:22px;">
+      <div class="grid cards">
+        <article class="card">
+          <div class="card__body">
+            <h3 class="h3">Structured sober housing</h3>
+            <p class="muted">Clear rules, respectful living, accountability, and a calm environment designed for stability.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__body">
+            <h3 class="h3">Life‑skills workshops</h3>
+            <p class="muted">Budgeting, job search, email/phones, routines, time management, and basic adulting skills.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__body">
+            <h3 class="h3">Reentry planning</h3>
+            <p class="muted">Step‑by‑step help with schedules, paperwork, appointments, and getting back into the flow of life.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__body">
+            <h3 class="h3">Employment pathway</h3>
+            <p class="muted">Job readiness support and opportunities through local partnerships — including Lumpia Bros Cafe.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__body">
+            <h3 class="h3">Family &amp; youth support</h3>
+            <p class="muted">Easy‑to‑read guidance for kids and families looking for safe next steps and local resources.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__body">
+            <h3 class="h3">Community &amp; mentorship</h3>
+            <p class="muted">Positive community, healthy friendships, and consistent encouragement — without the chaos.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>Upcoming openings</h2>
+          <p class="muted">Apply first. We’ll confirm fit and share exact pricing and move‑in steps.</p>
+        </div>
+        <div class="actions">
+          <a class="btn" href="{{ url_for('public.openings') }}">See all</a>
+        </div>
+      </div>
+
+      {% if openings_preview and openings_preview|length > 0 %}
         <div class="grid cards">
-          {% for b in page_blocks %}
-            <article class="card">
-              <div class="card__body">
-                <h3 class="h3">{{ b.content.title if b.content and b.content.title else b.id }}</h3>
-                <p class="muted">{{ b.content.body if b.content and b.content.body else "" }}</p>
-                {% if b.content and b.content.buttons %}
-                  <div class="actions">
-                    {% for btn in b.content.buttons %}
-                      <a class="btn {% if loop.first %}primary{% endif %}" href="{{ btn.href }}">{{ btn.label }}</a>
-                    {% endfor %}
-                  </div>
-                {% endif %}
-                {% if b.content and b.content.note %}
-                  <p class="muted tiny">{{ b.content.note }}</p>
-                {% endif %}
+          {% for o in openings_preview %}
+          <article class="card">
+            <div class="card__body">
+              <h3 class="h3">{{ o.title }}</h3>
+              <p class="muted">
+                {% if o.city %}{{ o.city }}{% endif %}{% if o.state %}{% if o.city %}, {% endif %}{{ o.state }}{% endif %}
+                {% if o.available_on %} • Available {{ o.available_on.strftime('%b %d, %Y') }}{% endif %}
+                • Beds: {{ o.beds_available }}
+              </p>
+              {% if o.summary %}
+                <p class="muted">{{ o.summary }}</p>
+              {% else %}
+                <p class="muted">Clean, supportive environment with structure and next‑step planning.</p>
+              {% endif %}
+
+              <div class="actions" style="margin-top:12px;">
+                <a class="btn btn--primary" href="{{ url_for('public.opening_detail', slug=o.slug) }}">View</a>
+                <a class="btn" href="{{ url_for('public.apply') }}">Apply</a>
               </div>
-            </article>
+
+              {% if not o.hide_price and o.price_monthly %}
+                <p class="muted small" style="margin-top:10px;">{{ o.price_monthly }}{% if o.deposit %} • {{ o.deposit }}{% endif %}</p>
+              {% else %}
+                <p class="muted small" style="margin-top:10px;">Pricing shared after application.</p>
+              {% endif %}
+            </div>
+          </article>
           {% endfor %}
         </div>
-      </section>
+      {% else %}
+        <div class="card">
+          <div class="card__body">
+            <p class="muted">No openings are posted right now. Apply anyway and we’ll reach out when a spot becomes available.</p>
+            <div class="actions" style="margin-top:12px;">
+              <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
+              <a class="btn" href="{{ url_for('public.contact') }}">Contact</a>
+            </div>
+          </div>
+        </div>
       {% endif %}
     </div>
   </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>Lumpia Bros Cafe</h2>
+          <p class="muted">Real‑world structure: routines, responsibility, and job skills — right here in Grover Beach.</p>
+        </div>
+        <div class="actions">
+          <a class="btn" href="{{ url_for('public.careers') }}">Jobs</a>
+          <a class="btn btn--primary" href="{{ url_for('public.contact') }}">Contact</a>
+        </div>
+      </div>
+
+      <div class="grid cards">
+        <article class="card" style="grid-column: span 6;">
+          <div class="card__body">
+            <h3 class="h3">Work experience &amp; training</h3>
+            <p class="muted">Food service basics, customer service, teamwork, and punctuality — plus mentorship and coaching.</p>
+            <p class="muted small" style="margin:0;"><strong>Address:</strong> 1187 W Grand Ave, Grover Beach, CA 93433</p>
+          </div>
+        </article>
+
+        <article class="card" style="grid-column: span 6;">
+          <div class="card__body">
+            <h3 class="h3">A pathway back to stability</h3>
+            <p class="muted">We help residents build a realistic plan: housing + employment + routines + support.</p>
+            <div class="actions" style="margin-top:12px;">
+              <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
+              <a class="btn" href="{{ url_for('public.what_we_do') }}">Learn more</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  {% if page_blocks %}
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>More programs</h2>
+          <p class="muted">These sections can be rearranged by an admin using the Page Builder.</p>
+        </div>
+      </div>
+      <div class="grid cards">
+        {% for b in page_blocks %}
+          <article class="card">
+            <div class="card__body">
+              <h3 class="h3">{{ b.content.title if b.content and b.content.title else b.id }}</h3>
+              <p class="muted">{{ b.content.body if b.content and b.content.body else "" }}</p>
+              {% if b.content and b.content.buttons %}
+                <div class="actions" style="margin-top:12px;">
+                  {% for btn in b.content.buttons %}
+                    <a class="btn {% if loop.first %}btn--primary{% else %}btn--ghost{% endif %}" href="{{ btn.href }}">{{ btn.label }}</a>
+                  {% endfor %}
+                </div>
+              {% endif %}
+              {% if b.content and b.content.note %}
+                <p class="muted small" style="margin-top:10px;">{{ b.content.note }}</p>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
 </main>
 {% endblock %}

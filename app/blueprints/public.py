@@ -8,7 +8,7 @@ from ..extensions import db, limiter
 from ..utils import slugify
 from ..utils.mailer import send_email
 from ..forms import ApplyForm, ContactForm, StorySubmitForm
-from ..models import Application, ContactMessage, Story, PageLayout
+from ..models import Application, ContactMessage, Story, PageLayout, Opening
 
 public_bp = Blueprint("public", __name__)
 
@@ -58,7 +58,8 @@ def index():
             blocks = data.get("blocks") if isinstance(data, dict) else None
         except Exception:
             blocks = None
-    return render_template("index.html", title="Overcomers | SLE", page_blocks=blocks)
+    openings_preview = Opening.query.filter_by(status="published").order_by(Opening.created_at.desc()).limit(3).all()
+    return render_template("index.html", title="Overcomers | SLE", page_blocks=blocks, openings_preview=openings_preview)
 
 @public_bp.get("/what-we-do")
 def what_we_do():
@@ -205,3 +206,20 @@ def careers():
 @public_bp.get("/checkout")
 def checkout():
     return render_template("checkout.html", title="Checkout")
+
+
+@public_bp.get("/openings")
+def openings():
+    items = (
+        Opening.query.filter_by(status="published")
+        .order_by(Opening.created_at.desc())
+        .limit(100)
+        .all()
+    )
+    return render_template("openings.html", openings=items, title="Upcoming Openings")
+
+
+@public_bp.get("/openings/<slug>")
+def opening_detail(slug: str):
+    row = Opening.query.filter_by(slug=slug, status="published").first_or_404()
+    return render_template("opening_detail.html", opening=row, title=row.title)

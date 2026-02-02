@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container page">
+    <div class="section-head">
+      <div>
+        <h1 class="h1">{{ opening.title }}</h1>
+        <p class="muted">
+          {% if opening.city %}{{ opening.city }}{% endif %}{% if opening.state %}{% if opening.city %}, {% endif %}{{ opening.state }}{% endif %}
+          {% if opening.available_on %} • Available {{ opening.available_on.strftime('%b %d, %Y') }}{% endif %}
+          • Beds: {{ opening.beds_available }}
+        </p>
+      </div>
+      <div class="actions">
+        <a class="btn primary" href="{{ url_for('public.apply') }}">Apply</a>
+        <a class="btn" href="{{ url_for('public.openings') }}">Back to openings</a>
+      </div>
+    </div>
+
+    <div class="grid" style="gap:16px;">
+      <div class="card" style="grid-column: span 8;">
+        <div class="card__body">
+          {% if opening.summary %}
+            <p class="muted">{{ opening.summary }}</p>
+          {% endif %}
+
+          {% if opening.details %}
+            <h3 class="h3" style="margin-top:10px;">Details</h3>
+            <div class="prose">{{ opening.details | nl2br }}</div>
+          {% endif %}
+
+          {% if opening.included %}
+            <h3 class="h3" style="margin-top:14px;">What’s included</h3>
+            <div class="prose">{{ opening.included | nl2br }}</div>
+          {% endif %}
+
+          {% if opening.house_rules %}
+            <h3 class="h3" style="margin-top:14px;">House rules / expectations</h3>
+            <div class="prose">{{ opening.house_rules | nl2br }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <aside class="card" style="grid-column: span 4;">
+        <div class="card__body">
+          <h3 class="h3">Next steps</h3>
+          <ol class="muted" style="margin:0 0 10px 18px;">
+            <li>Apply (2–3 minutes)</li>
+            <li>We call/text to confirm fit</li>
+            <li>We share exact pricing + move‑in steps</li>
+          </ol>
+
+          {% if not opening.hide_price and opening.price_monthly %}
+            <div class="pill" style="display:inline-block; margin-bottom:10px;">
+              {{ opening.price_monthly }}{% if opening.deposit %} • {{ opening.deposit }}{% endif %}
+            </div>
+          {% else %}
+            <p class="muted">Pricing is shared after a quick application so we can confirm the fit and keep things fair.</p>
+          {% endif %}
+
+          <div class="actions" style="margin-top:12px;">
+            <a class="btn primary" href="{{ url_for('public.apply') }}">Apply</a>
+            <a class="btn" href="{{ url_for('public.contact') }}">Ask a question</a>
+          </div>
+
+          <div style="margin-top:14px;">
+            <h3 class="h3">Contact</h3>
+            <p class="muted" style="margin:0;">
+              {% if opening.contact_name %}<strong>{{ opening.contact_name }}</strong><br>{% endif %}
+              {% if opening.contact_email %}<a class="link" href="mailto:{{ opening.contact_email }}">{{ opening.contact_email }}</a><br>{% endif %}
+              {% if opening.contact_phone %}<a class="link" href="tel:{{ opening.contact_phone }}">{{ opening.contact_phone }}</a>{% endif %}
+              {% if not opening.contact_email and not opening.contact_phone %}
+                Email: <a class="link" href="mailto:info@overcomerssle.com">info@overcomerssle.com</a>
+              {% endif %}
+            </p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}

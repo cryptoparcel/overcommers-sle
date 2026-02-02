@@ -7,9 +7,11 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for,
 from flask_login import login_required, current_user
 
 from ..extensions import db
-from ..models import Application, ContactMessage, Story, User, PageLayout
+from ..models import Application, ContactMessage, Story, User, PageLayout, Opening
 from ..utils import admin_required
 from ..seed import _default_home_layout_json  # uses same defaults
+from ..forms import OpeningForm
+from ..utils import slugify
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
@@ -176,3 +178,122 @@ def page_builder():
 
     raw = layout.layout_json or _default_home_layout_json()
     return render_template("admin/page_builder.html", raw_json=raw, parsed=parsed, active="builder", title="Page Builder")
+
+
+# ----------------------------
+# Openings (Admin)
+# ----------------------------
+
+@admin_bp.get("/openings")
+@login_required
+@admin_required
+def openings():
+    items = Opening.query.order_by(Opening.created_at.desc()).limit(300).all()
+    return render_template("admin/openings_list.html", openings=items, active="openings", title="Openings")
+
+
+@admin_bp.route("/openings/new", methods=["GET", "POST"])
+@login_required
+@admin_required
+def openings_new():
+    form = OpeningForm()
+    if request.method == "GET":
+        # sensible defaults for your area
+        form.state.data = form.state.data or "CA"
+        form.city.data = form.city.data or "Grover Beach"
+        form.hide_price.data = True
+        form.status.data = "draft"
+        return render_template("admin/opening_form.html", form=form, active="openings", title="New opening")
+
+    if not form.validate_on_submit():
+        flash("Please fix the form errors and try again.", "error")
+        return render_template("admin/opening_form.html", form=form, active="openings", title="New opening"), 400
+
+    # ensure slug uniqueness
+    slug = slugify(form.slug.data)
+    base = slug
+    i = 2
+    while Opening.query.filter_by(slug=slug).first() is not None:
+        slug = f"{base}-{i}"
+        i += 1
+
+    row = Opening(
+        title=form.title.data.strip(),
+        slug=slug,
+        city=(form.city.data or "").strip() or None,
+        state=(form.state.data or "").strip() or None,
+        beds_available=form.beds_available.data or 1,
+        available_on=form.available_on.data,
+        price_monthly=(form.price_monthly.data or "").strip() or None,
+        deposit=(form.deposit.data or "").strip() or None,
+        hide_price=bool(form.hide_price.data),
+        summary=(form.summary.data or "").strip() or None,
+        details=(form.details.data or "").strip() or None,
+        included=(form.included.data or "").strip() or None,
+        house_rules=(form.house_rules.data or "").strip() or None,
+        contact_name=(form.contact_name.data or "").strip() or None,
+        contact_email=(form.contact_email.data or "").strip().lower() or None,
+        contact_phone=(form.contact_phone.data or "").strip() or None,
+        status=form.status.data,
+    )
+    db.session.add(row)
+    db.session.commit()
+    flash("Opening created.", "success")
+    return redirect(url_for("admin.openings"))
+
+
+@admin_bp.route("/openings/<int:opening_id>/edit", methods=["GET", "POST"])
+@login_required
+@admin_required
+def openings_edit(opening_id: int):
+    row = Opening.query.get_or_404(opening_id)
+    form = OpeningForm(obj=row)
+
+    if request.method == "GET":
+        return render_template("admin/opening_form.html", form=form, opening=row, active="openings", title="Edit opening")
+
+    if not form.validate_on_submit():
+        flash("Please fix the form errors and try again.", "error")
+        return render_template("admin/opening_form.html", form=form, opening=row, active="openings", title="Edit opening"), 400
+
+    # slug uniqueness (allow unchanged)
+    new_slug = slugify(form.slug.data)
+    if new_slug != row.slug:
+        base = new_slug
+        i = 2
+        while Opening.query.filter(Opening.slug == new_slug, Opening.id != row.id).first() is not None:
+            new_slug = f"{base}-{i}"
+            i += 1
+        row.slug = new_slug
+
+    row.title = form.title.data.strip()
+    row.city = (form.city.data or "").strip() or None
+    row.state = (form.state.data or "").strip() or None
+    row.beds_available = form.beds_available.data or 1
+    row.available_on = form.available_on.data
+    row.price_monthly = (form.price_monthly.data or "").strip() or None
+    row.deposit = (form.deposit.data or "").strip() or None
+    row.hide_price = bool(form.hide_price.data)
+    row.summary = (form.summary.data or "").strip() or None
+    row.details = (form.details.data or "").strip() or None
+    row.included = (form.included.data or "").strip() or None
+    row.house_rules = (form.house_rules.data or "").strip() or None
+    row.contact_name = (form.contact_name.data or "").strip() or None
+    row.contact_email = (form.contact_email.data or "").strip().lower() or None
+    row.contact_phone = (form.contact_phone.data or "").strip() or None
+    row.status = form.status.data
+
+    db.session.commit()
+    flash("Opening updated.", "success")
+    return redirect(url_for("admin.openings"))
+
+
+@admin_bp.post("/openings/<int:opening_id>/delete")
+@login_required
+@admin_required
+def openings_delete(opening_id: int):
+    row = Opening.query.get_or_404(opening_id)
+    db.session.delete(row)
+    db.session.commit()
+    flash("Opening deleted.", "info")
+    return redirect(url_for("admin.openings"))

@@ -1,0 +1,112 @@
+{% extends "admin/_base.html" %}
+{% set title = title or "Opening" %}
+{% set active = "openings" %}
+{% block admin_content %}
+<div class="card">
+  <div class="card__body">
+    <h3 class="h3">{{ title }}</h3>
+    <p class="muted">Tip: keep pricing hidden publicly. People can apply first, then you can share exact monthly price when you contact them.</p>
+
+    <form method="POST">
+      {{ form.hidden_tag() }}
+
+      <div class="grid" style="gap:12px;">
+        <div class="card" style="grid-column: span 12; background: transparent; border:0; box-shadow:none;">
+          <div class="grid" style="gap:12px;">
+            <div style="grid-column: span 8;">
+              <label class="label">{{ form.title.label }}</label>
+              {{ form.title(class_="input") }}
+              {% for e in form.title.errors %}<div class="error">{{ e }}</div>{% endfor %}
+            </div>
+            <div style="grid-column: span 4;">
+              <label class="label">{{ form.status.label }}</label>
+              {{ form.status(class_="input") }}
+              {% for e in form.status.errors %}<div class="error">{{ e }}</div>{% endfor %}
+            </div>
+
+            <div style="grid-column: span 6;">
+              <label class="label">{{ form.slug.label }}</label>
+              {{ form.slug(class_="input") }}
+              <div class="muted tiny">Public URL will be: /openings/&lt;slug&gt;</div>
+              {% for e in form.slug.errors %}<div class="error">{{ e }}</div>{% endfor %}
+            </div>
+
+            <div style="grid-column: span 3;">
+              <label class="label">{{ form.city.label }}</label>
+              {{ form.city(class_="input") }}
+            </div>
+            <div style="grid-column: span 3;">
+              <label class="label">{{ form.state.label }}</label>
+              {{ form.state(class_="input") }}
+            </div>
+
+            <div style="grid-column: span 3;">
+              <label class="label">{{ form.beds_available.label }}</label>
+              {{ form.beds_available(class_="input") }}
+              {% for e in form.beds_available.errors %}<div class="error">{{ e }}</div>{% endfor %}
+            </div>
+            <div style="grid-column: span 3;">
+              <label class="label">{{ form.available_on.label }}</label>
+              {{ form.available_on(class_="input", placeholder="YYYY-MM-DD") }}
+              {% for e in form.available_on.errors %}<div class="error">{{ e }}</div>{% endfor %}
+            </div>
+
+            <div style="grid-column: span 3;">
+              <label class="label">{{ form.price_monthly.label }}</label>
+              {{ form.price_monthly(class_="input", placeholder="$1,100 / month") }}
+            </div>
+            <div style="grid-column: span 3;">
+              <label class="label">{{ form.deposit.label }}</label>
+              {{ form.deposit(class_="input", placeholder="$300 deposit") }}
+            </div>
+
+            <div style="grid-column: span 12; display:flex; align-items:center; gap:10px;">
+              {{ form.hide_price() }}
+              <label for="{{ form.hide_price.id }}">{{ form.hide_price.label.text }}</label>
+            </div>
+
+            <div style="grid-column: span 12;">
+              <label class="label">{{ form.summary.label }}</label>
+              {{ form.summary(class_="textarea", rows="2", placeholder="One sentence summary for the cards.") }}
+            </div>
+
+            <div style="grid-column: span 12;">
+              <label class="label">{{ form.details.label }}</label>
+              {{ form.details(class_="textarea", rows="5", placeholder="Full details: what the room is like, who it's for, neighborhood, requirements, etc.") }}
+            </div>
+
+            <div style="grid-column: span 6;">
+              <label class="label">{{ form.included.label }}</label>
+              {{ form.included(class_="textarea", rows="4", placeholder="What's included: utilities, wifi, chores, meetings, etc.") }}
+            </div>
+
+            <div style="grid-column: span 6;">
+              <label class="label">{{ form.house_rules.label }}</label>
+              {{ form.house_rules(class_="textarea", rows="4", placeholder="House rules: curfew, sobriety checks, visitors policy, etc.") }}
+            </div>
+
+            <div style="grid-column: span 4;">
+              <label class="label">{{ form.contact_name.label }}</label>
+              {{ form.contact_name(class_="input") }}
+            </div>
+            <div style="grid-column: span 4;">
+              <label class="label">{{ form.contact_email.label }}</label>
+              {{ form.contact_email(class_="input") }}
+              {% for e in form.contact_email.errors %}<div class="error">{{ e }}</div>{% endfor %}
+            </div>
+            <div style="grid-column: span 4;">
+              <label class="label">{{ form.contact_phone.label }}</label>
+              {{ form.contact_phone(class_="input") }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions" style="margin-top:14px;">
+        <button class="btn primary" type="submit">Save</button>
+        <a class="btn" href="{{ url_for('admin.openings') }}">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

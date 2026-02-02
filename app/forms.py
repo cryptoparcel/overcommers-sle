@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from flask import current_app
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, SubmitField, HiddenField
+from wtforms import BooleanField, DateField, HiddenField, IntegerField, PasswordField, SelectField, StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Email, Length, Optional, Regexp, URL, EqualTo, ValidationError
 import requests
 
@@ -95,3 +95,35 @@ class PasswordChangeForm(FlaskForm):
         validators=[DataRequired(), EqualTo("new_password", message="Passwords must match.")],
     )
     submit_password = SubmitField("Update password")
+
+class OpeningForm(FlaskForm):
+    title = StringField("Title", validators=[DataRequired(), Length(max=180)])
+    slug = StringField("Slug (URL)", validators=[DataRequired(), Length(max=220)])
+
+    city = StringField("City", validators=[Optional(), Length(max=120)])
+    state = StringField("State", validators=[Optional(), Length(max=64)], default="CA")
+
+    beds_available = IntegerField("Beds available", validators=[DataRequired()], default=1)
+    available_on = DateField("Available on (optional)", validators=[Optional()], format="%Y-%m-%d")
+
+    price_monthly = StringField("Monthly price (optional)", validators=[Optional(), Length(max=60)])
+    deposit = StringField("Deposit (optional)", validators=[Optional(), Length(max=60)])
+    hide_price = BooleanField("Hide pricing publicly (recommended)")
+
+    summary = TextAreaField("Short summary", validators=[Optional(), Length(max=320)])
+    details = TextAreaField("Details", validators=[Optional()])
+    included = TextAreaField("What's included (amenities)", validators=[Optional()])
+    house_rules = TextAreaField("House rules / expectations", validators=[Optional()])
+
+    contact_name = StringField("Contact name", validators=[Optional(), Length(max=120)])
+    contact_email = StringField("Contact email", validators=[Optional(), Email(), Length(max=255)])
+    contact_phone = StringField("Contact phone", validators=[Optional(), Length(max=60)])
+
+    status = SelectField(
+        "Status",
+        choices=[("draft", "Draft"), ("published", "Published"), ("archived", "Archived")],
+        validators=[DataRequired()],
+        default="draft",
+    )
+
+    submit = SubmitField("Save opening")

@@ -1,0 +1,51 @@
+{% extends "admin/_base.html" %}
+{% set title = "Openings" %}
+{% set active = "openings" %}
+{% block admin_content %}
+<div class="actions" style="margin-bottom:12px;">
+  <a class="btn primary" href="{{ url_for('admin.openings_new') }}">+ New opening</a>
+</div>
+
+<div class="card">
+  <div class="card__body">
+    <h3 class="h3">Upcoming openings</h3>
+    {% if openings|length == 0 %}
+      <p class="muted">No openings yet. Click “New opening” to create one.</p>
+    {% else %}
+      <div class="table">
+        <div class="row head" style="grid-template-columns: 110px 2fr 1fr 110px 130px 220px;">
+          <div>Status</div><div>Title</div><div>Location</div><div>Beds</div><div>Price</div><div>Actions</div>
+        </div>
+        {% for o in openings %}
+        <div class="row" style="grid-template-columns: 110px 2fr 1fr 110px 130px 220px;">
+          <div><span class="pill">{{ o.status }}</span></div>
+          <div>
+            <div><strong>{{ o.title }}</strong></div>
+            <div class="muted tiny">/{{ o.slug }}{% if o.available_on %} • Available {{ o.available_on.strftime('%Y-%m-%d') }}{% endif %}</div>
+          </div>
+          <div class="muted">{{ (o.city ~ ", " ~ o.state) if o.city else (o.state or "—") }}</div>
+          <div>{{ o.beds_available }}</div>
+          <div class="muted">
+            {% if o.hide_price %}
+              Hidden
+            {% else %}
+              {{ o.price_monthly or "—" }}
+            {% endif %}
+          </div>
+          <div class="actions-inline">
+            <a class="btn" href="{{ url_for('admin.openings_edit', opening_id=o.id) }}">Edit</a>
+            {% if o.status == 'published' %}
+              <a class="btn" href="{{ url_for('public.opening_detail', slug=o.slug) }}" target="_blank" rel="noopener">View</a>
+            {% endif %}
+            <form method="POST" action="{{ url_for('admin.openings_delete', opening_id=o.id) }}" onsubmit="return confirm('Delete this opening?');">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
