@@ -1,4 +1,4 @@
-# Overcomers | SLE
+# Overcomers RC (Restorative Community)
 
 A premium, structured sober-living / supportive-housing website built with Flask.
 

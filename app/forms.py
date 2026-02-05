@@ -106,9 +106,9 @@ class OpeningForm(FlaskForm):
     beds_available = IntegerField("Beds available", validators=[DataRequired()], default=1)
     available_on = DateField("Available on (optional)", validators=[Optional()], format="%Y-%m-%d")
 
-    price_monthly = StringField("Monthly price (optional)", validators=[Optional(), Length(max=60)])
-    deposit = StringField("Deposit (optional)", validators=[Optional(), Length(max=60)])
-    hide_price = BooleanField("Hide pricing publicly (recommended)")
+    price_monthly = StringField("Monthly price (optional)", validators=[Optional(), Length(max=60)], default="$1,100 / month")
+    deposit = StringField("Deposit (optional)", validators=[Optional(), Length(max=60)], default="$900 deposit")
+    hide_price = BooleanField("Hide pricing publicly (recommended)", default=True)
 
     summary = TextAreaField("Short summary", validators=[Optional(), Length(max=320)])
     details = TextAreaField("Details", validators=[Optional()])

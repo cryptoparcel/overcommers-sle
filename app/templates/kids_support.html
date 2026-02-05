@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container page">
+    <h1>Help for kids & families</h1>
+    <p class="lead">If you’re a kid, teen, or family member looking for help for someone you love — you’re not alone.</p>
+
+    <div class="grid cards" style="margin-top:18px;">
+      <article class="card">
+        <div class="card__body">
+          <h3>What to do first</h3>
+          <p class="muted">If there’s immediate danger, call 911. Otherwise, talk to a trusted adult and reach out to a local professional or support line.</p>
+          <div class="actions">
+            <a class="btn btn--primary" href="{{ url_for('public.resources') }}">Open resources</a>
+            <a class="btn btn--ghost" href="{{ url_for('public.contact') }}">Ask a question</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <h3>How we can help</h3>
+          <p class="muted">We can explain the next steps, connect you to local resources, and help with a calm, respectful plan.</p>
+          <ul class="muted" style="margin:10px 0 0; padding-left:18px;">
+            <li>Where to start if someone is coming out of treatment or custody</li>
+            <li>How sober living works (rules, routines, expectations)</li>
+            <li>What questions to ask before moving in</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="card" style="grid-column: span 12;">
+        <div class="card__body">
+          <h3>Important note</h3>
+          <p class="muted">Overcomers RC is supportive housing — not a medical clinic, therapy provider, or detox program. If someone needs clinical care, we will help you find licensed services.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+{% endblock %}

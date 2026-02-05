@@ -1,0 +1,8 @@
+Database migrations for Overcomers RC.
+
+On Render the service runs `flask db upgrade` on boot, which applies the latest
+migrations automatically.
+
+When you change models:
+1) `flask db migrate -m "describe change"`
+2) `flask db upgrade`

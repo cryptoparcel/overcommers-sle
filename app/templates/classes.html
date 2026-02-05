@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container page">
+    <h1>Classes</h1>
+    <p class="lead">A simple schedule-style overview. Times and topics can change — contact us for the latest.</p>
+
+    <div class="card" style="margin-top:16px;">
+      <div class="card__body">
+        <h3 class="h3">Weekly rhythm (example)</h3>
+        <div class="table" style="margin-top:10px;">
+          <div class="row head" style="grid-template-columns: 150px 1fr 160px;">
+            <div>Day</div><div>Topic</div><div>Type</div>
+          </div>
+          <div class="row" style="grid-template-columns: 150px 1fr 160px;">
+            <div class="muted">Mon</div><div>Job readiness: resumes, applications, interview practice</div><div><span class="pill">Workshop</span></div>
+          </div>
+          <div class="row" style="grid-template-columns: 150px 1fr 160px;">
+            <div class="muted">Tue</div><div>Life skills: budgeting, routines, phone/email basics</div><div><span class="pill">Workshop</span></div>
+          </div>
+          <div class="row" style="grid-template-columns: 150px 1fr 160px;">
+            <div class="muted">Wed</div><div>Reentry planning: forms, IDs, appointments, calendars</div><div><span class="pill">Support</span></div>
+          </div>
+          <div class="row" style="grid-template-columns: 150px 1fr 160px;">
+            <div class="muted">Thu</div><div>Community check-in + goals for the weekend</div><div><span class="pill">Group</span></div>
+          </div>
+          <div class="row" style="grid-template-columns: 150px 1fr 160px;">
+            <div class="muted">Fri</div><div>Health basics: sleep, nutrition, stress skills (non-clinical)</div><div><span class="pill">Workshop</span></div>
+          </div>
+        </div>
+        <p class="muted small" style="margin-top:10px;">Note: Overcomers RC is supportive housing and peer support — not therapy, detox, or medical treatment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

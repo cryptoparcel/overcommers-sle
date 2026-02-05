@@ -14,6 +14,31 @@
   });
 })();
 
+// reCAPTCHA v3 token helper (no-op if not enabled)
+(function () {
+  function setTokenOnForms() {
+    var tokenInputs = document.querySelectorAll('input[name="recaptcha_token"]');
+    if (!tokenInputs || tokenInputs.length === 0) return;
+
+    if (typeof grecaptcha === "undefined" || !grecaptcha.execute) {
+      // Keys not configured or script blocked; server-side validation will handle it.
+      return;
+    }
+
+    grecaptcha.ready(function () {
+      // Use the current path as an action label
+      var action = (window.location.pathname || "/").replace(/\//g, "_").replace(/^_+/, "") || "page";
+      grecaptcha.execute(window.RECAPTCHA_SITE_KEY, { action: action }).then(function (token) {
+        tokenInputs.forEach(function (inp) {
+          inp.value = token;
+        });
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", setTokenOnForms);
+})();
+
 // Simple dropdown menu (Account)
 (function () {
   function closeAll() {

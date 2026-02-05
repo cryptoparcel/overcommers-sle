@@ -8,7 +8,7 @@
           <h1 class="home-hero__title">A safe, sober place to live while you get back on your feet.</h1>
           <p class="home-hero__lead">Premium, structured sober living for recovery &amp; reentry — with clear routines, accountability, and practical next steps.</p>
           <p class="home-hero__body">
-            <strong>OVERCOMERS | SLE</strong> is peer‑based supportive housing. We focus on safety, respect, and stability.
+            <strong>OVERCOMERS RC</strong> is peer‑based supportive housing. We focus on safety, respect, and stability.
             If someone needs detox, therapy, or medical care, we help connect them to licensed providers.
           </p>
           <div class="home-actions">
@@ -183,7 +183,7 @@
             <p class="muted">We help residents build a realistic plan: housing + employment + routines + support.</p>
             <div class="actions" style="margin-top:12px;">
               <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
-              <a class="btn" href="{{ url_for('public.what_we_do') }}">Learn more</a>
+              <a class="btn" href="{{ url_for('public.programs') }}">Learn more</a>
             </div>
           </div>
         </article>
@@ -191,7 +191,88 @@
     </div>
   </section>
 
-  {% if page_blocks %}
+  
+
+      <!-- Expanded homepage content -->
+      <section class="section" style="margin-top:28px;">
+        <div class="section-head">
+          <div>
+            <h2>Programs, classes & support</h2>
+            <p>Practical, real-world help — designed to be easy to understand and actually useful.</p>
+          </div>
+          <div class="home-actions">
+            <a class="btn btn--ghost" href="{{ url_for('public.contact') }}">Ask about enrollment</a>
+            <a class="btn btn--primary" href="{{ url_for('public.openings') }}">View openings</a>
+          </div>
+        </div>
+
+        <div class="grid cards">
+          <article class="card">
+            <div class="card__body">
+              <h3 class="h3">Life-skills workshops</h3>
+              <p class="muted">Budgeting, routines, email & paperwork, job search basics, and staying organized.</p>
+              <p class="muted tiny">Format: small groups • easy language • step-by-step.</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card__body">
+              <h3 class="h3">Recovery-friendly structure</h3>
+              <p class="muted">House expectations, accountability, and peer support to keep momentum going.</p>
+              <p class="muted tiny">Not medical care. We help connect to licensed providers if needed.</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card__body">
+              <h3 class="h3">Kids & family support</h3>
+              <p class="muted">Simple resources for families: communication, healthy routines, and local help options.</p>
+              <p class="muted tiny">We can add “kid-friendly” guides and school/community links next.</p>
+              <div class="actions">
+                <a class="btn" href="{{ url_for('public.kids_support') }}">Get family help</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card__body">
+              <h3 class="h3">Room pricing</h3>
+              <p class="muted"><strong>$1,100 / month</strong> + <strong>$900 deposit</strong> (Grover Beach area).</p>
+              <p class="muted tiny">Included items may vary by house — see each opening for details.</p>
+              <div class="actions">
+                <a class="btn btn--primary" href="{{ url_for('public.openings') }}">See openings</a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="grid cards" style="margin-top:16px;">
+          <article class="card" style="grid-column: span 6;">
+            <div class="card__body">
+              <h3 class="h3">Lumpia Bros Cafe — job pathway</h3>
+              <p class="muted">For residents who are ready, we can help connect to work opportunities and job-readiness support.</p>
+              <div class="actions">
+                <a class="btn" href="{{ url_for('public.partnerships') }}">Lumpia pathway</a>
+                <a class="btn btn--ghost" href="{{ url_for('public.careers') }}">View jobs</a>
+                <a class="btn btn--ghost" href="{{ url_for('public.contact') }}">Ask about job support</a>
+              </div>
+              <p class="muted tiny">Location: 1187 W Grand Ave, Grover Beach, CA 93433</p>
+            </div>
+          </article>
+
+          <article class="card" style="grid-column: span 6;">
+            <div class="card__body">
+              <h3 class="h3">A step-by-step plan</h3>
+              <p class="muted">Apply → quick call → move-in checklist → weekly goals → next housing/work plan.</p>
+              <div class="actions">
+                <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply now</a>
+                <a class="btn" href="{{ url_for('public.programs') }}">Learn more</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+{% if page_blocks %}
   <section class="section">
     <div class="container">
       <div class="section-head">

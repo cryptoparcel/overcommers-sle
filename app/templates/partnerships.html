@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container page">
+    <h1>Lumpia Bros Cafe • jobs & training</h1>
+    <p class="lead">Work can be part of recovery. We connect eligible residents to real, structured opportunities in the Grover Beach area.</p>
+
+    <div class="card" style="margin-top:16px;">
+      <div class="card__body">
+        <h3 class="h3">What we offer</h3>
+        <ul class="muted" style="margin:0; padding-left:18px;">
+          <li>Entry-level roles (prep, counter, cleaning) based on availability</li>
+          <li>Basic food safety and workplace training</li>
+          <li>Support with punctuality, routines, and communication</li>
+          <li>A positive culture: respect, teamwork, and consistency</li>
+        </ul>
+
+        <div class="spacer"></div>
+        <div class="actions">
+          <a class="btn btn--primary" href="{{ url_for('public.careers') }}">View openings</a>
+          <a class="btn btn--ghost" href="{{ url_for('public.contact') }}">Ask a question</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="muted" style="margin-top:14px;">All jobs are subject to availability, screening, and basic requirements. This page is informational and not a guarantee of employment.</p>
+  </div>
+</section>
+{% endblock %}

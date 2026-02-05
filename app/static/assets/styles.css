@@ -130,3 +130,14 @@ h3{font-size:18px;margin:0 0 6px}
   .section-head{ align-items:flex-start; flex-direction: column; }
   .section-head .actions{ margin-left:0; }
 }
+
+/* Job board */
+.jobboard{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:16px;}
+.jobcard{grid-column:span 6;background:rgba(255,255,255,.86);border:1px solid rgba(7,25,34,.10);border-radius:22px;box-shadow:0 10px 26px rgba(2,6,23,.08);overflow:hidden;}
+.jobcard__body{padding:16px 18px;}
+.jobcard__title{margin:0 0 6px;font-size:1.12rem;}
+.jobcard__meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px;}
+.jobtag{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;border:1px solid rgba(7,25,34,.12);background:rgba(255,255,255,.92);font-weight:800;font-size:.88rem;color:rgba(11,18,32,.78);}
+.jobcard ul{margin:0; padding-left:18px;color:rgba(11,18,32,.72);}
+.jobcard li{margin:8px 0;}
+@media (max-width: 900px){.jobcard{grid-column:span 12;}}

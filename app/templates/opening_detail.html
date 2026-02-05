@@ -50,12 +50,45 @@
             <li>We share exact pricing + move‑in steps</li>
           </ol>
 
-          {% if not opening.hide_price and opening.price_monthly %}
-            <div class="pill" style="display:inline-block; margin-bottom:10px;">
-              {{ opening.price_monthly }}{% if opening.deposit %} • {{ opening.deposit }}{% endif %}
-            </div>
+          {% set monthly = opening.price_monthly or "$1,100 / month" %}
+          {% set deposit = opening.deposit or "$900 deposit" %}
+
+          <h3 class="h3" style="margin-top:12px;">Pricing</h3>
+          {% if opening.hide_price %}
+            <p class="muted">Pricing is shared after a quick application so we can confirm fit and keep things fair.</p>
           {% else %}
-            <p class="muted">Pricing is shared after a quick application so we can confirm the fit and keep things fair.</p>
+            <div class="card" style="margin-top:10px;">
+              <div class="card__body">
+                <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+                  <div>
+                    <div class="muted tiny">Monthly</div>
+                    <div style="font-weight:900; font-size:1.25rem;">{{ monthly }}</div>
+                  </div>
+                  <div>
+                    <div class="muted tiny">Deposit</div>
+                    <div style="font-weight:900; font-size:1.25rem;">{{ deposit }}</div>
+                  </div>
+                  <div>
+                    <div class="muted tiny">Due at move-in</div>
+                    <div style="font-weight:900; font-size:1.25rem;">$2000 total</div>
+                  </div>
+                </div>
+                <p class="muted small" style="margin-top:10px;">Pricing may vary for special arrangements. We confirm everything by phone/text before move‑in.</p>
+              </div>
+            </div>
+          {% endif %}
+
+          <h3 class="h3" style="margin-top:14px;">Included</h3>
+          {% if opening.included %}
+            <div class="prose">{{ opening.included | nl2br }}</div>
+          {% else %}
+            <ul class="muted" style="margin:0 0 10px 18px;">
+              <li>Bed + shared living space</li>
+              <li>Utilities (water, power, trash)</li>
+              <li>Wi‑Fi</li>
+              <li>Basic house supplies (as available)</li>
+              <li>Structured expectations + peer support</li>
+            </ul>
           {% endif %}
 
           <div class="actions" style="margin-top:12px;">
@@ -70,7 +103,7 @@
               {% if opening.contact_email %}<a class="link" href="mailto:{{ opening.contact_email }}">{{ opening.contact_email }}</a><br>{% endif %}
               {% if opening.contact_phone %}<a class="link" href="tel:{{ opening.contact_phone }}">{{ opening.contact_phone }}</a>{% endif %}
               {% if not opening.contact_email and not opening.contact_phone %}
-                Email: <a class="link" href="mailto:info@overcomerssle.com">info@overcomerssle.com</a>
+                Email: <a class="link" href="mailto:info@overcomersrc.com">info@overcomersrc.com</a>
               {% endif %}
             </p>
           </div>

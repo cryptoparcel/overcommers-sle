@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from sqlalchemy import text
 from flask import Blueprint, flash, redirect, render_template, url_for, send_from_directory, current_app, request, Response
 from flask_login import current_user
 
@@ -20,6 +21,23 @@ def favicon():
 def robots():
     body = "User-agent: *\nAllow: /\nSitemap: /sitemap.xml\n"
     return Response(body, mimetype="text/plain")
+
+
+@public_bp.get("/health")
+def health():
+    """Simple health check endpoint for Render."""
+    try:
+        # Lightweight DB ping if a DB is configured
+        db.session.execute(text("SELECT 1"))
+        db_ok = True
+    except Exception:
+        db_ok = False
+    status = 200 if db_ok else 503
+    return Response(
+        json.dumps({"status": "ok" if db_ok else "degraded", "db": db_ok}),
+        status=status,
+        mimetype="application/json",
+    )
 
 @public_bp.get("/sitemap.xml")
 def sitemap():
@@ -48,6 +66,13 @@ def sitemap():
     xml.append("</urlset>")
     return Response("\n".join(xml), mimetype="application/xml")
 
+
+
+@public_bp.get("/manifest.json")
+def manifest():
+    return send_from_directory(current_app.static_folder, "manifest.json")
+
+
 @public_bp.get("/")
 def index():
     layout = PageLayout.query.filter_by(page="home").first()
@@ -58,8 +83,11 @@ def index():
             blocks = data.get("blocks") if isinstance(data, dict) else None
         except Exception:
             blocks = None
-    openings_preview = Opening.query.filter_by(status="published").order_by(Opening.created_at.desc()).limit(3).all()
-    return render_template("index.html", title="Overcomers | SLE", page_blocks=blocks, openings_preview=openings_preview)
+    try:
+        openings_preview = Opening.query.filter_by(status="published").order_by(Opening.created_at.desc()).limit(3).all()
+    except Exception:
+        openings_preview = []
+    return render_template("index.html", title="Overcomers RC (Restorative Community)", page_blocks=blocks, openings_preview=openings_preview)
 
 @public_bp.get("/what-we-do")
 def what_we_do():
@@ -106,7 +134,7 @@ def contact_post():
         f"Subject: {msg.subject}\n\n"
         f"{msg.message}\n"
     )
-    send_email(to_email=current_app.config.get("NOTIFY_EMAIL"), subject=f"[Overcomers] Contact: {msg.subject}", body=body)
+    send_email(to_email=current_app.config.get("NOTIFY_EMAIL"), subject=f"[Overcomers RC] Contact: {msg.subject}", body=body)
 
     flash("Thanks — we got your message.", "success")
     return redirect(url_for("public.contact"))
@@ -140,7 +168,7 @@ def apply_post():
         f"Phone: {app_row.phone or '-'}\n\n"
         f"Message:\n{app_row.message or '-'}\n"
     )
-    send_email(to_email=current_app.config.get("NOTIFY_EMAIL"), subject="[Overcomers] New application", body=body)
+    send_email(to_email=current_app.config.get("NOTIFY_EMAIL"), subject="[Overcomers RC] New application", body=body)
 
     flash("Thanks — we’ll reach out soon.", "success")
     return redirect(url_for("public.apply"))
@@ -192,7 +220,7 @@ def story_submit():
         if admin_email:
             send_email(
                 to_email=admin_email,
-                subject="New story submission (Overcomers SLE)",
+                subject="New story submission (Overcomers RC)",
                 body=f"Title: {story.title}\nAuthor: {story.author_name or '(not provided)'}\n\nReview in /admin/stories",
             )
         flash("Thanks! Your story was submitted for review.", "success")
@@ -223,3 +251,22 @@ def openings():
 def opening_detail(slug: str):
     row = Opening.query.filter_by(slug=slug, status="published").first_or_404()
     return render_template("opening_detail.html", opening=row, title=row.title)
+
+@public_bp.get("/programs")
+def programs():
+    return render_template("programs.html", title="Programs & workshops")
+
+
+@public_bp.get("/classes")
+def classes():
+    return render_template("classes.html", title="Classes")
+
+
+@public_bp.get("/kids-support")
+def kids_support():
+    return render_template("kids_support.html", title="Kids & family support")
+
+
+@public_bp.get("/partnerships")
+def partnerships():
+    return render_template("partnerships.html", title="Jobs & partnerships")

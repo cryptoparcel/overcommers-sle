@@ -93,15 +93,15 @@ class Opening(db.Model):
     slug = db.Column(db.String(220), unique=True, index=True, nullable=False)
 
     # Location (simple for now)
-    city = db.Column(db.String(120), nullable=True)
+    city = db.Column(db.String(120), nullable=True, default="Grover Beach")
     state = db.Column(db.String(64), nullable=True, default="CA")
 
     beds_available = db.Column(db.Integer, nullable=False, default=1)
     available_on = db.Column(db.Date, nullable=True)
 
     # Pricing
-    price_monthly = db.Column(db.String(60), nullable=True)  # e.g. "$1,100 / month"
-    deposit = db.Column(db.String(60), nullable=True)        # e.g. "$300 deposit"
+    price_monthly = db.Column(db.String(60), nullable=True, default="$1,100 / month")  # e.g. "$1,100 / month"
+    deposit = db.Column(db.String(60), nullable=True, default="$900 deposit")        # e.g. "$900 deposit"
     hide_price = db.Column(db.Boolean, nullable=False, default=True)
 
     # Content

@@ -28,8 +28,11 @@ class Config:
         self.SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
         self.SMTP_USERNAME = os.environ.get("SMTP_USERNAME", "")
         self.SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD", "")
-        self.SMTP_FROM = os.environ.get("SMTP_FROM", "") or self.SMTP_USERNAME or "no-reply@overcomerssle.com"
-        self.NOTIFY_EMAIL = os.environ.get("NOTIFY_EMAIL", "info@overcomerssle.com")
+        self.SMTP_FROM = os.environ.get("SMTP_FROM", "") or self.SMTP_USERNAME or "no-reply@overcomersrc.com"
+        self.NOTIFY_EMAIL = os.environ.get("NOTIFY_EMAIL", "info@overcomersrc.com")
+
+        # Auto DB create for small deployments (can disable by setting AUTO_CREATE_DB=0)
+        self.AUTO_CREATE_DB = os.environ.get("AUTO_CREATE_DB", "1") == "1"
 
         # Optional reCAPTCHA (v2 checkbox)
         self.RECAPTCHA_SITE_KEY = os.environ.get("RECAPTCHA_SITE_KEY", "")

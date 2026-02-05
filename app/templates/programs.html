@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container page">
+    <h1>Programs & workshops</h1>
+    <p class="lead">Practical, simple classes that help people rebuild stability — one step at a time.</p>
+
+    <div class="grid cards" style="margin-top:18px;">
+      <article class="card">
+        <div class="card__body">
+          <h3>Life skills</h3>
+          <p>Budgeting, routines, scheduling, email/phone basics, and how to handle everyday tasks without overwhelm.</p>
+          <p class="muted small">Goal: build confident independence.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <h3>Job readiness</h3>
+          <p>Resume help, interview practice, transportation planning, and how to keep work habits consistent.</p>
+          <p class="muted small">Goal: steady income + forward momentum.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <h3>Reentry planning</h3>
+          <p>Support with paperwork, appointments, ID steps, and a simple weekly plan that makes progress visible.</p>
+          <p class="muted small">Goal: reduce chaos, increase stability.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="card" style="margin-top:18px;">
+      <div class="card__body">
+        <h3 class="h3">How to join</h3>
+        <ol style="margin:0; padding-left:18px; color: var(--muted);">
+          <li>Apply for housing (or contact us if you’re a family member helping someone).</li>
+          <li>We review fit and availability.</li>
+          <li>We confirm the plan, house expectations, and next steps.</li>
+        </ol>
+        <div class="actions">
+          <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
+          <a class="btn btn--ghost" href="{{ url_for('public.contact') }}">Ask a question</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
