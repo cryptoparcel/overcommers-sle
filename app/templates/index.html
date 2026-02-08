@@ -8,7 +8,7 @@
           <h1 class="home-hero__title">A safe, sober place to live while you get back on your feet.</h1>
           <p class="home-hero__lead">Premium, structured sober living for recovery &amp; reentry — with clear routines, accountability, and practical next steps.</p>
           <p class="home-hero__body">
-            <strong>OVERCOMERS RC</strong> is peer‑based supportive housing. We focus on safety, respect, and stability.
+            <strong>OVERCOMERS</strong> is peer‑based supportive housing. We focus on safety, respect, and stability.
             If someone needs detox, therapy, or medical care, we help connect them to licensed providers.
           </p>
           <div class="home-actions">
@@ -191,10 +191,55 @@
     </div>
   </section>
 
-  
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>Standards &amp; safety</h2>
+          <p class="muted">How we operate — transparent, accountable, and aligned with best-practice recovery residence standards.</p>
+        </div>
+        <div class="actions">
+          <a class="btn btn--primary" href="{{ url_for('public.standards') }}">Our standards</a>
+        </div>
+      </div>
 
-      <!-- Expanded homepage content -->
+      <div class="grid cards">
+        <article class="card">
+          <div class="card__body">
+            <h3 class="h3">Structured support</h3>
+            <p class="muted">A recovery residence is a safe, sober living environment — not a treatment center. We provide structure, peer support, and accountability while residents rebuild stability.</p>
+            <div class="actions" style="margin-top:10px;">
+              <a class="btn" href="{{ url_for('public.standards') }}">Learn what that means</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__body">
+            <h3 class="h3">Resident rights &amp; transparency</h3>
+            <p class="muted">Written confidentiality agreements, clear financial terms, a fair grievance process, and ethical advertising. Every resident knows their rights before move-in.</p>
+            <div class="actions" style="margin-top:10px;">
+              <a class="btn" href="{{ url_for('public.standards') }}#rights">See resident rights</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__body">
+            <h3 class="h3">Documented operations</h3>
+            <p class="muted">House rules, safety protocols, medication policies, grievance procedures — all documented and reviewed. Aligned with NARR/CCAPP industry standards.</p>
+            <div class="actions" style="margin-top:10px;">
+              <a class="btn" href="{{ url_for('public.operator_resources') }}">View operating documents</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  
       <section class="section" style="margin-top:28px;">
+        <div class="container">
         <div class="section-head">
           <div>
             <h2>Programs, classes & support</h2>
@@ -237,7 +282,7 @@
           <article class="card">
             <div class="card__body">
               <h3 class="h3">Room pricing</h3>
-              <p class="muted"><strong>$1,100 / month</strong> + <strong>$900 deposit</strong> (Grover Beach area).</p>
+              <p class="muted"><strong>$1,000 / month</strong> + <strong>$1,000 deposit</strong> (Grover Beach area).</p>
               <p class="muted tiny">Included items may vary by house — see each opening for details.</p>
               <div class="actions">
                 <a class="btn btn--primary" href="{{ url_for('public.openings') }}">See openings</a>
@@ -270,6 +315,7 @@
               </div>
             </div>
           </article>
+        </div>
         </div>
       </section>
 {% if page_blocks %}

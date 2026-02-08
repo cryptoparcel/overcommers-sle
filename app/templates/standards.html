@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>Our Standards</h1>
+        <p>Safety, integrity, and accountability — how our home operates.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply now</a>
+        <a class="btn" href="{{ url_for('public.contact') }}">Ask a question</a>
+      </div>
+    </div>
+
+    <!-- What is a recovery residence -->
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <h2 class="h2">What is a recovery residence?</h2>
+        <p>A recovery residence — sometimes called a step-down house or transitional home — is a safe, sober living environment for people in recovery or reentry. It is <strong>not</strong> a treatment center, detox facility, or medical clinic.</p>
+        <p>Recovery residences provide structure, peer support, and accountability while residents rebuild stability: finding employment, reconnecting with family, learning life skills, and developing healthy routines.</p>
+        <p>Research consistently shows that the longer someone lives in a supportive, sober community, the better the chances are for lasting recovery. Our home is designed around that principle.</p>
+        <div class="grid cards" style="margin-top:16px;">
+          <article class="card card--flat">
+            <div class="card__body">
+              <h3 class="h3">How it works</h3>
+              <p class="muted">All residents are involved in recovery. As a group, residents work together — using skills learned in treatment — to support each other. This creates accountability, friendships, and dedication to a life of recovery.</p>
+            </div>
+          </article>
+          <article class="card card--flat">
+            <div class="card__body">
+              <h3 class="h3">What we provide</h3>
+              <p class="muted">A clean, furnished room in a shared home. Weekly house meetings. Clear expectations. Peer support. Life-skills guidance. Help with job search, paperwork, and appointments. A calm, stable environment.</p>
+            </div>
+          </article>
+          <article class="card card--flat">
+            <div class="card__body">
+              <h3 class="h3">What we don't provide</h3>
+              <p class="muted">Medical treatment, therapy, or detox services. If a resident needs clinical care, we help connect them to licensed providers. We are peer-based supportive housing — not a licensed treatment facility.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resident rights -->
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <h2 class="h2">Resident rights</h2>
+        <p>Every resident has the right to be treated with dignity and respect. Our policies are aligned with best-practice standards for recovery residences.</p>
+        <div class="standards-list">
+          <div class="standards-item">
+            <div class="standards-item__icon">✓</div>
+            <div>
+              <strong>Privacy &amp; confidentiality</strong>
+              <p class="muted">Personal information is kept confidential. We follow a written confidentiality agreement that every resident signs during orientation.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">✓</div>
+            <div>
+              <strong>Grievance process</strong>
+              <p class="muted">Residents have a clear, written process for raising concerns. Complaints are addressed fairly, promptly, and without retaliation.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">✓</div>
+            <div>
+              <strong>Financial transparency</strong>
+              <p class="muted">All fees, deposits, and financial expectations are disclosed in writing before move-in. No hidden charges.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">✓</div>
+            <div>
+              <strong>Safe &amp; healthy environment</strong>
+              <p class="muted">The home meets health and safety standards. We maintain clean, well-kept living spaces with proper fire safety, sanitation, and accessibility.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">✓</div>
+            <div>
+              <strong>Fair &amp; equal treatment</strong>
+              <p class="muted">We follow fair housing and anti-discrimination principles. No one is denied residency based on race, religion, gender, disability, or other protected status.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">✓</div>
+            <div>
+              <strong>Right to honest information</strong>
+              <p class="muted">We practice ethical advertising. Everything on this website and in our materials accurately represents what we offer. No exaggerated claims.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How we keep the home safe -->
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <h2 class="h2">How we keep the home safe</h2>
+        <p>Structure and clear expectations are at the core of what makes a recovery home work. Here's what residents can expect:</p>
+        <div class="grid cards" style="margin-top:16px;">
+          <article class="card card--flat" style="grid-column: span 6;">
+            <div class="card__body">
+              <h3 class="h3">House rules &amp; expectations</h3>
+              <p class="muted">Written house rules are provided at orientation. Rules cover curfew, sobriety expectations, visitor policies, chores, and community responsibilities. Everyone is held to the same standard.</p>
+            </div>
+          </article>
+          <article class="card card--flat" style="grid-column: span 6;">
+            <div class="card__body">
+              <h3 class="h3">Weekly schedule &amp; meetings</h3>
+              <p class="muted">A structured weekly schedule helps residents build healthy routines. Regular house meetings create accountability and a space to check in as a community.</p>
+            </div>
+          </article>
+          <article class="card card--flat" style="grid-column: span 6;">
+            <div class="card__body">
+              <h3 class="h3">Good neighbor policy</h3>
+              <p class="muted">We maintain respectful relationships with our neighbors and community. Noise, parking, and property upkeep standards are part of our written policies.</p>
+            </div>
+          </article>
+          <article class="card card--flat" style="grid-column: span 6;">
+            <div class="card__body">
+              <h3 class="h3">Health &amp; safety protocols</h3>
+              <p class="muted">Medication policies, infectious disease control procedures, and emergency protocols are documented and shared during orientation.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alignment with standards -->
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <h2 class="h2">Aligned with industry best practices</h2>
+        <p>Our operating policies are guided by the standards established by the <strong>National Alliance of Recovery Residences (NARR)</strong> and recognized by <strong>California's Department of Health Care Services</strong> through <strong>CCAPP</strong> (California Consortium of Addiction Programs and Professionals).</p>
+        <p>This means our home follows documented, peer-reviewed standards for recovery residence operations — covering everything from resident rights to financial agreements to safety inspections.</p>
+        <div class="actions" style="margin-top:16px;">
+          <a class="btn" href="{{ url_for('public.operator_resources') }}">View our operating documents</a>
+          <a class="btn btn--ghost" href="https://ccapprecoveryresidences.org/" target="_blank" rel="noopener">Learn about CCAPP certification →</a>
+        </div>
+        <p class="muted small" style="margin-top:12px;">This page is informational only and does not constitute legal or medical advice. We do not claim CCAPP certification unless explicitly stated.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

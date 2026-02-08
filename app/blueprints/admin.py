@@ -177,7 +177,7 @@ def page_builder():
         parsed = json.loads(_default_home_layout_json())
 
     raw = layout.layout_json or _default_home_layout_json()
-    return render_template("admin/page_builder.html", raw_json=raw, parsed=parsed, active="builder", title="Page Builder")
+    return render_template("admin/page_builder.html", raw_json=raw, parsed=parsed, layout_data=parsed, active="builder", title="Page Builder")
 
 
 # ----------------------------

@@ -1,4 +1,4 @@
-"""OVERCOMERS RC management CLI.
+"""OVERCOMERS management CLI.
 
 This project intentionally has **no** "make yourself admin" button.
 Admins are created via a command.

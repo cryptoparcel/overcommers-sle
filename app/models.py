@@ -100,8 +100,8 @@ class Opening(db.Model):
     available_on = db.Column(db.Date, nullable=True)
 
     # Pricing
-    price_monthly = db.Column(db.String(60), nullable=True, default="$1,100 / month")  # e.g. "$1,100 / month"
-    deposit = db.Column(db.String(60), nullable=True, default="$900 deposit")        # e.g. "$900 deposit"
+    price_monthly = db.Column(db.String(60), nullable=True, default="$1,000 / month")  # e.g. "$1,000 / month"
+    deposit = db.Column(db.String(60), nullable=True, default="$1,000 deposit")        # e.g. "$1,000 deposit"
     hide_price = db.Column(db.Boolean, nullable=False, default=True)
 
     # Content

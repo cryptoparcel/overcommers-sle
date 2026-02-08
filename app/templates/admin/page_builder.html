@@ -27,7 +27,7 @@
   </div>
 </div>
 
-<script id="pbInitialJson" type="application/json">{{ raw_json|tojson }}</script>
+<script id="pbInitialJson" type="application/json">{{ layout_data|tojson }}</script>
 <script src="{{ url_for('static', filename='assets/page_builder.js') }}" defer></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='assets/page_builder.css') }}" />
 {% endblock %}

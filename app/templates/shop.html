@@ -1,13 +1,44 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="section">
-  <div class="container page">
-    <h1>Shop</h1>
-    <p class="muted">This is a placeholder shop page. You can connect Shopify, Stripe, or a simple product checkout later.</p>
-    <p class="muted">For now, use this page to describe what proceeds fund (beds, supplies, transportation, etc.).</p>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>Shop</h1>
+        <p class="muted">Support the mission — every purchase helps keep beds available and programs running.</p>
+      </div>
+    </div>
 
-    <div class="actions" style="margin-top:16px;">
-      <a class="btn primary" href="{{ url_for('public.checkout') }}">Checkout (placeholder)</a>
+    <div class="grid cards" style="margin-bottom:32px;">
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Overcomers T-Shirt</h3>
+          <p class="muted">Rep the mission. Comfortable, quality tee with the Overcomers logo. Available in multiple sizes.</p>
+          <p class="muted small" style="margin-top:8px;"><strong>Coming soon</strong></p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Coffee Mug</h3>
+          <p class="muted">Start your morning right. Ceramic mug with the Overcomers sunrise design.</p>
+          <p class="muted small" style="margin-top:8px;"><strong>Coming soon</strong></p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Donate a Bed Kit</h3>
+          <p class="muted">Cover the cost of bedding, toiletries, and basic supplies for a new resident moving in. Makes a real difference on day one.</p>
+          <p class="muted small" style="margin-top:8px;"><strong>Coming soon</strong></p>
+        </div>
+      </article>
+    </div>
+
+    <div class="card">
+      <div class="card__body">
+        <h2 class="h2">Where the money goes</h2>
+        <p>Proceeds from the shop go directly toward keeping the home running: beds, supplies, utilities, transportation, and programming. Nothing fancy — just the basics that keep residents stable.</p>
+        <p class="muted">Want to support in a different way? <a href="{{ url_for('public.contact') }}">Reach out</a> — we welcome partnerships, sponsorships, and in-kind donations.</p>
+      </div>
     </div>
   </div>
 </section>

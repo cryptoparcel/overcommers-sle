@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>Operating Documents &amp; Resources</h1>
+        <p>The policies, agreements, and standards that guide how our home operates.</p>
+      </div>
+      <div class="actions">
+        <a class="btn" href="{{ url_for('public.standards') }}">← Our standards</a>
+        <a class="btn btn--primary" href="{{ url_for('public.contact') }}">Contact us</a>
+      </div>
+    </div>
+
+    <!-- Intro -->
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <p>Recovery residences that follow documented operating standards provide better outcomes for residents and stronger trust with families, referral partners, and the community. Below are the core documents that guide our operations — aligned with NARR/CCAPP best-practice standards.</p>
+        <p class="muted small">Note: Document templates referenced below are based on guidelines provided by CCAPP (California Consortium of Addiction Programs and Professionals). Forms are suggestions and do not constitute legal advice for any particular locality.</p>
+      </div>
+    </div>
+
+    <!-- Resident-facing documents -->
+    <h2 class="h2" style="margin-bottom:16px;">Resident agreements &amp; orientation</h2>
+    <p class="muted" style="margin-bottom:16px;">These documents are reviewed with every resident during orientation before move-in.</p>
+
+    <div class="grid cards" style="margin-bottom:32px;">
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge">Resident</div>
+          <h3 class="h3">Confidentiality Agreement</h3>
+          <p class="muted">Protects resident privacy. Outlines what personal information is collected, how it's used, and who has access. Every resident signs this at orientation.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge">Resident</div>
+          <h3 class="h3">Financial Agreement</h3>
+          <p class="muted">Clear disclosure of all fees, deposits, payment schedules, refund policies, and financial expectations — in writing, before move-in. No surprises.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge">Resident</div>
+          <h3 class="h3">Resident Rights</h3>
+          <p class="muted">A written statement of every resident's rights — including privacy, dignity, fair treatment, grievance processes, and access to personal belongings.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge">Resident</div>
+          <h3 class="h3">House Rules</h3>
+          <p class="muted">Written expectations covering sobriety, curfew, chores, visitors, quiet hours, shared spaces, and community responsibilities. Clear and consistent.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge">Resident</div>
+          <h3 class="h3">Grievance &amp; Enforcement Policies</h3>
+          <p class="muted">How residents can raise concerns. How rule violations are handled. A fair, documented process for warnings, consequences, and appeals.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge">Resident</div>
+          <h3 class="h3">Weekly Schedule</h3>
+          <p class="muted">A structured weekly routine including house meetings, chore rotations, curfew times, and community activities. Helps residents build healthy habits.</p>
+        </div>
+      </article>
+    </div>
+
+    <!-- Operational documents -->
+    <h2 class="h2" style="margin-bottom:16px;">Operational policies</h2>
+    <p class="muted" style="margin-bottom:16px;">Internal documents that guide how we run the home, manage staff, and maintain safety.</p>
+
+    <div class="grid cards" style="margin-bottom:32px;">
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge doc-badge--ops">Operations</div>
+          <h3 class="h3">Mission &amp; Vision Statement</h3>
+          <p class="muted">Our core purpose and values. Why we exist, who we serve, and what outcomes we work toward.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge doc-badge--ops">Operations</div>
+          <h3 class="h3">Code of Ethics</h3>
+          <p class="muted">Ethical standards for staff and leadership. Covers honesty, conflicts of interest, resident welfare, and professional conduct.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge doc-badge--ops">Operations</div>
+          <h3 class="h3">Good Neighbor Policy</h3>
+          <p class="muted">Written commitments to the surrounding community — covering noise, parking, property upkeep, and neighborhood respect.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge doc-badge--ops">Operations</div>
+          <h3 class="h3">House Manager Contract</h3>
+          <p class="muted">Roles, responsibilities, and expectations for house managers — including emergency procedures, resident communication, and reporting.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge doc-badge--ops">Operations</div>
+          <h3 class="h3">Medication Policy</h3>
+          <p class="muted">How medications are stored, administered, and documented. Protects resident safety and complies with applicable guidelines.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge doc-badge--ops">Operations</div>
+          <h3 class="h3">Infectious Disease Control</h3>
+          <p class="muted">Procedures for preventing the spread of illness, sanitation standards, and protocols for handling health concerns in shared living.</p>
+        </div>
+      </article>
+    </div>
+
+    <!-- Certification & external resources -->
+    <h2 class="h2" style="margin-bottom:16px;">Certification &amp; external resources</h2>
+
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <h3 class="h3">About recovery residence certification in California</h3>
+        <p>California's Department of Health Care Services recognizes CCAPP as the certifying organization for recovery residences in the state. Certification involves documented operating standards, peer review, and annual site inspections.</p>
+        <p>The certification process includes:</p>
+        <div class="standards-list" style="margin-top:12px;">
+          <div class="standards-item">
+            <div class="standards-item__icon">1</div>
+            <div><strong>Application &amp; documentation</strong> — submit all operating policies, agreements, insurance, and organizational information.</div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">2</div>
+            <div><strong>Ethics &amp; compliance agreements</strong> — sign code of ethics, ethical advertising, and employee agreements.</div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">3</div>
+            <div><strong>Site inspection</strong> — a peer inspector visits the home to verify health, safety, and standards compliance.</div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">4</div>
+            <div><strong>Certification &amp; ongoing review</strong> — approved homes receive certification and are subject to annual inspections and complaint investigations.</div>
+          </div>
+        </div>
+        <div class="actions" style="margin-top:16px;">
+          <a class="btn" href="https://ccapprecoveryresidences.org/templates/" target="_blank" rel="noopener">CCAPP templates library →</a>
+          <a class="btn" href="https://ccapprecoveryresidences.org/start-recovery-residence/" target="_blank" rel="noopener">Starting a recovery residence →</a>
+          <a class="btn" href="https://ccapprecoveryresidences.org/search/" target="_blank" rel="noopener">Find certified residences →</a>
+        </div>
+        <p class="muted small" style="margin-top:14px;">External links go to CCAPP's official website. Overcomers is not affiliated with CCAPP. This page is informational only and does not constitute legal advice.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__body">
+        <h3 class="h3">Questions?</h3>
+        <p>If you're a family member, case manager, or referral partner and want to learn more about how our home operates, we're happy to talk.</p>
+        <div class="actions" style="margin-top:12px;">
+          <a class="btn btn--primary" href="{{ url_for('public.contact') }}">Contact us</a>
+          <a class="btn" href="{{ url_for('public.apply') }}">Apply</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

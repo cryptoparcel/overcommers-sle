@@ -27,7 +27,7 @@ h3{font-size:18px;margin:0 0 6px}
 .topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.8);backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid rgba(0,0,0,.06)}
 .topbar__inner{display:flex;align-items:center;gap:18px;padding:12px 0}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-.brand__logo{height:44px;width:auto;max-width:240px;object-fit:contain;border-radius:12px;}
+.brand__logo{height:44px;width:44px;object-fit:contain;border-radius:50%;}
 .brand__title{font-weight:800;letter-spacing:.04em}
 .brand__subtitle{font-size:12px;color:var(--muted)}
 .nav{display:flex;gap:14px;flex:1;justify-content:center}
@@ -141,3 +141,19 @@ h3{font-size:18px;margin:0 0 6px}
 .jobcard ul{margin:0; padding-left:18px;color:rgba(11,18,32,.72);}
 .jobcard li{margin:8px 0;}
 @media (max-width: 900px){.jobcard{grid-column:span 12;}}
+
+/* Standards page */
+.standards-list{display:flex;flex-direction:column;gap:14px;margin-top:8px;}
+.standards-item{display:flex;gap:14px;align-items:flex-start;}
+.standards-item__icon{flex-shrink:0;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--brand);color:#fff;font-weight:700;font-size:14px;}
+.standards-item p{margin:4px 0 0;}
+
+/* Document badges */
+.doc-badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;background:rgba(11,95,87,.1);color:var(--brand);margin-bottom:8px;}
+.doc-badge--ops{background:rgba(14,165,160,.1);color:#087d78;}
+
+/* Flat card variant (no shadow, subtle border) */
+.card--flat{box-shadow:none;border:1px solid rgba(7,25,34,.1);background:rgba(255,255,255,.7);}
+
+/* h2 standalone */
+.h2{font-size:24px;margin:0 0 8px;}

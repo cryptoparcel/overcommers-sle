@@ -1,14 +1,162 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="section">
-  <div class="container page">
-    <h1>Resources</h1>
-    <p class="muted">If you need immediate help, call <strong>988</strong> (U.S.) for mental health crisis support.</p>
-    <p class="muted">We’re building a curated list of local recovery meetings, job support, and reentry resources.</p>
-    <p class="muted">If you have a resource you want listed, contact us.</p>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>Resources</h1>
+        <p class="muted">Free, family-friendly links for help, hotlines, and local support options.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn--primary" href="{{ url_for('public.contact') }}">Suggest a resource</a>
+      </div>
+    </div>
 
-    <div class="actions" style="margin-top:16px;">
-      <a class="btn primary" href="{{ url_for('public.contact') }}">Suggest a resource</a>
+    <!-- Crisis -->
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <h2 class="h2">If you need help right now</h2>
+        <div class="standards-list" style="margin-top:12px;">
+          <div class="standards-item">
+            <div class="standards-item__icon" style="background:var(--danger);">!</div>
+            <div>
+              <strong>Emergency — call 911</strong>
+              <p class="muted">For immediate danger, medical emergencies, or overdose.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">☎</div>
+            <div>
+              <strong>988 Suicide &amp; Crisis Lifeline</strong>
+              <p class="muted">Call or text <strong>988</strong> — free, confidential, 24/7 crisis support.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">☎</div>
+            <div>
+              <strong>SAMHSA National Helpline</strong>
+              <p class="muted">Call <strong>1-800-662-4357</strong> — free referrals to treatment facilities, support groups, and community organizations. 24/7, 365 days.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">☎</div>
+            <div>
+              <strong>National Alliance for Eating Disorders Helpline</strong>
+              <p class="muted">Call <strong>1-866-662-1235</strong> — free support and treatment referrals.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">☎</div>
+            <div>
+              <strong>Crisis Text Line</strong>
+              <p class="muted">Text <strong>HOME</strong> to <strong>741741</strong> — free, 24/7 crisis counseling via text.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recovery -->
+    <h2 class="h2" style="margin-bottom:16px;">Recovery &amp; sobriety</h2>
+    <div class="grid cards" style="margin-bottom:32px;">
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Alcoholics Anonymous (AA)</h3>
+          <p class="muted">Find local meetings, online meetings, and literature. No cost, no sign-up.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="https://www.aa.org/find-aa" target="_blank" rel="noopener">Find a meeting →</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Narcotics Anonymous (NA)</h3>
+          <p class="muted">Peer support groups for people recovering from substance use. Free, anonymous, and available worldwide.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="https://www.na.org/meetingsearch/" target="_blank" rel="noopener">Find a meeting →</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">SMART Recovery</h3>
+          <p class="muted">Science-based mutual support for people with addictive behaviors. Offers online and in-person meetings.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="https://www.smartrecovery.org/community/" target="_blank" rel="noopener">Find support →</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Reentry -->
+    <h2 class="h2" style="margin-bottom:16px;">Reentry &amp; next steps</h2>
+    <div class="grid cards" style="margin-bottom:32px;">
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">CalFresh (food assistance)</h3>
+          <p class="muted">Free food benefits for eligible Californians. Apply online — no appointment needed.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="https://www.getcalfresh.org/" target="_blank" rel="noopener">Apply for CalFresh →</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Covered California (health insurance)</h3>
+          <p class="muted">Affordable health coverage including Medi-Cal. Many people qualify for free or low-cost plans.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="https://www.coveredca.com/" target="_blank" rel="noopener">Check eligibility →</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">CalJOBS (employment)</h3>
+          <p class="muted">California's job search portal. Free resume help, job listings, and career resources.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="https://www.caljobs.ca.gov/" target="_blank" rel="noopener">Search jobs →</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">211 SLO County</h3>
+          <p class="muted">Dial <strong>2-1-1</strong> for local San Luis Obispo County resources: housing, food, utilities, transportation, and more.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="https://www.211slo.org/" target="_blank" rel="noopener">Browse resources →</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Family -->
+    <h2 class="h2" style="margin-bottom:16px;">For families</h2>
+    <div class="grid cards" style="margin-bottom:24px;">
+      <article class="card" style="grid-column: span 6;">
+        <div class="card__body">
+          <h3 class="h3">Al-Anon Family Groups</h3>
+          <p class="muted">Support for family and friends of someone with a drinking problem. Free meetings, online and in-person.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="https://al-anon.org/al-anon-meetings/" target="_blank" rel="noopener">Find a meeting →</a>
+          </div>
+        </div>
+      </article>
+      <article class="card" style="grid-column: span 6;">
+        <div class="card__body">
+          <h3 class="h3">Nar-Anon Family Groups</h3>
+          <p class="muted">Support for families and friends affected by someone's addiction. Free, anonymous, available worldwide.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="https://www.nar-anon.org/find-a-meeting" target="_blank" rel="noopener">Find a meeting →</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="card">
+      <div class="card__body">
+        <p class="muted">Know a resource that should be listed here? <a href="{{ url_for('public.contact') }}">Let us know.</a></p>
+        <p class="muted small">Links go to external organizations. Overcomers is not affiliated with these organizations. This page is informational only and not medical advice.</p>
+      </div>
     </div>
   </div>
 </section>

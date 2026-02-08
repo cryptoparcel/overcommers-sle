@@ -1,4 +1,4 @@
-"""Utility helpers for OVERCOMERS RC.
+"""Utility helpers for OVERCOMERS.
 
 Note:
 - This is a package (app.utils.*). Keep shared helpers here.

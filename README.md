@@ -1,95 +1,99 @@
-# Overcomers RC (Restorative Community)
+# Overcomers — Transformative Thinking & Restorative Community
 
 A premium, structured sober-living / supportive-housing website built with Flask.
 
 ## Features
 
 - Public pages: Home, What We Do, Resources, Impact, Shop, Contact, Apply
+- Openings: Published housing listings with pricing, amenities, house rules
+- Stories: User-submitted stories with admin approval workflow
 - Accounts: signup/login, account settings, logout
 - Admin area (admins only):
-  - Applications
-  - Contact messages
-  - Stories (approve / reject / delete)
-  - Users
-  - Page Builder (homepage blocks)
-  - **Openings** (create & publish “Upcoming Openings” listings)
+  - Applications management (status updates, CSV export)
+  - Contact messages inbox
+  - Stories moderation (approve / reject / delete)
+  - Users list
+  - Page Builder (drag-and-drop homepage blocks)
+  - Openings CRUD (create & publish "Upcoming Openings" listings)
 
-## Local setup (easy)
+## Local setup
 
 1) Create a virtualenv and install deps:
 
 ```bash
 python -m venv .venv
-# Windows:
-.venv\Scripts\activate
+source .venv/bin/activate   # macOS/Linux
+# .venv\Scripts\activate    # Windows
 pip install -r requirements.txt
 ```
 
-2) Set environment variables (example):
+2) Set environment variables:
 
 ```bash
-# Windows PowerShell
-$env:FLASK_APP="manage.py"
-$env:FLASK_ENV="development"
-$env:SECRET_KEY="change-me"
-$env:DATABASE_URL="sqlite:///app.db"
-$env:BOOTSTRAP_DB="1"
+export FLASK_APP="wsgi:app"
+export SECRET_KEY="change-me"
+export DATABASE_URL="sqlite:///app.db"
 ```
 
-3) Run the app:
+3) Create the database and seed starter content:
+
+```bash
+flask db upgrade
+flask bootstrap-db
+```
+
+4) Run the app:
 
 ```bash
 flask run
 ```
 
-On first boot (with `BOOTSTRAP_DB=1`) it will create tables + seed starter content.
-
 ## Making yourself admin
+
+There is **no** UI button to become admin (by design).
 
 1) Create an account on the site (Signup)
 2) In a terminal, run:
 
 ```bash
 flask make-admin your@email.com
+
+# Or using manage.py:
+python manage.py make-admin your@email.com
 ```
 
-Now you’ll see the **Admin** link in the navbar when you’re logged in.
+Now refresh — you'll see the **Admin** link in the navbar.
 
 ## Openings (Upcoming Openings)
 
-- Admin → Openings → “New opening”
+- Admin → Openings → "New opening"
 - Set **Status = Published** to show it on `/openings`
 - Recommended: leave **Hide pricing publicly** checked (pricing is shared after application)
 
-## Deploying (Render)
+## Deploying on Render
 
-- Set `DATABASE_URL` to your Render Postgres URL
-- Set `SECRET_KEY` to a strong random string
-- Set `BOOTSTRAP_DB=1` only once for the first deploy, then remove it
+The included `render.yaml` handles deployment. Key steps:
 
-## Make yourself an admin (so you can access /admin)
-
-There is **no** UI button to become admin (by design).
-
-1) Sign up normally on the site.
-2) Create the database tables once:
+1. Set `DATABASE_URL` to your Render Postgres internal URL
+2. Set `SECRET_KEY` to a strong random string (e.g. `python -c "import secrets; print(secrets.token_urlsafe(32))"`)
+3. Set `SESSION_COOKIE_SECURE=1`
+4. The start command runs `flask db upgrade` automatically before starting Gunicorn
+5. After first deploy, open the Render Shell and run:
 
 ```bash
-# Local dev:
-BOOTSTRAP_DB=1 flask --app wsgi:app bootstrap-db
-
-# Or on Render Shell:
-BOOTSTRAP_DB=1 flask --app wsgi:app bootstrap-db
+flask bootstrap-db
+flask make-admin you@example.com
 ```
 
-3) Promote your user to admin:
+## Optional configuration
 
-```bash
-# Local dev:
-python manage.py make-admin you@example.com
-
-# Or using Flask CLI:
-flask --app wsgi:app make-admin you@example.com
-```
-
-Now refresh the site while logged in — you will see the **Admin** link.
+| Variable | Purpose |
+|---|---|
+| `SMTP_HOST` | SMTP server for email notifications |
+| `SMTP_PORT` | SMTP port (default: 587) |
+| `SMTP_USERNAME` | SMTP login |
+| `SMTP_PASSWORD` | SMTP password |
+| `SMTP_FROM` | From address for emails |
+| `NOTIFY_EMAIL` | Where to send admin notifications (default: info@overcomersrc.com) |
+| `RECAPTCHA_SITE_KEY` | Google reCAPTCHA v3 site key |
+| `RECAPTCHA_SECRET_KEY` | Google reCAPTCHA v3 secret key |

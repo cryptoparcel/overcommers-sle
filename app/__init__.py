@@ -42,8 +42,15 @@ def create_app() -> Flask:
     @app.template_filter("nl2br")
     def nl2br(s: str) -> str:
         if not s:
-            return ""
-        return (str(s).replace("\r\n", "\n").replace("\r", "\n").replace("\n", "<br>"))
+            return Markup("")
+        from markupsafe import escape
+        escaped = escape(s)
+        return Markup(
+            str(escaped)
+            .replace("\r\n", "\n")
+            .replace("\r", "\n")
+            .replace("\n", "<br>")
+        )
 
 
     return app

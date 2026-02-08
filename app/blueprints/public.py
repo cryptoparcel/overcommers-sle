@@ -46,12 +46,17 @@ def sitemap():
     pages = [
         ("/", "daily", "1.0"),
         ("/what-we-do", "monthly", "0.8"),
+        ("/standards", "monthly", "0.8"),
+        ("/operator-resources", "monthly", "0.6"),
         ("/resources", "weekly", "0.7"),
         ("/impact", "monthly", "0.6"),
         ("/shop", "monthly", "0.5"),
         ("/contact", "weekly", "0.7"),
         ("/apply", "weekly", "0.8"),
+        ("/openings", "weekly", "0.8"),
         ("/stories", "weekly", "0.6"),
+        ("/careers", "monthly", "0.5"),
+        ("/programs", "monthly", "0.5"),
         ("/privacy", "yearly", "0.3"),
         ("/terms", "yearly", "0.3"),
     ]
@@ -87,7 +92,7 @@ def index():
         openings_preview = Opening.query.filter_by(status="published").order_by(Opening.created_at.desc()).limit(3).all()
     except Exception:
         openings_preview = []
-    return render_template("index.html", title="Overcomers RC (Restorative Community)", page_blocks=blocks, openings_preview=openings_preview)
+    return render_template("index.html", title="Overcomers — Transformative Thinking & Restorative Community", page_blocks=blocks, openings_preview=openings_preview)
 
 @public_bp.get("/what-we-do")
 def what_we_do():
@@ -134,7 +139,7 @@ def contact_post():
         f"Subject: {msg.subject}\n\n"
         f"{msg.message}\n"
     )
-    send_email(to_email=current_app.config.get("NOTIFY_EMAIL"), subject=f"[Overcomers RC] Contact: {msg.subject}", body=body)
+    send_email(to_email=current_app.config.get("NOTIFY_EMAIL"), subject=f"[Overcomers] Contact: {msg.subject}", body=body)
 
     flash("Thanks — we got your message.", "success")
     return redirect(url_for("public.contact"))
@@ -168,7 +173,7 @@ def apply_post():
         f"Phone: {app_row.phone or '-'}\n\n"
         f"Message:\n{app_row.message or '-'}\n"
     )
-    send_email(to_email=current_app.config.get("NOTIFY_EMAIL"), subject="[Overcomers RC] New application", body=body)
+    send_email(to_email=current_app.config.get("NOTIFY_EMAIL"), subject="[Overcomers] New application", body=body)
 
     flash("Thanks — we’ll reach out soon.", "success")
     return redirect(url_for("public.apply"))
@@ -220,12 +225,22 @@ def story_submit():
         if admin_email:
             send_email(
                 to_email=admin_email,
-                subject="New story submission (Overcomers RC)",
+                subject="New story submission (Overcomers)",
                 body=f"Title: {story.title}\nAuthor: {story.author_name or '(not provided)'}\n\nReview in /admin/stories",
             )
         flash("Thanks! Your story was submitted for review.", "success")
         return redirect(url_for("public.stories"))
     return render_template("story_submit.html", form=form, title="Share a story")
+
+@public_bp.get("/standards")
+def standards():
+    return render_template("standards.html", title="Our Standards — Safety & Integrity")
+
+
+@public_bp.get("/operator-resources")
+def operator_resources():
+    return render_template("operator_resources.html", title="Operating Documents & Resources")
+
 
 @public_bp.get("/careers")
 def careers():

@@ -14,7 +14,7 @@
         <p class="muted">By {{ story.author_name or "OVERCOMERS community" }} • {{ story.created_at.strftime('%b %d, %Y') }}</p>
         {% if story.summary %}<p class="lead">{{ story.summary }}</p>{% endif %}
         <div class="prose">
-          {{ story.body | replace('\n', '<br>') | safe }}
+          {{ story.body | nl2br }}
         </div>
       </div>
     </div>

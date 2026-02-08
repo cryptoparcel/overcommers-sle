@@ -1,32 +1,118 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="section">
-  <div class="container page">
-    <h1>What We Do</h1>
-    <p class="muted">We provide a structured living environment with clear expectations, daily routine, and accountability.</p>
-    <p class="muted">Residents are supported in building healthy habits, returning to work or school, and maintaining stable recovery.</p>
-    <p class="muted">We’re supportive housing — not a medical or clinical program.</p>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>What We Do</h1>
+        <p class="muted">Structured, peer-based supportive housing — not a treatment center.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
+        <a class="btn" href="{{ url_for('public.openings') }}">View openings</a>
+      </div>
+    </div>
 
-    <div class="grid cards" style="margin-top:16px;">
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <p>Overcomers provides a safe, structured living environment for adults in recovery or reentry. We focus on stability: clear routines, accountability, peer support, and practical next steps — so residents can get back on their feet without the chaos.</p>
+        <p>We are <strong>not</strong> a medical program, therapy practice, or detox center. If someone needs clinical care, we help connect them to licensed providers.</p>
+      </div>
+    </div>
+
+    <div class="grid cards" style="margin-bottom:32px;">
       <article class="card">
         <div class="card__body">
           <h3 class="h3">Structure &amp; routine</h3>
-          <p class="muted">Clear house rules, curfews, responsibilities, and practical routines that reduce chaos and build consistency.</p>
+          <p class="muted">Clear house rules, curfews, chore rotations, and a weekly schedule. Reducing chaos and building consistency is how residents start to feel stable again.</p>
         </div>
       </article>
       <article class="card">
         <div class="card__body">
-          <h3 class="h3">Peer support</h3>
-          <p class="muted">Respectful community, accountability, and positive momentum — one day at a time.</p>
+          <h3 class="h3">Peer support &amp; accountability</h3>
+          <p class="muted">Residents live together in a respectful community. Weekly house meetings, check-ins, and shared goals keep everyone moving forward — one day at a time.</p>
         </div>
       </article>
       <article class="card">
         <div class="card__body">
-          <h3 class="h3">Next steps</h3>
-          <p class="muted">Support around work, school, reentry, and local resources — with a focus on stability and follow‑through.</p>
+          <h3 class="h3">Life-skills workshops</h3>
+          <p class="muted">Budgeting, job search, email and phone basics, time management, and practical routines. Small groups, easy language, step-by-step format.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Employment pathway</h3>
+          <p class="muted">Job readiness support and opportunities through local partnerships — including Lumpia Bros Cafe in Grover Beach. Structured work experience for residents who are ready.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="{{ url_for('public.partnerships') }}">Lumpia Bros pathway</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Reentry planning</h3>
+          <p class="muted">Step-by-step help with schedules, paperwork, appointments, and getting back into the flow of life. We help residents build a realistic plan for what comes next.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Family &amp; youth support</h3>
+          <p class="muted">Simple resources and guidance for families navigating recovery together. Age-appropriate, easy-to-understand information for kids and parents.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="{{ url_for('public.kids_support') }}">Family resources</a>
+          </div>
         </div>
       </article>
     </div>
+
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <h2 class="h2">The typical path</h2>
+        <div class="standards-list" style="margin-top:12px;">
+          <div class="standards-item">
+            <div class="standards-item__icon">1</div>
+            <div>
+              <strong>Apply</strong>
+              <p class="muted">Submit a quick application. We'll review it and reach out within 1–2 business days.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">2</div>
+            <div>
+              <strong>Phone screen</strong>
+              <p class="muted">A brief call to confirm fit, answer questions, and go over house expectations and pricing.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">3</div>
+            <div>
+              <strong>Move-in orientation</strong>
+              <p class="muted">Review and sign house rules, confidentiality agreement, financial agreement, and resident rights. Get settled in.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">4</div>
+            <div>
+              <strong>Weekly goals &amp; meetings</strong>
+              <p class="muted">Set personal goals, attend house meetings, participate in workshops, and build routines.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">5</div>
+            <div>
+              <strong>Next steps</strong>
+              <p class="muted">When you're ready, we help plan the transition — whether that's independent housing, continued support, or a new chapter.</p>
+            </div>
+          </div>
+        </div>
+        <div class="actions" style="margin-top:20px;">
+          <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Start your application</a>
+          <a class="btn" href="{{ url_for('public.standards') }}">See our standards</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="muted small">Overcomers is peer-based supportive housing and does not provide medical, therapeutic, or detox services. If you need clinical care, we will help connect you to licensed providers.</p>
   </div>
 </section>
 {% endblock %}

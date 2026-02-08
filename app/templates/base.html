@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Overcomers RC (Restorative Community) — restorative community + supportive housing in the Grover Beach area, focused on safety, routine, recovery, and reentry." />
-    <title>{{ title or "Overcomers RC" }}</title>
+    <meta name="description" content="Overcomers — Transformative Thinking and Restorative Community. Supportive housing in the Grover Beach area, focused on safety, routine, recovery, and reentry." />
+    <title>{{ title or "Overcomers" }}</title>
 
     <link rel="icon" href="{{ url_for('public.favicon') }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,15 +17,16 @@
     <header class="topbar">
       <div class="container topbar__inner">
         <a class="brand" href="{{ url_for('public.index') }}">
-          <img src="{{ url_for('static', filename='assets/overcomers-logo-small.png') }}" alt="Overcomers logo" class="brand__logo" onerror="this.style.display='none'">
+          <img src="{{ url_for('static', filename='assets/overcomers-emblem.png') }}" alt="Overcomers logo" class="brand__logo" onerror="this.style.display='none'">
           <div class="brand__text">
-            <div class="brand__title">OVERCOMERS RC</div>
-            <div class="brand__subtitle">Restorative Community • recovery &amp; reentry</div>
+            <div class="brand__title">OVERCOMERS</div>
+            <div class="brand__subtitle">Transformative Thinking &amp; Restorative Community</div>
           </div>
         </a>
 
         <nav class="nav" aria-label="Primary">
           <a href="{{ url_for('public.what_we_do') }}">What We Do</a>
+          <a href="{{ url_for('public.standards') }}">Standards</a>
           <a href="{{ url_for('public.resources') }}">Resources</a>
           <a href="{{ url_for('public.impact') }}">Impact</a>
           <a href="{{ url_for('public.openings') }}">Openings</a>
@@ -102,17 +103,18 @@
 
       <div class="container footer__inner">
         <div class="footer__left">
-          <div class="footer__brand">OVERCOMERS RC (Restorative Community)</div>
+          <div class="footer__brand">OVERCOMERS — Transformative Thinking &amp; Restorative Community</div>
           <p class="footer__desc">A restorative community focused on safety, routine, and community.</p>
           <p class="footer__fine">
-            Disclaimer: OVERCOMERS RC provides peer-based supportive housing and does not provide medical, therapeutic, or detox services.
+            Disclaimer: OVERCOMERS provides peer-based supportive housing and does not provide medical, therapeutic, or detox services.
             We do not guarantee outcomes. If you need clinical care, consult licensed professionals. We follow fair housing and anti-discrimination rules.
           </p>
-          <p class="footer__fine">© 2026 OVERCOMERS RC. All rights reserved.</p>
+          <p class="footer__fine">© 2026 OVERCOMERS. All rights reserved.</p>
         </div>
 
         <div class="footer__links">
           <a href="{{ url_for('public.what_we_do') }}">What We Do</a>
+          <a href="{{ url_for('public.standards') }}">Standards</a>
           <a href="{{ url_for('public.resources') }}">Resources</a>
           <a href="{{ url_for('public.impact') }}">Impact</a>
           <a href="{{ url_for('public.openings') }}">Openings</a>
