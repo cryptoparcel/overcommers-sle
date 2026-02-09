@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>Policies &amp; Documents</h1>
+        <p class="muted">Transparency matters. Here are the documents that guide how our home operates.</p>
+      </div>
+      <div class="actions">
+        <a class="btn" href="{{ url_for('public.standards') }}">Our standards</a>
+        <a class="btn" href="{{ url_for('public.contact') }}">Questions?</a>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <p>Every resident reviews and signs key agreements during orientation. These documents are also available to families, referral partners, and anyone who wants to understand how we operate. If you'd like a copy of any document, <a href="mailto:legal@overcomersrc.com">email our team</a>.</p>
+        <p class="muted small">Note: Documents are based on best-practice guidelines and do not constitute legal advice.</p>
+      </div>
+    </div>
+
+    <h2 class="h2" style="margin-bottom:16px;">Resident documents</h2>
+    <p class="muted" style="margin-bottom:16px;">Reviewed and signed before move-in.</p>
+
+    <div class="grid cards" style="margin-bottom:32px;">
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge">Resident</div>
+          <h3 class="h3">House Rules</h3>
+          <p class="muted">Written expectations covering sobriety, curfew, chores, visitors, quiet hours, and community responsibilities. Clear and consistent for everyone.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge">Resident</div>
+          <h3 class="h3">Resident Rights</h3>
+          <p class="muted">Your rights to privacy, dignity, fair treatment, personal property, and a clear grievance process  -  all in writing.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge">Resident</div>
+          <h3 class="h3">Financial Agreement</h3>
+          <p class="muted">All fees, deposits, payment schedules, and refund policies disclosed in writing. No surprises, no hidden charges.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge">Resident</div>
+          <h3 class="h3">Confidentiality Agreement</h3>
+          <p class="muted">How your personal information is collected, stored, and protected. Signed by every resident.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge">Resident</div>
+          <h3 class="h3">Grievance &amp; Enforcement Policy</h3>
+          <p class="muted">How to raise concerns. How violations are handled. Fair, documented process for warnings, consequences, and appeals.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge">Resident</div>
+          <h3 class="h3">Intake Checklist</h3>
+          <p class="muted">What to bring, what to expect on move-in day, and the step-by-step orientation process.</p>
+        </div>
+      </article>
+    </div>
+
+    <h2 class="h2" style="margin-bottom:16px;">Operational policies</h2>
+    <p class="muted" style="margin-bottom:16px;">Internal documents that guide staff, safety, and daily operations.</p>
+
+    <div class="grid cards" style="margin-bottom:32px;">
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge doc-badge--ops">Operations</div>
+          <h3 class="h3">Code of Ethics</h3>
+          <p class="muted">Ethical standards for staff and leadership covering honesty, conflicts of interest, and professional conduct.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge doc-badge--ops">Operations</div>
+          <h3 class="h3">Medication Policy</h3>
+          <p class="muted">How medications are stored, administered, and documented to protect resident safety.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge doc-badge--ops">Operations</div>
+          <h3 class="h3">Good Neighbor Policy</h3>
+          <p class="muted">Written commitments to the surrounding community  -  noise, parking, property upkeep, and neighborhood respect.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <div class="doc-badge doc-badge--ops">Operations</div>
+          <h3 class="h3">Infectious Disease Control</h3>
+          <p class="muted">Sanitation standards, illness prevention procedures, and health protocols for shared living.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="card">
+      <div class="card__body">
+        <h3 class="h3">Need a copy?</h3>
+        <p class="muted">Email <a href="mailto:legal@overcomersrc.com">legal@overcomersrc.com</a> to request any document. For general questions, <a href="{{ url_for('public.contact') }}">contact us</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<p class="last-updated" style="margin-top:18px;">Last updated: January 2026</p>
+{% endblock %}

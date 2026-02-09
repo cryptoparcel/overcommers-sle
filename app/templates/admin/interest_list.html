@@ -1,0 +1,16 @@
+{% extends "admin/_base.html" %}
+{% block admin_content %}
+<div class="table">
+  <div class="row head" style="grid-template-columns: 1fr 2fr;">
+    <div>Date</div><div>Email</div>
+  </div>
+  {% for s in signups %}
+  <div class="row" style="grid-template-columns: 1fr 2fr;">
+    <div class="small">{{ s.created_at.strftime('%b %d, %Y %H:%M') if s.created_at else '-' }}</div>
+    <div><a href="mailto:{{ s.email }}">{{ s.email }}</a></div>
+  </div>
+  {% else %}
+  <div class="row" style="grid-template-columns:1fr;"><div class="muted">No interest signups yet.</div></div>
+  {% endfor %}
+</div>
+{% endblock %}

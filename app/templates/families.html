@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>For Families &amp; Loved Ones</h1>
+        <p class="muted">If someone you care about is in recovery or reentry, here's how we can help  -  and what to expect.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn--primary" href="{{ url_for('public.contact') }}">Ask a question</a>
+        <a class="btn" href="{{ url_for('public.tour') }}">Schedule a tour</a>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <p>Watching someone you love go through recovery or reentry is hard. You want to help, but you may not know what the right next step is. We're here to answer your questions honestly and help your loved one find stable, structured housing.</p>
+      </div>
+    </div>
+
+    <div class="grid cards" style="margin-bottom:32px;">
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">What this place is</h3>
+          <p class="muted">A sober, structured home where residents live together, support each other, and build routines. Clear rules, weekly meetings, and accountability  -  not a clinical program.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">What to expect</h3>
+          <p class="muted">Your loved one will have a clean, safe place to live. They'll follow house rules, attend meetings, and work toward personal goals. We check in weekly and keep the environment stable.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">How to start</h3>
+          <p class="muted">Your loved one can <a href="{{ url_for('public.apply') }}">apply</a> directly, or you can <a href="{{ url_for('public.contact') }}">contact us</a> to ask questions first. We'll walk you through the process together.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Resident rights</h3>
+          <p class="muted">Every resident has documented rights  -  privacy, dignity, fair treatment, and a clear process for raising concerns. <a href="{{ url_for('public.standards') }}#rights">Read the full list.</a></p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Visiting &amp; communication</h3>
+          <p class="muted">Visitor policies are part of the house rules. Your loved one can always communicate with family  -  we encourage healthy connections while maintaining house structure.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Support for you</h3>
+          <p class="muted">This is hard on families too. We recommend <a href="{{ url_for('public.resources') }}">Al-Anon and Nar-Anon</a> for family support. You don't have to do this alone.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="card">
+      <div class="card__body">
+        <h2 class="h2">Questions?</h2>
+        <p>Call, text, or email  -  we're happy to talk through your situation. No pressure, no judgment.</p>
+        <p class="muted">Email: <a href="mailto:info@overcomersrc.com">info@overcomersrc.com</a></p>
+        <div class="actions" style="margin-top:12px;">
+          <a class="btn btn--primary" href="{{ url_for('public.contact') }}">Send a message</a>
+          <a class="btn" href="{{ url_for('public.faq') }}">Read FAQs</a>
+        </div>
+        <p class="muted small" style="margin-top:10px;">Typical response time: within 24 hours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <div class="card" style="margin-top:18px;">
+      <div class="card__body">
+        <h3 class="h3">For kids &amp; teens</h3>
+        <p class="muted">We also have a page specifically for kids and teens who are looking for help for someone they love.</p>
+        <div class="actions" style="margin-top:8px;">
+          <a class="btn" href="{{ url_for('public.kids_support') }}">Kids &amp; family help</a>
+        </div>
+      </div>
+    </div>
+{% endblock %}

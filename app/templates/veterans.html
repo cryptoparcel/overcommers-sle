@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>Veterans Support</h1>
+        <p class="muted">Structured housing and reentry support built around stability, not pressure.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
+        <a class="btn" href="{{ url_for('public.tour') }}">Schedule a tour</a>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <p>Transitioning out of service  -  or back into civilian life after treatment or incarceration  -  comes with real challenges. We provide a calm, structured home where veterans can rebuild routines, find employment, and reconnect with support systems at their own pace.</p>
+        <p>We are <strong>not</strong> a VA program or clinical facility. We're peer-based supportive housing that works alongside whatever care you're already receiving.</p>
+      </div>
+    </div>
+
+    <div class="grid cards" style="margin-bottom:32px;">
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Calm rebuilding</h3>
+          <p class="muted">A stable home with clear routines, respectful housemates, and no drama. Quiet hours, clean spaces, and the structure that helps you get back on track.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Reentry help</h3>
+          <p class="muted">Step-by-step support with paperwork, appointments, ID renewal, job search, and daily logistics. We help simplify the transition.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Resource connections</h3>
+          <p class="muted">We'll help connect you to local VA services, veteran-specific programs, recovery meetings, employment support, and community resources in SLO County.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Peer community</h3>
+          <p class="muted">Live alongside others who understand recovery. Weekly meetings, shared accountability, and genuine support  -  not just a bed.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <h2 class="h2">How to start</h2>
+        <div class="standards-list" style="margin-top:12px;">
+          <div class="standards-item">
+            <div class="standards-item__icon">1</div>
+            <div><strong>Apply or call us</strong>  -  <a href="{{ url_for('public.apply') }}">apply online</a> or contact us at <a href="mailto:info@overcomersrc.com">info@overcomersrc.com</a></div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">2</div>
+            <div><strong>Quick phone screen</strong>  -  we confirm fit, answer questions, and discuss your situation.</div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">3</div>
+            <div><strong>Tour &amp; move in</strong>  -  visit the home, sign agreements, and get settled.</div>
+          </div>
+        </div>
+        <div class="actions" style="margin-top:16px;">
+          <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply now</a>
+          <a class="btn" href="tel:+1" onclick="return false;">Call us</a>
+          <a class="btn" href="{{ url_for('public.tour') }}">Schedule a tour</a>
+        </div>
+        <p class="muted small" style="margin-top:10px;">Typical response time: within 24 hours. You can also text us.</p>
+      </div>
+    </div>
+
+    <p class="muted small">Overcomers is peer-based supportive housing and does not provide medical, therapeutic, VA, or detox services. If you need clinical care, we help connect you to licensed providers and veteran-specific programs.</p>
+  </div>
+</section>
+<p class="last-updated" style="margin-top:18px;">Last updated: January 2026</p>
+{% endblock %}

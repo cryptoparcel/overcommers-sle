@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -9,12 +10,15 @@ from ..models import User
 
 auth_bp = Blueprint("auth", __name__)
 
+
+# ── Convenience redirects (old bookmarks / typed URLs) ───────
 @auth_bp.get("/login")
 def login():
     if current_user.is_authenticated:
         return redirect(url_for("public.index"))
     form = LoginForm()
     return render_template("auth/login.html", form=form, title="Login")
+
 
 @auth_bp.post("/login")
 @limiter.limit("10 per minute")
@@ -30,12 +34,25 @@ def login_post():
     ident = form.identifier.data.strip().lower()
     user = User.query.filter_by(email=ident).first() or User.query.filter_by(username=ident).first()
     if not user or not user.check_password(form.password.data):
-        flash("Invalid login.", "error")
+        flash("Invalid email/username or password.", "error")
         return render_template("auth/login.html", form=form, title="Login"), 401
 
-    login_user(user)
+    # Track last login
+    try:
+        user.last_login = datetime.utcnow()
+        db.session.commit()
+    except Exception:
+        pass
+
+    login_user(user, remember=True)
     flash("Welcome back.", "success")
+
+    # Redirect to next page if specified, otherwise home
+    next_page = request.args.get("next")
+    if next_page and next_page.startswith("/"):
+        return redirect(next_page)
     return redirect(url_for("public.index"))
+
 
 @auth_bp.get("/register")
 def register():
@@ -43,6 +60,7 @@ def register():
         return redirect(url_for("public.index"))
     form = SignupForm()
     return render_template("auth/register.html", form=form, title="Create account")
+
 
 @auth_bp.post("/register")
 @limiter.limit("6 per hour")
@@ -73,9 +91,10 @@ def register_post():
     user.set_password(form.password.data)
     db.session.add(user)
     db.session.commit()
-    login_user(user)
+    login_user(user, remember=True)
     flash("Account created.", "success")
     return redirect(url_for("public.index"))
+
 
 @auth_bp.post("/logout")
 @login_required
@@ -83,6 +102,7 @@ def logout():
     logout_user()
     flash("Logged out.", "success")
     return redirect(url_for("public.index"))
+
 
 @auth_bp.route("/account", methods=["GET", "POST"])
 @login_required

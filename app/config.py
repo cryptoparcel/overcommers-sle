@@ -18,10 +18,20 @@ class Config:
         self.SQLALCHEMY_DATABASE_URI = _normalize_database_url(os.environ.get("DATABASE_URL"))
         self.SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-        # Cookies (Render should set SESSION_COOKIE_SECURE=1)
+        # Safety: crash loudly if deployed with default secret
+        if os.environ.get("RENDER") and self.SECRET_KEY == "dev-not-secure-change-me":
+            raise RuntimeError(
+                "SECRET_KEY is not set! Add it as an environment variable in Render."
+            )
+
+        # HTTPS
+        self.PREFERRED_URL_SCHEME = "https" if os.environ.get("RENDER") else "http"
+
+        # Cookies
         self.SESSION_COOKIE_SECURE = os.environ.get("SESSION_COOKIE_SECURE", "0") == "1"
         self.SESSION_COOKIE_HTTPONLY = True
         self.SESSION_COOKIE_SAMESITE = os.environ.get("SESSION_COOKIE_SAMESITE", "Lax")
+        self.PERMANENT_SESSION_LIFETIME = 86400 * 7  # 7 days
 
         # Email notifications
         self.SMTP_HOST = os.environ.get("SMTP_HOST", "")
@@ -34,3 +44,7 @@ class Config:
         # Optional reCAPTCHA (v2 checkbox)
         self.RECAPTCHA_SITE_KEY = os.environ.get("RECAPTCHA_SITE_KEY", "")
         self.RECAPTCHA_SECRET_KEY = os.environ.get("RECAPTCHA_SECRET_KEY", "")
+
+        # Auto-bootstrap admin from env (optional)
+        self.ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "")
+        self.ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")

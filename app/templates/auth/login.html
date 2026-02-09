@@ -34,8 +34,11 @@
 
       <div class="card" style="grid-column: span 6;">
         <div class="body">
-          <h3>Security note</h3>
-          <p class="muted">Next upgrades: email verification, password reset, and stronger rate limiting.</p>
+          <h3>Need an account?</h3>
+          <p class="muted">Create an account to submit stories, track your application status, and more.</p>
+          <div class="actions" style="margin-top:12px;">
+            <a class="btn" href="{{ url_for('auth.register') }}">Create account</a>
+          </div>
         </div>
       </div>
     </div>

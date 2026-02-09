@@ -7,7 +7,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for,
 from flask_login import login_required, current_user
 
 from ..extensions import db
-from ..models import Application, ContactMessage, Story, User, PageLayout, Opening
+from ..models import Application, ContactMessage, Story, User, PageLayout, Opening, TourRequest, InterestSignup
 from ..utils import admin_required
 from ..seed import _default_home_layout_json  # uses same defaults
 from ..forms import OpeningForm
@@ -24,10 +24,25 @@ def dashboard():
     total_count = Application.query.count()
     pending_stories = Story.query.filter_by(status="pending").count()
     msg_count = ContactMessage.query.count()
+    try:
+        tour_count = TourRequest.query.count()
+    except Exception:
+        tour_count = 0
+    try:
+        interest_count = InterestSignup.query.count()
+    except Exception:
+        interest_count = 0
     return render_template(
         "admin/dashboard.html",
         title="Admin dashboard",
-        counts={"new": new_count, "total": total_count, "pending_stories": pending_stories, "messages": msg_count},
+        counts={
+            "new": new_count,
+            "total": total_count,
+            "pending_stories": pending_stories,
+            "messages": msg_count,
+            "tours": tour_count,
+            "interest": interest_count,
+        },
         active="dashboard",
     )
 
@@ -297,3 +312,29 @@ def openings_delete(opening_id: int):
     db.session.commit()
     flash("Opening deleted.", "info")
     return redirect(url_for("admin.openings"))
+
+
+# ── Tour Requests (Admin) ────────────────────────────────────
+
+@admin_bp.get("/tour-requests")
+@login_required
+@admin_required
+def tour_requests():
+    try:
+        items = TourRequest.query.order_by(TourRequest.created_at.desc()).limit(300).all()
+    except Exception:
+        items = []
+    return render_template("admin/tour_requests.html", tours=items, active="tours", title="Tour Requests")
+
+
+# ── Interest List (Admin) ────────────────────────────────────
+
+@admin_bp.get("/interest-list")
+@login_required
+@admin_required
+def interest_list():
+    try:
+        items = InterestSignup.query.order_by(InterestSignup.created_at.desc()).limit(300).all()
+    except Exception:
+        items = []
+    return render_template("admin/interest_list.html", signups=items, active="interest", title="Interest List")

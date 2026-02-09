@@ -4,31 +4,40 @@
   <div class="container">
     <div class="section-head">
       <div>
-        <h1>Shop</h1>
-        <p class="muted">Support the mission — every purchase helps keep beds available and programs running.</p>
+        <h1>Support the Mission</h1>
+        <p class="muted">Every contribution helps keep beds available and programs running.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn--primary" href="{{ url_for('public.contact') }}">Contact about sponsorship</a>
       </div>
     </div>
 
-    <div class="grid cards" style="margin-bottom:32px;">
-      <article class="card">
-        <div class="card__body">
-          <h3 class="h3">Overcomers T-Shirt</h3>
-          <p class="muted">Rep the mission. Comfortable, quality tee with the Overcomers logo. Available in multiple sizes.</p>
-          <p class="muted small" style="margin-top:8px;"><strong>Coming soon</strong></p>
-        </div>
-      </article>
-      <article class="card">
-        <div class="card__body">
-          <h3 class="h3">Coffee Mug</h3>
-          <p class="muted">Start your morning right. Ceramic mug with the Overcomers sunrise design.</p>
-          <p class="muted small" style="margin-top:8px;"><strong>Coming soon</strong></p>
-        </div>
-      </article>
+    <div class="grid cards" style="margin-bottom:24px;">
       <article class="card">
         <div class="card__body">
           <h3 class="h3">Donate a Bed Kit</h3>
           <p class="muted">Cover the cost of bedding, toiletries, and basic supplies for a new resident moving in. Makes a real difference on day one.</p>
-          <p class="muted small" style="margin-top:8px;"><strong>Coming soon</strong></p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn btn--primary" href="{{ url_for('public.contact') }}">Inquire</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Monthly Sponsorship</h3>
+          <p class="muted">Help cover rent, utilities, or transportation for a resident who's rebuilding. Recurring support makes the biggest difference.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn btn--primary" href="{{ url_for('public.contact') }}">Inquire</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">In-Kind Donations</h3>
+          <p class="muted">Household items, groceries, cleaning supplies, or gift cards. We'll put them to work immediately.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn btn--primary" href="{{ url_for('public.contact') }}">Inquire</a>
+          </div>
         </div>
       </article>
     </div>
@@ -36,8 +45,9 @@
     <div class="card">
       <div class="card__body">
         <h2 class="h2">Where the money goes</h2>
-        <p>Proceeds from the shop go directly toward keeping the home running: beds, supplies, utilities, transportation, and programming. Nothing fancy — just the basics that keep residents stable.</p>
+        <p>Proceeds go directly toward keeping the home running: beds, supplies, utilities, transportation, and programming. Nothing fancy — just the basics that keep residents stable.</p>
         <p class="muted">Want to support in a different way? <a href="{{ url_for('public.contact') }}">Reach out</a> — we welcome partnerships, sponsorships, and in-kind donations.</p>
+        <p class="muted small" style="margin-top:8px;">For billing or payment questions: <a href="mailto:billing@overcomersrc.com">billing@overcomersrc.com</a></p>
       </div>
     </div>
   </div>

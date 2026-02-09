@@ -46,7 +46,7 @@
           {% for e in form.recaptcha_token.errors %}<div class="error">{{ e }}</div>{% endfor %}
 
           <div class="actions">
-            <button class="btn primary" type="submit" data-track="submit_story">{{ form.submit.label.text }}</button>
+            <button class="btn btn--primary" type="submit" data-track="submit_story">{{ form.submit.label.text }}</button>
             <a class="btn" href="{{ url_for('public.stories') }}">Cancel</a>
           </div>
         </div>

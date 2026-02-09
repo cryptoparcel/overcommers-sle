@@ -39,6 +39,27 @@
   document.addEventListener("DOMContentLoaded", setTokenOnForms);
 })();
 
+// Mobile navigation toggle
+(function () {
+  const btn = document.querySelector(".mobile-toggle");
+  const nav = document.querySelector(".nav");
+  if (!btn || !nav) return;
+
+  btn.addEventListener("click", function () {
+    const isOpen = nav.classList.contains("nav--open");
+    nav.classList.toggle("nav--open");
+    btn.setAttribute("aria-expanded", isOpen ? "false" : "true");
+  });
+
+  // Close on outside click
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".mobile-toggle") && !e.target.closest(".nav")) {
+      nav.classList.remove("nav--open");
+      btn.setAttribute("aria-expanded", "false");
+    }
+  });
+})();
+
 // Simple dropdown menu (Account)
 (function () {
   function closeAll() {

@@ -24,7 +24,7 @@
         </div>
       {% elif b.type == 'button' %}
         <div class="pb-button">
-          <a class="btn primary" href="{{ b.content.href or '#' }}">{{ b.content.label or 'Button' }}</a>
+          <a class="btn btn--primary" href="{{ b.content.href or '#' }}">{{ b.content.label or 'Button' }}</a>
         </div>
       {% elif b.type == 'image' %}
         <div class="pb-image">

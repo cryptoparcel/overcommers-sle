@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>Schedule a Tour</h1>
+        <p class="muted">See the home in person or virtually — no commitment, no pressure.</p>
+      </div>
+    </div>
+
+    <div class="grid" style="gap:16px;">
+      <div class="card" style="grid-column: span 7;">
+        <div class="card__body">
+          <h2 class="h2">Request a tour</h2>
+          <p class="muted">Fill out the form and we'll confirm a time within 24 hours.</p>
+
+          <form method="post" class="form" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="grid grid--form">
+              <div class="field">
+                <label>{{ form.name.label }}</label>
+                {{ form.name(class_="input", autocomplete="name") }}
+                {% for e in form.name.errors %}<div class="error">{{ e }}</div>{% endfor %}
+              </div>
+              <div class="field">
+                <label>{{ form.email.label }}</label>
+                {{ form.email(class_="input", autocomplete="email") }}
+                {% for e in form.email.errors %}<div class="error">{{ e }}</div>{% endfor %}
+              </div>
+              <div class="field">
+                <label>{{ form.phone.label }}</label>
+                {{ form.phone(class_="input", autocomplete="tel") }}
+                {% for e in form.phone.errors %}<div class="error">{{ e }}</div>{% endfor %}
+              </div>
+              <div class="field">
+                <label>{{ form.preferred_time.label }}</label>
+                {{ form.preferred_time(class_="input", placeholder="e.g. Weekday mornings") }}
+                {% for e in form.preferred_time.errors %}<div class="error">{{ e }}</div>{% endfor %}
+              </div>
+              <div class="field grid__span2">
+                <label>{{ form.notes.label }}</label>
+                {{ form.notes(class_="textarea", rows="3") }}
+                {% for e in form.notes.errors %}<div class="error">{{ e }}</div>{% endfor %}
+              </div>
+            </div>
+            {{ form.recaptcha_token(id="recaptcha_token_tour") }}
+            <div class="form__actions">
+              <button class="btn btn--primary" type="submit">Request tour</button>
+              <a class="btn btn--ghost" href="{{ url_for('public.contact') }}">Contact instead</a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <aside class="card" style="grid-column: span 5;">
+        <div class="card__body">
+          <h3 class="h3">What to expect</h3>
+          <div class="standards-list" style="margin-top:10px;">
+            <div class="standards-item">
+              <div class="standards-item__icon">1</div>
+              <div>
+                <strong>Submit request</strong>
+                <p class="muted">Fill out the form or email info@overcomersrc.com with "Tour" in the subject.</p>
+              </div>
+            </div>
+            <div class="standards-item">
+              <div class="standards-item__icon">2</div>
+              <div>
+                <strong>We confirm a time</strong>
+                <p class="muted">In-person or video call options available.</p>
+              </div>
+            </div>
+            <div class="standards-item">
+              <div class="standards-item__icon">3</div>
+              <div>
+                <strong>Visit &amp; ask questions</strong>
+                <p class="muted">See the rooms, common areas, and neighborhood. Bring anyone who supports you.</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:18px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06);">
+            <h3 class="h3">Quick info</h3>
+            <p class="muted"><strong>Location:</strong> Grover Beach area, CA</p>
+            <p class="muted"><strong>Pricing:</strong> $1,000/month + $1,000 deposit</p>
+            <p class="muted"><strong>Who we serve:</strong> Adults in recovery or reentry</p>
+            <div class="actions" style="margin-top:10px;">
+              <a class="btn" href="{{ url_for('public.guide') }}">Full guide</a>
+              <a class="btn" href="{{ url_for('public.faq') }}">FAQ</a>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}

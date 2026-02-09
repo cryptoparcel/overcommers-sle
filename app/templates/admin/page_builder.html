@@ -8,7 +8,7 @@
       <form id="pbSaveForm" method="post" style="display:flex; gap:10px; align-items:center;">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="layout_json" id="layout_json" value="">
-        <button class="btn primary" type="submit">Save layout</button>
+        <button class="btn btn--primary" type="submit">Save layout</button>
         <button class="btn" type="submit" name="action" value="reset" onclick="return confirm('Reset layout to default?');">Reset</button>
         <span class="muted tiny">Tip: drag blocks; use handles to resize.</span>
       </form>

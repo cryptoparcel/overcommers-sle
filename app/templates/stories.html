@@ -2,31 +2,45 @@
 {% block content %}
 <section class="section">
   <div class="container">
-    <div class="section__head">
-      <h1 class="h1">Stories</h1>
-      <p class="muted">Real progress happens one step at a time. These are example stories for now—swap in real stories whenever you're ready.</p>
+    <div class="section-head">
+      <div>
+        <h1>Stories</h1>
+        <p class="muted">Real progress happens one step at a time.</p>
+      </div>
       <div class="actions">
-        <a class="btn primary" href="{{ url_for('public.story_submit') }}">Share your story</a>
+        <a class="btn btn--primary" href="{{ url_for('public.story_submit') }}">Share your story</a>
       </div>
     </div>
 
     <div class="grid cards">
       {% for s in stories %}
       <article class="card">
+        {% if s.image_url %}
         <a class="card__media" href="{{ url_for('public.story_detail', slug=s.slug) }}">
-          <img src="{{ s.image_url or 'https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&w=1600&q=80' }}" alt="{{ s.title|e }}">
+          <img src="{{ s.image_url }}" alt="{{ s.title|e }}">
         </a>
+        {% endif %}
         <div class="card__body">
           <h3 class="h3"><a class="link" href="{{ url_for('public.story_detail', slug=s.slug) }}">{{ s.title }}</a></h3>
           <p class="muted">{{ s.summary or (s.body[:140] ~ '…') }}</p>
-          <div class="card__meta">
-            <span class="pill">Approved</span>
-            <span class="muted">{{ (s.author_name or 'OVERCOMERS community') }}</span>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:auto;">
+            <span class="pill">Story</span>
+            <span class="muted small">{{ (s.author_name or 'Community member') }}</span>
           </div>
         </div>
       </article>
       {% else %}
-        <p class="muted">No stories yet.</p>
+      <article class="card" style="grid-column: span 12;">
+        <div class="card__body" style="text-align:center;padding:32px 18px;">
+          <h3 class="h3">Stories are coming</h3>
+          <p class="muted">We're collecting stories from residents and community members. Your story could be the first one here.</p>
+          <div class="actions" style="justify-content:center;margin-top:14px;">
+            <a class="btn btn--primary" href="{{ url_for('public.story_submit') }}">Share your story</a>
+            <a class="btn" href="{{ url_for('public.contact') }}">Ask about it</a>
+          </div>
+          <p class="muted tiny" style="margin-top:10px;">All stories are reviewed before publishing. Your privacy is respected.</p>
+        </div>
+      </article>
       {% endfor %}
     </div>
   </div>

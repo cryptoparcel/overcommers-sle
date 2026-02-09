@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>Recovery Residence Guide</h1>
+        <p class="muted">Everything you need to know about living with us  -  start here.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply now</a>
+        <a class="btn" href="{{ url_for('public.tour') }}">Schedule a tour</a>
+      </div>
+    </div>
+
+    <!-- Quick directory -->
+    <div class="grid cards" style="margin-bottom:32px;">
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">🏠 How it works</h3>
+          <p class="muted">What a recovery residence is, what to expect, and how the home is structured day-to-day.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="{{ url_for('public.what_we_do') }}">What we do</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">📋 Standards &amp; rights</h3>
+          <p class="muted">Resident rights, house rules, grievance process, and how we keep the home safe and fair.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="{{ url_for('public.standards') }}">Our standards</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">🛏️ Openings</h3>
+          <p class="muted">See available beds, pricing, and location details for our homes in the Grover Beach area.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="{{ url_for('public.openings') }}">View openings</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">📞 Resources &amp; help</h3>
+          <p class="muted">Crisis lines, recovery meetings, reentry support, food assistance, and more  -  all free.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="{{ url_for('public.resources') }}">Resources</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">❓ Common questions</h3>
+          <p class="muted">Is this treatment? How much does it cost? Can I have visitors? Get answers to common questions.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="{{ url_for('public.faq') }}">FAQ</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">📄 Policies</h3>
+          <p class="muted">House rules, resident rights, financial agreement, grievance process  -  all in one place.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="{{ url_for('public.policies') }}">Policies</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- How to get started -->
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <h2 class="h2">How to get started</h2>
+        <p>The process is simple and respectful. No pressure  -  just honest conversation.</p>
+        <div class="standards-list" style="margin-top:14px;">
+          <div class="standards-item">
+            <div class="standards-item__icon">1</div>
+            <div>
+              <strong>Apply</strong>
+              <p class="muted">Fill out a short application (2-3 minutes). We review every submission personally.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">2</div>
+            <div>
+              <strong>Phone call</strong>
+              <p class="muted">We call or text within 24 hours to answer your questions, confirm fit, and go over expectations.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">3</div>
+            <div>
+              <strong>Tour the home</strong>
+              <p class="muted">Visit in person (or virtually) to see the space, meet the house, and ask anything on your mind.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">4</div>
+            <div>
+              <strong>Move in</strong>
+              <p class="muted">Sign your agreements, pay your deposit, and get settled. We walk you through everything at orientation.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">5</div>
+            <div>
+              <strong>Build routines</strong>
+              <p class="muted">Weekly meetings, goal-setting, workshops, and peer support. One day at a time.</p>
+            </div>
+          </div>
+        </div>
+        <div class="actions" style="margin-top:18px;">
+          <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Start your application</a>
+          <a class="btn" href="{{ url_for('public.contact') }}">Ask a question first</a>
+        </div>
+        <p class="muted small" style="margin-top:12px;">Typical response time: within 24 hours.</p>
+      </div>
+    </div>
+
+    <!-- House expectations accordion -->
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <h2 class="h2">What to expect</h2>
+        <details class="accordion">
+          <summary class="accordion__title">Structure &amp; daily routine</summary>
+          <div class="accordion__body">
+            <p class="muted">You'll follow a weekly schedule with house meetings, chore rotations, curfew, and quiet hours. The goal is to reduce chaos and build consistency. Everyone is held to the same standard.</p>
+          </div>
+        </details>
+        <details class="accordion">
+          <summary class="accordion__title">Sobriety &amp; safety</summary>
+          <div class="accordion__body">
+            <p class="muted">This is a sober living environment. No drugs, alcohol, or substances on the property. We maintain a calm, respectful atmosphere for everyone. Violations are handled through a written enforcement process.</p>
+          </div>
+        </details>
+        <details class="accordion">
+          <summary class="accordion__title">Your rights</summary>
+          <div class="accordion__body">
+            <p class="muted">Every resident has the right to privacy, dignity, fair treatment, and a clear grievance process. All rights are documented and shared before move-in. <a href="{{ url_for('public.standards') }}#rights">Read the full list.</a></p>
+          </div>
+        </details>
+        <details class="accordion">
+          <summary class="accordion__title">Financial expectations</summary>
+          <div class="accordion__body">
+            <p class="muted">Standard pricing is $1,000/month with a $1,000 deposit. All fees are disclosed in writing before you sign anything. No hidden charges. Payment plans may be available  -  just ask.</p>
+          </div>
+        </details>
+        <details class="accordion">
+          <summary class="accordion__title">What's included</summary>
+          <div class="accordion__body">
+            <p class="muted">A furnished bed in a shared home, utilities (water, power, trash), Wi-Fi, basic house supplies, weekly meetings, and access to workshops and peer support.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <p class="muted small">Overcomers is peer-based supportive housing  -  not a medical, therapeutic, or detox program. If you need clinical care, we help connect you to licensed providers.</p>
+  </div>
+</section>
+<p class="last-updated" style="margin-top:18px;">Last updated: January 2026</p>
+{% endblock %}

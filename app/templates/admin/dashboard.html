@@ -1,47 +1,61 @@
 {% extends "admin/_base.html" %}
-{% set title = "Admin dashboard" %}
-{% set active = "dashboard" %}
-
 {% block admin_content %}
 <div class="grid cards">
-  <div class="card" style="grid-column: span 6;">
+  <article class="card">
     <div class="card__body">
       <h3 class="h3">Applications</h3>
-      <p>New: <strong>{{ counts.new }}</strong> • Total: <strong>{{ counts.total }}</strong></p>
-      <div class="actions">
-        <a class="btn primary" href="{{ url_for('admin.applications') }}">View applications</a>
+      <p class="muted"><strong>{{ counts.new }}</strong> new &nbsp;/&nbsp; <strong>{{ counts.total }}</strong> total</p>
+      <div class="actions" style="margin-top:8px;">
+        <a class="btn btn--primary" href="{{ url_for('admin.applications') }}">View</a>
+        <a class="btn" href="{{ url_for('admin.export_applications') }}">Export CSV</a>
       </div>
     </div>
-  </div>
-
-  <div class="card" style="grid-column: span 6;">
-    <div class="card__body">
-      <h3 class="h3">Stories</h3>
-      <p>Pending: <strong>{{ counts.pending_stories }}</strong></p>
-      <div class="actions">
-        <a class="btn primary" href="{{ url_for('admin.stories', status='pending') }}">Review stories</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="card" style="grid-column: span 6;">
+  </article>
+  <article class="card">
     <div class="card__body">
       <h3 class="h3">Messages</h3>
-      <p>Total: <strong>{{ counts.messages }}</strong></p>
-      <div class="actions">
-        <a class="btn primary" href="{{ url_for('admin.messages') }}">View messages</a>
+      <p class="muted"><strong>{{ counts.messages }}</strong> total</p>
+      <div class="actions" style="margin-top:8px;">
+        <a class="btn" href="{{ url_for('admin.messages') }}">View</a>
       </div>
     </div>
-  </div>
-
-  <div class="card" style="grid-column: span 6;">
+  </article>
+  <article class="card">
     <div class="card__body">
-      <h3 class="h3">Homepage layout</h3>
-      <p class="muted">Drag-and-drop blocks and save.</p>
-      <div class="actions">
-        <a class="btn primary" href="{{ url_for('admin.page_builder') }}">Open page builder</a>
+      <h3 class="h3">Stories</h3>
+      <p class="muted"><strong>{{ counts.pending_stories }}</strong> pending review</p>
+      <div class="actions" style="margin-top:8px;">
+        <a class="btn" href="{{ url_for('admin.stories') }}">Review</a>
       </div>
     </div>
-  </div>
+  </article>
+  <article class="card">
+    <div class="card__body">
+      <h3 class="h3">Tour Requests</h3>
+      <p class="muted"><strong>{{ counts.tours }}</strong> total</p>
+      <div class="actions" style="margin-top:8px;">
+        <a class="btn" href="{{ url_for('admin.tour_requests') }}">View</a>
+      </div>
+    </div>
+  </article>
+  <article class="card">
+    <div class="card__body">
+      <h3 class="h3">Interest List</h3>
+      <p class="muted"><strong>{{ counts.interest }}</strong> signups</p>
+      <div class="actions" style="margin-top:8px;">
+        <a class="btn" href="{{ url_for('admin.interest_list') }}">View</a>
+      </div>
+    </div>
+  </article>
+  <article class="card">
+    <div class="card__body">
+      <h3 class="h3">Quick links</h3>
+      <div class="actions" style="margin-top:8px;">
+        <a class="btn" href="{{ url_for('admin.openings') }}">Openings</a>
+        <a class="btn" href="{{ url_for('admin.users') }}">Users</a>
+        <a class="btn" href="{{ url_for('admin.page_builder') }}">Page builder</a>
+      </div>
+    </div>
+  </article>
 </div>
 {% endblock %}

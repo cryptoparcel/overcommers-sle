@@ -1,0 +1,19 @@
+{% extends "admin/_base.html" %}
+{% block admin_content %}
+<div class="table">
+  <div class="row head" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
+    <div>Date</div><div>Name</div><div>Email</div><div>Phone</div><div>Preferred Time</div>
+  </div>
+  {% for t in tours %}
+  <div class="row" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
+    <div class="small">{{ t.created_at.strftime('%b %d, %Y %H:%M') if t.created_at else '-' }}</div>
+    <div>{{ t.name }}</div>
+    <div class="small"><a href="mailto:{{ t.email }}">{{ t.email }}</a></div>
+    <div class="small">{{ t.phone or '-' }}</div>
+    <div class="small">{{ t.preferred_time or '-' }}</div>
+  </div>
+  {% else %}
+  <div class="row" style="grid-template-columns:1fr;"><div class="muted">No tour requests yet.</div></div>
+  {% endfor %}
+</div>
+{% endblock %}

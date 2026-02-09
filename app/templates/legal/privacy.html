@@ -1,12 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="section">
-  <div class="container page">
-    <h1>Privacy Policy</h1>
-    <p class="muted">Placeholder privacy policy. Add your full text here.</p>
-    <div class="prose">
-      <p>We only collect information you submit through forms (Apply, Contact, Stories). We store it securely and do not sell it.</p>
-      <p>If you want your information removed, contact us.</p>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>Privacy Policy</h1>
+        <p class="muted">How we collect, use, and protect your information.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <h2 class="h2">What we collect</h2>
+        <p class="muted">We only collect information you voluntarily submit through forms on this site  -  including your name, email, phone number, and message content when you apply, contact us, or submit a story.</p>
+
+        <h2 class="h2" style="margin-top:16px;">How we use it</h2>
+        <p class="muted">Your information is used solely to respond to your inquiry, process your application, or manage your story submission. We do not sell, rent, or share your personal information with third parties for marketing purposes.</p>
+
+        <h2 class="h2" style="margin-top:16px;">How we store it</h2>
+        <p class="muted">Data submitted through forms is stored securely in our database. We use HTTPS encryption in transit and follow reasonable security practices to protect your information at rest.</p>
+
+        <h2 class="h2" style="margin-top:16px;">Cookies &amp; analytics</h2>
+        <p class="muted">This site may use minimal cookies for session management and security (CSRF protection). We may use Google reCAPTCHA to prevent spam, which is subject to Google's <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+
+        <h2 class="h2" style="margin-top:16px;">Your rights</h2>
+        <p class="muted">You can request to view, correct, or delete your personal information at any time. Contact us at <a href="mailto:legal@overcomersrc.com">legal@overcomersrc.com</a> with your request.</p>
+
+        <h2 class="h2" style="margin-top:16px;">Questions</h2>
+        <p class="muted">For privacy-related questions, email <a href="mailto:legal@overcomersrc.com">legal@overcomersrc.com</a>. For general questions, <a href="{{ url_for('public.contact') }}">contact us</a>.</p>
+
+        <p class="muted small" style="margin-top:16px;">Last updated: January 2026. This policy may be updated from time to time.</p>
+      </div>
     </div>
   </div>
 </section>

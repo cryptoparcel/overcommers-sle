@@ -1,43 +1,108 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="section">
-  <div class="container page">
-    <h1>Contact</h1>
-    <p class="muted">Send a message and we’ll respond as soon as we can.</p>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>Contact</h1>
+        <p class="muted">Send a message and we'll respond as soon as we can. Typical response: within 24 hours.</p>
+      </div>
+      <div class="actions">
+        <a class="btn" href="{{ url_for('public.tour') }}">Schedule a tour</a>
+        <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
+      </div>
+    </div>
 
-    <form method="post" class="form" novalidate>
-      {{ form.hidden_tag() }}
-      <div class="grid grid--form">
-        <div class="field">
-          <label>{{ form.name.label }}</label>
-          {{ form.name(class_="input") }}
-          {% for e in form.name.errors %}<div class="error">{{ e }}</div>{% endfor %}
-        </div>
-        <div class="field">
-          <label>{{ form.email.label }}</label>
-          {{ form.email(class_="input") }}
-          {% for e in form.email.errors %}<div class="error">{{ e }}</div>{% endfor %}
-        </div>
-        <div class="field grid__span2">
-          <label>{{ form.subject.label }}</label>
-          {{ form.subject(class_="input") }}
-          {% for e in form.subject.errors %}<div class="error">{{ e }}</div>{% endfor %}
-        </div>
-        <div class="field grid__span2">
-          <label>{{ form.message.label }}</label>
-          {{ form.message(class_="textarea", rows="6") }}
-          {% for e in form.message.errors %}<div class="error">{{ e }}</div>{% endfor %}
+    <div class="grid" style="gap:16px;">
+      <div class="card" style="grid-column: span 7;">
+        <div class="card__body">
+          <form method="post" class="form" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="grid grid--form">
+              <div class="field">
+                <label>{{ form.name.label }}</label>
+                {{ form.name(class_="input") }}
+                {% for e in form.name.errors %}<div class="error">{{ e }}</div>{% endfor %}
+              </div>
+              <div class="field">
+                <label>{{ form.email.label }}</label>
+                {{ form.email(class_="input") }}
+                {% for e in form.email.errors %}<div class="error">{{ e }}</div>{% endfor %}
+              </div>
+              <div class="field grid__span2">
+                <label>{{ form.subject.label }}</label>
+                {{ form.subject(class_="input") }}
+                {% for e in form.subject.errors %}<div class="error">{{ e }}</div>{% endfor %}
+              </div>
+              <div class="field grid__span2">
+                <label>{{ form.message.label }}</label>
+                {{ form.message(class_="textarea", rows="6") }}
+                {% for e in form.message.errors %}<div class="error">{{ e }}</div>{% endfor %}
+              </div>
+            </div>
+
+            {{ form.recaptcha_token(id="recaptcha_token") }}
+            {% for e in form.recaptcha_token.errors %}<div class="error">{{ e }}</div>{% endfor %}
+
+            <div class="form__actions">
+              <button class="btn btn--primary" type="submit" data-track="submit_contact">Send message</button>
+              <a class="btn btn--ghost" href="{{ url_for('public.index') }}">Back home</a>
+            </div>
+          </form>
         </div>
       </div>
 
-      {{ form.recaptcha_token(id="recaptcha_token") }}
-      {% for e in form.recaptcha_token.errors %}<div class="error">{{ e }}</div>{% endfor %}
-
-      <div class="form__actions">
-        <button class="btn btn--primary" type="submit" data-track="submit_contact">Send</button>
-        <a class="btn btn--ghost" href="{{ url_for('public.index') }}">Back home</a>
-      </div>
-    </form>
+      <aside style="grid-column: span 5;">
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card__body">
+            <h3 class="h3">Quick links</h3>
+            <p class="muted">Not sure where to start?</p>
+            <div class="actions" style="margin-top:8px;">
+              <a class="btn" href="{{ url_for('public.faq') }}">FAQ</a>
+              <a class="btn" href="{{ url_for('public.guide') }}">Guide</a>
+              <a class="btn" href="{{ url_for('public.tour') }}">Tour</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__body">
+            <h3 class="h3">Email the right team</h3>
+            <div class="contact-dir" style="margin-top:8px;">
+              <div class="contact-dir__item">
+                <div class="contact-dir__label">General questions</div>
+                <a class="contact-dir__email" href="mailto:info@overcomersrc.com">info@overcomersrc.com</a>
+                <div class="contact-dir__desc">Availability, tours, next steps</div>
+              </div>
+              <div class="contact-dir__item">
+                <div class="contact-dir__label">Referrals</div>
+                <a class="contact-dir__email" href="mailto:info@overcomersrc.com">info@overcomersrc.com</a>
+                <div class="contact-dir__desc">Case managers, treatment centers</div>
+              </div>
+              <div class="contact-dir__item">
+                <div class="contact-dir__label">Careers</div>
+                <a class="contact-dir__email" href="mailto:careers@overcomersrc.com">careers@overcomersrc.com</a>
+                <div class="contact-dir__desc">Jobs, training, volunteering</div>
+              </div>
+              <div class="contact-dir__item">
+                <div class="contact-dir__label">Website help</div>
+                <a class="contact-dir__email" href="mailto:support@overcomersrc.com">support@overcomersrc.com</a>
+                <div class="contact-dir__desc">Forms, login, site issues</div>
+              </div>
+              <div class="contact-dir__item">
+                <div class="contact-dir__label">Billing</div>
+                <a class="contact-dir__email" href="mailto:billing@overcomersrc.com">billing@overcomersrc.com</a>
+                <div class="contact-dir__desc">Receipts, payment questions</div>
+              </div>
+              <div class="contact-dir__item">
+                <div class="contact-dir__label">Policies &amp; legal</div>
+                <a class="contact-dir__email" href="mailto:legal@overcomersrc.com">legal@overcomersrc.com</a>
+                <div class="contact-dir__desc">Formal requests, compliance</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
   </div>
 </section>
 

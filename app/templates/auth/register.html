@@ -5,7 +5,7 @@
     <div class="section-head">
       <div>
         <h2>Create account</h2>
-        <p>This is the backend-ready version of the sign-up flow.</p>
+        <p>Join to submit stories, track applications, and more.</p>
       </div>
     </div>
 
@@ -53,8 +53,11 @@
 
       <div class="card" style="grid-column: span 6;">
         <div class="body">
-          <h3>Admin access</h3>
-          <p class="muted">Create a normal account first, then run <code>python manage.py make-admin you@example.com</code>.</p>
+          <h3>Already have an account?</h3>
+          <p class="muted">Log in to access your dashboard, check your application status, or manage your account.</p>
+          <div class="actions" style="margin-top:12px;">
+            <a class="btn" href="{{ url_for('auth.login') }}">Login</a>
+          </div>
         </div>
       </div>
     </div>

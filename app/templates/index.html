@@ -1,34 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
 <main class="home">
+  {# ── Hero ─────────────────────────────────────────────── #}
   <section class="home-hero">
     <div class="container">
       <div class="home-hero__card">
         <div class="home-hero__copy">
           <h1 class="home-hero__title">A safe, sober place to live while you get back on your feet.</h1>
-          <p class="home-hero__lead">Premium, structured sober living for recovery &amp; reentry — with clear routines, accountability, and practical next steps.</p>
+          <p class="home-hero__lead">Structured sober living for recovery &amp; reentry — with clear routines, accountability, and practical next steps.</p>
           <p class="home-hero__body">
-            <strong>OVERCOMERS</strong> is peer‑based supportive housing. We focus on safety, respect, and stability.
-            If someone needs detox, therapy, or medical care, we help connect them to licensed providers.
+            <strong>OVERCOMERS</strong> is peer-based supportive housing in the Grover Beach area.
+            We focus on safety, respect, and stability. If someone needs detox, therapy, or medical care, we help connect them to licensed providers.
           </p>
           <div class="home-actions">
-            <a class="btn btn--primary" href="{{ url_for('public.apply') }}" data-track="cta_apply">Apply</a>
-            <a class="btn btn--ghost" href="{{ url_for('public.openings') }}" data-track="cta_openings">View openings</a>
-            <a class="btn btn--ghost" href="{{ url_for('public.contact') }}" data-track="cta_contact">Ask a question</a>
+            <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
+            <a class="btn btn--ghost" href="{{ url_for('public.openings') }}">View openings</a>
+            <a class="btn btn--ghost" href="{{ url_for('public.tour') }}">Schedule a tour</a>
           </div>
           <p class="muted small" style="margin-top:10px;">Emergency? Call 911. This site is informational and not medical advice.</p>
         </div>
 
         <div class="card card--padded card--stretch">
-          <h2 class="section-title">Upcoming openings</h2>
-          <p class="muted">See what’s available around Grover Beach. Apply first — we confirm fit and share exact pricing &amp; next steps.</p>
+          <h2 class="section-title">Openings</h2>
+          <p class="muted">See what's available. Apply first — we confirm fit and share pricing.</p>
           <div class="spacer"></div>
           <a class="btn btn--primary" href="{{ url_for('public.openings') }}">View openings</a>
         </div>
 
         <div class="card card--padded card--stretch">
           <h2 class="section-title">Resources</h2>
-          <p class="muted">Simple, family‑friendly links for help, hotlines, and local support options.</p>
+          <p class="muted">Family-friendly links for help, hotlines, and local support options.</p>
           <div class="spacer"></div>
           <a class="btn btn--primary" href="{{ url_for('public.resources') }}">Go to resources</a>
         </div>
@@ -36,6 +37,43 @@
     </div>
   </section>
 
+  {# ── How it works (process strip) ─────────────────────── #}
+  <section class="section" style="padding:24px 0;">
+    <div class="container">
+      <div class="grid cards">
+        <article class="card" style="grid-column: span 3;">
+          <div class="card__body" style="text-align:center;">
+            <div class="impact-icon" style="margin:0 auto 6px;">1</div>
+            <h3 class="h3">Apply</h3>
+            <p class="muted small">Quick form — takes 2 minutes.</p>
+          </div>
+        </article>
+        <article class="card" style="grid-column: span 3;">
+          <div class="card__body" style="text-align:center;">
+            <div class="impact-icon" style="margin:0 auto 6px;">2</div>
+            <h3 class="h3">Call / Screen</h3>
+            <p class="muted small">We confirm fit and answer questions.</p>
+          </div>
+        </article>
+        <article class="card" style="grid-column: span 3;">
+          <div class="card__body" style="text-align:center;">
+            <div class="impact-icon" style="margin:0 auto 6px;">3</div>
+            <h3 class="h3">Tour</h3>
+            <p class="muted small">See the space. Bring family or a case manager.</p>
+          </div>
+        </article>
+        <article class="card" style="grid-column: span 3;">
+          <div class="card__body" style="text-align:center;">
+            <div class="impact-icon" style="margin:0 auto 6px;">4</div>
+            <h3 class="h3">Move In</h3>
+            <p class="muted small">Orientation, agreements, stability plan.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  {# ── What we offer ────────────────────────────────────── #}
   <section class="section">
     <div class="container">
       <div class="section-head">
@@ -45,7 +83,7 @@
         </div>
         <div class="actions">
           <a class="btn" href="{{ url_for('public.what_we_do') }}">What we do</a>
-          <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
+          <a class="btn btn--primary" href="{{ url_for('public.guide') }}">Start here</a>
         </div>
       </div>
 
@@ -54,23 +92,21 @@
           <div class="card__body">
             <h3 class="h3">Structured sober housing</h3>
             <p class="muted">Clear rules, respectful living, accountability, and a calm environment designed for stability.</p>
+            <p class="muted small">$1,000/month + $1,000 deposit (Grover Beach area)</p>
           </div>
         </article>
-
         <article class="card">
           <div class="card__body">
-            <h3 class="h3">Life‑skills workshops</h3>
+            <h3 class="h3">Life-skills workshops</h3>
             <p class="muted">Budgeting, job search, email/phones, routines, time management, and basic adulting skills.</p>
           </div>
         </article>
-
         <article class="card">
           <div class="card__body">
             <h3 class="h3">Reentry planning</h3>
-            <p class="muted">Step‑by‑step help with schedules, paperwork, appointments, and getting back into the flow of life.</p>
+            <p class="muted">Step-by-step help with schedules, paperwork, appointments, and getting back into the flow of life.</p>
           </div>
         </article>
-
         <article class="card">
           <div class="card__body">
             <h3 class="h3">Employment pathway</h3>
@@ -80,156 +116,106 @@
             </div>
           </div>
         </article>
-
         <article class="card">
           <div class="card__body">
             <h3 class="h3">Family &amp; youth support</h3>
-            <p class="muted">Easy‑to‑read guidance for kids and families looking for safe next steps and local resources.</p>
+            <p class="muted">Guidance for kids and families looking for safe next steps and local resources.</p>
+            <div class="actions" style="margin-top:10px;">
+              <a class="btn" href="{{ url_for('public.families') }}">For families</a>
+            </div>
           </div>
         </article>
-
         <article class="card">
           <div class="card__body">
-            <h3 class="h3">Community &amp; mentorship</h3>
-            <p class="muted">Positive community, healthy friendships, and consistent encouragement — without the chaos.</p>
+            <h3 class="h3">Veterans support</h3>
+            <p class="muted">A stable, recovery-focused environment for veterans — plus help connecting to the right resources.</p>
+            <div class="actions" style="margin-top:10px;">
+              <a class="btn" href="{{ url_for('public.veterans') }}">Veterans info</a>
+            </div>
           </div>
         </article>
       </div>
     </div>
   </section>
 
+  {# ── Dynamic openings preview ─────────────────────────── #}
+  {% if openings_preview and openings_preview|length > 0 %}
   <section class="section">
     <div class="container">
       <div class="section-head">
         <div>
-          <h2>Upcoming openings</h2>
-          <p class="muted">Apply first. We’ll confirm fit and share exact pricing and move‑in steps.</p>
+          <h2>Current openings</h2>
+          <p class="muted">Apply first. We'll confirm fit and share exact pricing.</p>
         </div>
         <div class="actions">
           <a class="btn" href="{{ url_for('public.openings') }}">See all</a>
         </div>
       </div>
-
-      {% if openings_preview and openings_preview|length > 0 %}
-        <div class="grid cards">
-          {% for o in openings_preview %}
-          <article class="card">
-            <div class="card__body">
-              <h3 class="h3">{{ o.title }}</h3>
-              <p class="muted">
-                {% if o.city %}{{ o.city }}{% endif %}{% if o.state %}{% if o.city %}, {% endif %}{{ o.state }}{% endif %}
-                {% if o.available_on %} • Available {{ o.available_on.strftime('%b %d, %Y') }}{% endif %}
-                • Beds: {{ o.beds_available }}
-              </p>
-              {% if o.summary %}
-                <p class="muted">{{ o.summary }}</p>
-              {% else %}
-                <p class="muted">Clean, supportive environment with structure and next‑step planning.</p>
-              {% endif %}
-
-              <div class="actions" style="margin-top:12px;">
-                <a class="btn btn--primary" href="{{ url_for('public.opening_detail', slug=o.slug) }}">View</a>
-                <a class="btn" href="{{ url_for('public.apply') }}">Apply</a>
-              </div>
-
-              {% if not o.hide_price and o.price_monthly %}
-                <p class="muted small" style="margin-top:10px;">{{ o.price_monthly }}{% if o.deposit %} • {{ o.deposit }}{% endif %}</p>
-              {% else %}
-                <p class="muted small" style="margin-top:10px;">Pricing shared after application.</p>
-              {% endif %}
-            </div>
-          </article>
-          {% endfor %}
-        </div>
-      {% else %}
-        <div class="card">
-          <div class="card__body">
-            <p class="muted">No openings are posted right now. Apply anyway and we’ll reach out when a spot becomes available.</p>
-            <div class="actions" style="margin-top:12px;">
-              <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
-              <a class="btn" href="{{ url_for('public.contact') }}">Contact</a>
-            </div>
-          </div>
-        </div>
-      {% endif %}
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>Lumpia Bros Cafe</h2>
-          <p class="muted">Real‑world structure: routines, responsibility, and job skills — right here in Grover Beach.</p>
-        </div>
-        <div class="actions">
-          <a class="btn" href="{{ url_for('public.careers') }}">Jobs</a>
-          <a class="btn btn--primary" href="{{ url_for('public.contact') }}">Contact</a>
-        </div>
-      </div>
-
       <div class="grid cards">
-        <article class="card" style="grid-column: span 6;">
+        {% for o in openings_preview %}
+        <article class="card">
           <div class="card__body">
-            <h3 class="h3">Work experience &amp; training</h3>
-            <p class="muted">Food service basics, customer service, teamwork, and punctuality — plus mentorship and coaching.</p>
-            <p class="muted small" style="margin:0;"><strong>Address:</strong> 1187 W Grand Ave, Grover Beach, CA 93433</p>
-          </div>
-        </article>
-
-        <article class="card" style="grid-column: span 6;">
-          <div class="card__body">
-            <h3 class="h3">A pathway back to stability</h3>
-            <p class="muted">We help residents build a realistic plan: housing + employment + routines + support.</p>
+            <h3 class="h3">{{ o.title }}</h3>
+            <p class="muted">
+              {% if o.city %}{{ o.city }}{% endif %}{% if o.state %}{% if o.city %}, {% endif %}{{ o.state }}{% endif %}
+              {% if o.available_on %} · Available {{ o.available_on.strftime('%b %d, %Y') }}{% endif %}
+              · Beds: {{ o.beds_available }}
+            </p>
             <div class="actions" style="margin-top:12px;">
-              <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
-              <a class="btn" href="{{ url_for('public.programs') }}">Learn more</a>
+              <a class="btn btn--primary" href="{{ url_for('public.opening_detail', slug=o.slug) }}">View</a>
+              <a class="btn" href="{{ url_for('public.apply') }}">Apply</a>
             </div>
           </div>
         </article>
+        {% endfor %}
       </div>
     </div>
   </section>
+  {% endif %}
 
+  {# ── Who we serve ─────────────────────────────────────── #}
   <section class="section">
     <div class="container">
       <div class="section-head">
         <div>
-          <h2>Standards &amp; safety</h2>
-          <p class="muted">How we operate — transparent, accountable, and aligned with best-practice recovery residence standards.</p>
-        </div>
-        <div class="actions">
-          <a class="btn btn--primary" href="{{ url_for('public.standards') }}">Our standards</a>
+          <h2>Who we serve</h2>
+          <p class="muted">Whether you're looking for housing, referring a client, or helping a loved one.</p>
         </div>
       </div>
-
       <div class="grid cards">
         <article class="card">
           <div class="card__body">
-            <h3 class="h3">Structured support</h3>
-            <p class="muted">A recovery residence is a safe, sober living environment — not a treatment center. We provide structure, peer support, and accountability while residents rebuild stability.</p>
+            <h3 class="h3">Individuals in recovery</h3>
+            <p class="muted">Structured housing, peer support, and practical next steps for adults in recovery or reentry.</p>
             <div class="actions" style="margin-top:10px;">
-              <a class="btn" href="{{ url_for('public.standards') }}">Learn what that means</a>
+              <a class="btn" href="{{ url_for('public.guide') }}">Guide</a>
             </div>
           </div>
         </article>
-
         <article class="card">
           <div class="card__body">
-            <h3 class="h3">Resident rights &amp; transparency</h3>
-            <p class="muted">Written confidentiality agreements, clear financial terms, a fair grievance process, and ethical advertising. Every resident knows their rights before move-in.</p>
+            <h3 class="h3">Veterans</h3>
+            <p class="muted">Calm rebuilding, reentry help, and resource connections — tailored for service members.</p>
             <div class="actions" style="margin-top:10px;">
-              <a class="btn" href="{{ url_for('public.standards') }}#rights">See resident rights</a>
+              <a class="btn" href="{{ url_for('public.veterans') }}">Veterans support</a>
             </div>
           </div>
         </article>
-
         <article class="card">
           <div class="card__body">
-            <h3 class="h3">Documented operations</h3>
-            <p class="muted">House rules, safety protocols, medication policies, grievance procedures — all documented and reviewed. Aligned with NARR/CCAPP industry standards.</p>
+            <h3 class="h3">Families &amp; loved ones</h3>
+            <p class="muted">Guidance on what to expect, how the process works, and support resources for your family.</p>
             <div class="actions" style="margin-top:10px;">
-              <a class="btn" href="{{ url_for('public.operator_resources') }}">View operating documents</a>
+              <a class="btn" href="{{ url_for('public.families') }}">For families</a>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card__body">
+            <h3 class="h3">Referral partners</h3>
+            <p class="muted">Case managers, treatment centers, and community orgs — here's how to refer clients.</p>
+            <div class="actions" style="margin-top:10px;">
+              <a class="btn" href="{{ url_for('public.referrals') }}">For referrals</a>
             </div>
           </div>
         </article>
@@ -237,96 +223,10 @@
     </div>
   </section>
 
-  
-      <section class="section" style="margin-top:28px;">
-        <div class="container">
-        <div class="section-head">
-          <div>
-            <h2>Programs, classes & support</h2>
-            <p>Practical, real-world help — designed to be easy to understand and actually useful.</p>
-          </div>
-          <div class="home-actions">
-            <a class="btn btn--ghost" href="{{ url_for('public.contact') }}">Ask about enrollment</a>
-            <a class="btn btn--primary" href="{{ url_for('public.openings') }}">View openings</a>
-          </div>
-        </div>
-
-        <div class="grid cards">
-          <article class="card">
-            <div class="card__body">
-              <h3 class="h3">Life-skills workshops</h3>
-              <p class="muted">Budgeting, routines, email & paperwork, job search basics, and staying organized.</p>
-              <p class="muted tiny">Format: small groups • easy language • step-by-step.</p>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card__body">
-              <h3 class="h3">Recovery-friendly structure</h3>
-              <p class="muted">House expectations, accountability, and peer support to keep momentum going.</p>
-              <p class="muted tiny">Not medical care. We help connect to licensed providers if needed.</p>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card__body">
-              <h3 class="h3">Kids & family support</h3>
-              <p class="muted">Simple resources for families: communication, healthy routines, and local help options.</p>
-              <p class="muted tiny">We can add “kid-friendly” guides and school/community links next.</p>
-              <div class="actions">
-                <a class="btn" href="{{ url_for('public.kids_support') }}">Get family help</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card__body">
-              <h3 class="h3">Room pricing</h3>
-              <p class="muted"><strong>$1,000 / month</strong> + <strong>$1,000 deposit</strong> (Grover Beach area).</p>
-              <p class="muted tiny">Included items may vary by house — see each opening for details.</p>
-              <div class="actions">
-                <a class="btn btn--primary" href="{{ url_for('public.openings') }}">See openings</a>
-              </div>
-            </div>
-          </article>
-        </div>
-
-        <div class="grid cards" style="margin-top:16px;">
-          <article class="card" style="grid-column: span 6;">
-            <div class="card__body">
-              <h3 class="h3">Lumpia Bros Cafe — job pathway</h3>
-              <p class="muted">For residents who are ready, we can help connect to work opportunities and job-readiness support.</p>
-              <div class="actions">
-                <a class="btn" href="{{ url_for('public.partnerships') }}">Lumpia pathway</a>
-                <a class="btn btn--ghost" href="{{ url_for('public.careers') }}">View jobs</a>
-                <a class="btn btn--ghost" href="{{ url_for('public.contact') }}">Ask about job support</a>
-              </div>
-              <p class="muted tiny">Location: 1187 W Grand Ave, Grover Beach, CA 93433</p>
-            </div>
-          </article>
-
-          <article class="card" style="grid-column: span 6;">
-            <div class="card__body">
-              <h3 class="h3">A step-by-step plan</h3>
-              <p class="muted">Apply → quick call → move-in checklist → weekly goals → next housing/work plan.</p>
-              <div class="actions">
-                <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply now</a>
-                <a class="btn" href="{{ url_for('public.programs') }}">Learn more</a>
-              </div>
-            </div>
-          </article>
-        </div>
-        </div>
-      </section>
-{% if page_blocks %}
+  {# ── Page builder blocks (admin-managed) ───────────────── #}
+  {% if page_blocks %}
   <section class="section">
     <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>More programs</h2>
-          <p class="muted">These sections can be rearranged by an admin using the Page Builder.</p>
-        </div>
-      </div>
       <div class="grid cards">
         {% for b in page_blocks %}
           <article class="card">
@@ -339,9 +239,6 @@
                     <a class="btn {% if loop.first %}btn--primary{% else %}btn--ghost{% endif %}" href="{{ btn.href }}">{{ btn.label }}</a>
                   {% endfor %}
                 </div>
-              {% endif %}
-              {% if b.content and b.content.note %}
-                <p class="muted small" style="margin-top:10px;">{{ b.content.note }}</p>
               {% endif %}
             </div>
           </article>

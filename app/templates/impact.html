@@ -16,92 +16,68 @@
     <div class="card" style="margin-bottom:24px;">
       <div class="card__body">
         <h2 class="h2">What we focus on</h2>
-        <p>Impact isn't just about numbers. It's about real, tangible stability: safe housing, consistent routines, employment, and follow-through. We track progress across a few key areas — without sharing anyone's private information publicly.</p>
+        <p>Impact isn't just about numbers. It's about real, tangible stability: safe housing, consistent routines, employment, and follow-through. We track progress without sharing anyone's private information.</p>
       </div>
     </div>
 
     <div class="grid cards" style="margin-bottom:32px;">
       <article class="card">
         <div class="card__body">
-          <div class="impact-number">🏠</div>
+          <div class="impact-icon">🏠</div>
           <h3 class="h3">Stable housing</h3>
-          <p class="muted">Residents have a clean, sober, structured place to live while they rebuild. Many stay 3–12 months, building habits that last beyond their time here.</p>
+          <p class="muted">Residents have a clean, sober, structured place to live while they rebuild. Many stay 3–12 months, building habits that last.</p>
         </div>
       </article>
       <article class="card">
         <div class="card__body">
-          <div class="impact-number">💼</div>
+          <div class="impact-icon">💼</div>
           <h3 class="h3">Employment progress</h3>
-          <p class="muted">We help residents with job search, resumes, and connecting to local employers — including opportunities through Lumpia Bros Cafe in Grover Beach.</p>
+          <p class="muted">We help residents with job search, resumes, and connecting to local employers — including opportunities through Lumpia Bros Cafe.</p>
         </div>
       </article>
       <article class="card">
         <div class="card__body">
-          <div class="impact-number">📋</div>
+          <div class="impact-icon">📋</div>
           <h3 class="h3">Life skills &amp; routines</h3>
-          <p class="muted">Weekly workshops cover budgeting, time management, paperwork, and adulting basics. Small group format, easy language, step-by-step approach.</p>
+          <p class="muted">Weekly workshops cover budgeting, time management, paperwork, and adulting basics. Small group format, step-by-step approach.</p>
         </div>
       </article>
       <article class="card">
         <div class="card__body">
-          <div class="impact-number">🤝</div>
+          <div class="impact-icon">🤝</div>
           <h3 class="h3">Community connections</h3>
           <p class="muted">Residents build positive relationships, attend recovery meetings, and develop a support network that continues after they move on.</p>
         </div>
       </article>
       <article class="card">
         <div class="card__body">
-          <div class="impact-number">📈</div>
+          <div class="impact-icon">📈</div>
           <h3 class="h3">Accountability</h3>
-          <p class="muted">Weekly house meetings, goal-setting, and check-ins create structure. Residents track their own milestones and celebrate progress together.</p>
+          <p class="muted">Weekly house meetings, goal-setting, and check-ins create structure. Residents track milestones and celebrate progress together.</p>
         </div>
       </article>
       <article class="card">
         <div class="card__body">
-          <div class="impact-number">🔗</div>
+          <div class="impact-icon">🔗</div>
           <h3 class="h3">Referral partnerships</h3>
-          <p class="muted">We work with case managers, treatment centers, and community organizations to ensure residents have continuity of care and support.</p>
+          <p class="muted">We work with case managers, treatment centers, and community organizations to ensure continuity of care and support.</p>
         </div>
       </article>
     </div>
 
-    <div class="card" style="margin-bottom:24px;">
+    <div class="card">
       <div class="card__body">
         <h2 class="h2">How you can help</h2>
-        <p>Every bit of support helps keep beds available, supplies stocked, and programming running. Here are some ways to contribute:</p>
-        <div class="grid cards" style="margin-top:16px;">
-          <article class="card card--flat" style="grid-column: span 4;">
-            <div class="card__body">
-              <h3 class="h3">Refer someone</h3>
-              <p class="muted">If you know someone who could benefit from structured sober living, point them our way.</p>
-              <div class="actions" style="margin-top:8px;">
-                <a class="btn" href="{{ url_for('public.apply') }}">Apply</a>
-              </div>
-            </div>
-          </article>
-          <article class="card card--flat" style="grid-column: span 4;">
-            <div class="card__body">
-              <h3 class="h3">Share your story</h3>
-              <p class="muted">If you've been through our program, your story can encourage others to take the next step.</p>
-              <div class="actions" style="margin-top:8px;">
-                <a class="btn" href="{{ url_for('public.story_submit') }}">Submit a story</a>
-              </div>
-            </div>
-          </article>
-          <article class="card card--flat" style="grid-column: span 4;">
-            <div class="card__body">
-              <h3 class="h3">Support the mission</h3>
-              <p class="muted">Check the shop for ways to contribute, or reach out to discuss partnerships.</p>
-              <div class="actions" style="margin-top:8px;">
-                <a class="btn" href="{{ url_for('public.shop') }}">Shop</a>
-              </div>
-            </div>
-          </article>
+        <p>Every bit of support helps keep beds available, supplies stocked, and programming running.</p>
+        <div class="actions" style="margin-top:12px;">
+          <a class="btn" href="{{ url_for('public.apply') }}">Refer someone</a>
+          <a class="btn" href="{{ url_for('public.story_submit') }}">Share a story</a>
+          <a class="btn" href="{{ url_for('public.shop') }}">Support the mission</a>
+          <a class="btn" href="{{ url_for('public.contact') }}">Contact us</a>
         </div>
+        <p class="muted small" style="margin-top:12px;">We do not share personally identifiable information about residents publicly. All reporting is anonymized.</p>
       </div>
     </div>
-
-    <p class="muted small">We do not share personally identifiable information about residents publicly. All impact reporting is anonymized and aggregated.</p>
   </div>
 </section>
 {% endblock %}

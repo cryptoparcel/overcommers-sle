@@ -1,99 +1,99 @@
-# Overcomers — Transformative Thinking & Restorative Community
+# OVERCOMERS — Transformative Thinking & Restorative Community
 
-A premium, structured sober-living / supportive-housing website built with Flask.
+Supportive housing management site built with Flask.
 
-## Features
-
-- Public pages: Home, What We Do, Resources, Impact, Shop, Contact, Apply
-- Openings: Published housing listings with pricing, amenities, house rules
-- Stories: User-submitted stories with admin approval workflow
-- Accounts: signup/login, account settings, logout
-- Admin area (admins only):
-  - Applications management (status updates, CSV export)
-  - Contact messages inbox
-  - Stories moderation (approve / reject / delete)
-  - Users list
-  - Page Builder (drag-and-drop homepage blocks)
-  - Openings CRUD (create & publish "Upcoming Openings" listings)
-
-## Local setup
-
-1) Create a virtualenv and install deps:
+## Quick Start (Local)
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate   # macOS/Linux
-# .venv\Scripts\activate    # Windows
 pip install -r requirements.txt
+python manage.py run
 ```
 
-2) Set environment variables:
+Visit http://localhost:5000
+
+## How to Get Admin Access
+
+### Option A: Environment variables (recommended for Render)
+
+Set these in your Render service environment:
+```
+ADMIN_EMAIL=you@example.com
+ADMIN_PASSWORD=your-secure-password
+```
+The app auto-creates the admin user on first request. After the account exists, you can remove `ADMIN_PASSWORD` from env vars.
+
+### Option B: CLI command (local or Render Shell)
+
+1. Register an account at `/auth/register`
+2. Run in terminal (or Render Shell):
+```bash
+flask --app wsgi:app make-admin you@example.com
+```
+3. Visit `/admin` — you're in.
+
+### Option C: manage.py (local)
 
 ```bash
-export FLASK_APP="wsgi:app"
-export SECRET_KEY="change-me"
-export DATABASE_URL="sqlite:///app.db"
+python manage.py make-admin you@example.com
 ```
 
-3) Create the database and seed starter content:
+## Deploying to Render
 
+1. Push code to GitHub
+2. Create a Web Service on Render
+3. Set environment variables:
+   - `SECRET_KEY` — **required** (long random string, app won't start without it)
+   - `DATABASE_URL` — auto-set if using Render Postgres
+   - `SESSION_COOKIE_SECURE=1`
+   - `ADMIN_EMAIL` — (optional) auto-creates admin on first deploy
+   - `ADMIN_PASSWORD` — (optional) remove after first deploy
+
+### Optional email notifications
+```
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USERNAME=you@gmail.com
+SMTP_PASSWORD=your-app-password
+NOTIFY_EMAIL=info@overcomersrc.com
+```
+
+## Database Migrations
+
+Render runs migrations automatically via `render.yaml`. Locally:
 ```bash
-flask db upgrade
-flask bootstrap-db
+flask --app wsgi:app db upgrade
 ```
 
-4) Run the app:
-
+To generate a new migration after model changes:
 ```bash
-flask run
+flask --app wsgi:app db migrate -m "description"
 ```
 
-## Making yourself admin
+## Project Structure
 
-There is **no** UI button to become admin (by design).
-
-1) Create an account on the site (Signup)
-2) In a terminal, run:
-
-```bash
-flask make-admin your@email.com
-
-# Or using manage.py:
-python manage.py make-admin your@email.com
+```
+app/
+  blueprints/    → Routes (public, auth, admin, errors)
+  templates/     → Jinja2 HTML templates
+  static/        → CSS, JS, images
+  models.py      → Database models
+  forms.py       → WTForms definitions
+  config.py      → Configuration
+  utils/         → Helpers (mailer, slugify, admin_required)
+manage.py        → CLI commands
+wsgi.py          → WSGI entry point
 ```
 
-Now refresh — you'll see the **Admin** link in the navbar.
+## Business Emails
 
-## Openings (Upcoming Openings)
-
-- Admin → Openings → "New opening"
-- Set **Status = Published** to show it on `/openings`
-- Recommended: leave **Hide pricing publicly** checked (pricing is shared after application)
-
-## Deploying on Render
-
-The included `render.yaml` handles deployment. Key steps:
-
-1. Set `DATABASE_URL` to your Render Postgres internal URL
-2. Set `SECRET_KEY` to a strong random string (e.g. `python -c "import secrets; print(secrets.token_urlsafe(32))"`)
-3. Set `SESSION_COOKIE_SECURE=1`
-4. The start command runs `flask db upgrade` automatically before starting Gunicorn
-5. After first deploy, open the Render Shell and run:
-
-```bash
-flask bootstrap-db
-flask make-admin you@example.com
-```
-
-## Optional configuration
-
-| Variable | Purpose |
-|---|---|
-| `SMTP_HOST` | SMTP server for email notifications |
-| `SMTP_PORT` | SMTP port (default: 587) |
-| `SMTP_USERNAME` | SMTP login |
-| `SMTP_PASSWORD` | SMTP password |
-| `SMTP_FROM` | From address for emails |
-| `NOTIFY_EMAIL` | Where to send admin notifications (default: info@overcomersrc.com) |
-| `RECAPTCHA_SITE_KEY` | Google reCAPTCHA v3 site key |
-| `RECAPTCHA_SECRET_KEY` | Google reCAPTCHA v3 secret key |
+| Email | Purpose | Where it appears |
+|---|---|---|
+| info@overcomersrc.com | General questions, tours | Footer, contact page |
+| support@overcomersrc.com | Website issues | Contact directory |
+| careers@overcomersrc.com | Jobs, volunteering | Careers page, contact directory |
+| billing@overcomersrc.com | Payment questions | Shop, contact directory |
+| legal@overcomersrc.com | Policies, formal requests | Privacy, terms, policies |
+| mod@overcomersrc.com | Community conduct | Contact directory |
+| sales@overcomersrc.com | Referral partnerships | Referrals page |
+| marketing@overcomersrc.com | Outreach, events | Referrals page |
+| admin@overcomersrc.com | Administrative escalation | Contact directory |

@@ -21,13 +21,13 @@
         <div class="row" style="grid-template-columns: 110px 2fr 1fr 120px 260px;">
           <div class="muted">{{ s.created_at.strftime('%Y-%m-%d') }}</div>
           <div>{{ s.title }}</div>
-          <div class="muted">{{ s.author_name or "—" }}</div>
+          <div class="muted">{{ s.author_name or " - " }}</div>
           <div><span class="pill">{{ s.status }}</span></div>
           <div class="actions-inline">
             {% if s.status == 'pending' %}
             <form method="POST" action="{{ url_for('admin.approve_story', story_id=s.id) }}">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-              <button class="btn primary" type="submit">Approve</button>
+              <button class="btn btn--primary" type="submit">Approve</button>
             </form>
             <form method="POST" action="{{ url_for('admin.reject_story', story_id=s.id) }}">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

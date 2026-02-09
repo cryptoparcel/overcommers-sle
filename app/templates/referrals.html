@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>For Referral Partners</h1>
+        <p class="muted">Case managers, treatment centers, and community organizations  -  here's how we work together.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn--primary" href="mailto:info@overcomersrc.com">Email us</a>
+        <a class="btn" href="{{ url_for('public.contact') }}">Contact form</a>
+      </div>
+    </div>
+
+    <div class="grid cards" style="margin-bottom:32px;">
+      <article class="card" style="grid-column: span 6;">
+        <div class="card__body">
+          <h3 class="h3">What we provide</h3>
+          <p class="muted">Safe, sober, structured housing with peer support, weekly meetings, life-skills workshops, job readiness, and accountability. A stable environment where your clients can build routines and follow through on their recovery plan.</p>
+        </div>
+      </article>
+      <article class="card" style="grid-column: span 6;">
+        <div class="card__body">
+          <h3 class="h3">What we don't provide</h3>
+          <p class="muted">Medical treatment, therapy, detox, psychiatric care, or medication management. We are not a licensed treatment facility. If a resident needs clinical services, we help connect them to appropriate providers.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card__body">
+        <h2 class="h2">How to refer someone</h2>
+        <div class="standards-list" style="margin-top:12px;">
+          <div class="standards-item">
+            <div class="standards-item__icon">1</div>
+            <div>
+              <strong>Check availability</strong>
+              <p class="muted">Email <a href="mailto:info@overcomersrc.com">info@overcomersrc.com</a> or call to ask about current bed availability and any waitlist.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">2</div>
+            <div>
+              <strong>Have your client apply</strong>
+              <p class="muted">They can fill out the <a href="{{ url_for('public.apply') }}">online application</a> (2-3 minutes). You're welcome to assist them with the form.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">3</div>
+            <div>
+              <strong>We follow up</strong>
+              <p class="muted">We contact the applicant within 24 hours for a phone screen. We'll coordinate with you as needed for care continuity.</p>
+            </div>
+          </div>
+          <div class="standards-item">
+            <div class="standards-item__icon">4</div>
+            <div>
+              <strong>Tour &amp; move-in</strong>
+              <p class="muted">If it's a fit, we schedule a tour and walk through orientation, agreements, and move-in logistics.</p>
+            </div>
+          </div>
+        </div>
+        <p class="muted small" style="margin-top:14px;">Typical response time: within 24 hours. For urgent placements, email with "URGENT" in the subject.</p>
+      </div>
+    </div>
+
+    <div class="grid cards" style="margin-bottom:24px;">
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Our standards</h3>
+          <p class="muted">Documented policies, resident rights, and operating standards aligned with NARR/CCAPP guidelines.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="{{ url_for('public.standards') }}">View standards</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Policies &amp; documents</h3>
+          <p class="muted">House rules, financial agreements, grievance process, and all operating documentation.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="{{ url_for('public.policies') }}">View policies</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__body">
+          <h3 class="h3">Veterans</h3>
+          <p class="muted">Veteran-specific support and resources for service members in recovery or reentry.</p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn" href="{{ url_for('public.veterans') }}">Veterans page</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="card">
+      <div class="card__body">
+        <h3 class="h3">Contact for referrals</h3>
+        <p class="muted">General referrals: <a href="mailto:info@overcomersrc.com">info@overcomersrc.com</a></p>
+        <p class="muted">Partnerships &amp; outreach: <a href="mailto:marketing@overcomersrc.com">marketing@overcomersrc.com</a></p>
+        <p class="muted small" style="margin-top:8px;">We welcome relationships with treatment centers, probation/parole, social workers, hospitals, and community organizations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

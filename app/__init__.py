@@ -18,19 +18,20 @@ def create_app() -> Flask:
     migrate.init_app(app, db)
     login_manager.init_app(app)
 
-    # Flask-Login: load a user from the session
     from .models import User
 
     @login_manager.user_loader
     def _load_user(user_id: str):  # pragma: no cover
         try:
-            return User.query.get(int(user_id))
+            return db.session.get(User, int(user_id))
         except Exception:
             return None
+
     csrf.init_app(app)
     limiter.init_app(app)
 
     login_manager.login_view = "auth.login"
+    login_manager.login_message_category = "info"
 
     app.register_blueprint(public_bp)
     app.register_blueprint(auth_bp, url_prefix="/auth")
@@ -39,6 +40,7 @@ def create_app() -> Flask:
 
     register_cli(app)
 
+    # ── Template filters ─────────────────────────────────────
     @app.template_filter("nl2br")
     def nl2br(s: str) -> str:
         if not s:
@@ -52,5 +54,39 @@ def create_app() -> Flask:
             .replace("\n", "<br>")
         )
 
+    # ── Auto-bootstrap admin from env vars on first request ──
+    _admin_bootstrapped = {"done": False}
+
+    @app.before_request
+    def _auto_bootstrap_admin():
+        """Create admin user from ADMIN_EMAIL + ADMIN_PASSWORD env vars if no admin exists yet."""
+        if _admin_bootstrapped["done"]:
+            return
+        _admin_bootstrapped["done"] = True
+
+        admin_email = app.config.get("ADMIN_EMAIL", "").strip().lower()
+        admin_password = app.config.get("ADMIN_PASSWORD", "").strip()
+        if not admin_email or not admin_password:
+            return
+        try:
+            existing = User.query.filter_by(email=admin_email).first()
+            if existing:
+                if not existing.is_admin:
+                    existing.is_admin = True
+                    db.session.commit()
+                    app.logger.info(f"Promoted {admin_email} to admin via env vars.")
+                return
+            user = User(
+                name="Admin",
+                email=admin_email,
+                username=admin_email.split("@")[0],
+            )
+            user.set_password(admin_password)
+            user.is_admin = True
+            db.session.add(user)
+            db.session.commit()
+            app.logger.info(f"Auto-created admin user: {admin_email}")
+        except Exception as e:
+            app.logger.warning(f"Admin bootstrap skipped: {e}")
 
     return app
