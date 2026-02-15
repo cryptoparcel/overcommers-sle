@@ -1,7 +1,11 @@
+
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from werkzeug.security import generate_password_hash, check_password_hash
+
+def _utcnow():
+    return datetime.now(timezone.utc)
 from flask_login import UserMixin
 
 from .extensions import db
@@ -11,8 +15,8 @@ class User(UserMixin, db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=_utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=_utcnow, onupdate=_utcnow, nullable=False)
 
     name = db.Column(db.String(120), nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False, index=True)
@@ -22,6 +26,10 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
     last_login = db.Column(db.DateTime, nullable=True)
+
+    # Email confirmation
+    email_confirmed = db.Column(db.Boolean, default=False, nullable=False)
+    confirm_token = db.Column(db.String(64), unique=True, nullable=True)
 
     def set_password(self, password: str) -> None:
         self.password_hash = generate_password_hash(password)
@@ -34,22 +42,22 @@ class Application(db.Model):
     __tablename__ = "applications"
 
     id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=_utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=_utcnow, onupdate=_utcnow, nullable=False)
 
     full_name = db.Column(db.String(120), nullable=False)
     email = db.Column(db.String(255), nullable=False, index=True)
     phone = db.Column(db.String(40), nullable=True)
 
     message = db.Column(db.Text, nullable=True)
-    status = db.Column(db.String(32), default="new", nullable=False)
+    status = db.Column(db.String(32), default="new", nullable=False, index=True)
 
 
 class ContactMessage(db.Model):
     __tablename__ = "contact_messages"
 
     id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=_utcnow, nullable=False)
 
     name = db.Column(db.String(120), nullable=False)
     email = db.Column(db.String(255), nullable=False)
@@ -62,7 +70,7 @@ class TourRequest(db.Model):
     __tablename__ = "tour_requests"
 
     id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=_utcnow, nullable=False)
 
     name = db.Column(db.String(120), nullable=False)
     email = db.Column(db.String(255), nullable=False)
@@ -76,8 +84,8 @@ class InterestSignup(db.Model):
     __tablename__ = "interest_signups"
 
     id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    email = db.Column(db.String(255), nullable=False)
+    created_at = db.Column(db.DateTime, default=_utcnow, nullable=False)
+    email = db.Column(db.String(255), nullable=False, unique=True, index=True)
 
 
 class Story(db.Model):
@@ -91,8 +99,8 @@ class Story(db.Model):
     image_url = db.Column(db.String(500), nullable=True)
     author_name = db.Column(db.String(120), nullable=True)
 
-    status = db.Column(db.String(20), nullable=False, default="pending")  # pending | approved | rejected
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    status = db.Column(db.String(20), nullable=False, default="pending", index=True)  # pending | approved | rejected
+    created_at = db.Column(db.DateTime, nullable=False, default=_utcnow)
     reviewed_at = db.Column(db.DateTime, nullable=True)
     reviewed_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
 
@@ -103,7 +111,7 @@ class PageLayout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     page = db.Column(db.String(64), unique=True, nullable=False, index=True)
     layout_json = db.Column(db.Text, nullable=False, default="{}")
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=_utcnow, onupdate=_utcnow)
 
 
 class Opening(db.Model):
@@ -112,8 +120,8 @@ class Opening(db.Model):
     __tablename__ = "openings"
 
     id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.DateTime, nullable=False, default=_utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=_utcnow, onupdate=_utcnow)
 
     title = db.Column(db.String(180), nullable=False)
     slug = db.Column(db.String(220), unique=True, index=True, nullable=False)
@@ -137,7 +145,7 @@ class Opening(db.Model):
     contact_email = db.Column(db.String(255), nullable=True)
     contact_phone = db.Column(db.String(60), nullable=True)
 
-    status = db.Column(db.String(20), nullable=False, default="draft")
+    status = db.Column(db.String(20), nullable=False, default="draft", index=True)
 
     def __repr__(self) -> str:
         return f"<Opening {self.id} {self.status} {self.slug}>"

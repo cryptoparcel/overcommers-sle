@@ -1,3 +1,4 @@
+
 from __future__ import annotations
 
 import json
@@ -16,14 +17,19 @@ public_bp = Blueprint("public", __name__)
 
 # ── Static / SEO ─────────────────────────────────────────────
 
+@public_bp.get("/donate")
+def donate():
+    return render_template("donate.html", title="Donate — Overcomers")
+
+
 @public_bp.get("/favicon.ico")
 def favicon():
-    return send_from_directory(current_app.static_folder, "assets/favicon.ico")
+    return send_from_directory(current_app.static_folder, "favicon.svg", mimetype="image/svg+xml")
 
 
 @public_bp.get("/robots.txt")
 def robots():
-    body = "User-agent: *\nAllow: /\nSitemap: /sitemap.xml\n"
+    body = "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /auth\nSitemap: /sitemap.xml\n"
     return Response(body, mimetype="text/plain")
 
 
@@ -52,6 +58,7 @@ def sitemap():
         ("/faq", "monthly", "0.8"),
         ("/openings", "weekly", "0.8"),
         ("/apply", "weekly", "0.8"),
+        ("/donate", "monthly", "0.8"),
         ("/resources", "weekly", "0.7"),
         ("/veterans", "monthly", "0.7"),
         ("/referrals", "monthly", "0.7"),
@@ -64,15 +71,19 @@ def sitemap():
         ("/stories", "weekly", "0.6"),
         ("/programs", "monthly", "0.5"),
         ("/careers", "monthly", "0.5"),
+        ("/classes", "monthly", "0.5"),
+        ("/partnerships", "monthly", "0.5"),
+        ("/kids-support", "monthly", "0.5"),
         ("/shop", "monthly", "0.5"),
         ("/privacy", "yearly", "0.3"),
         ("/terms", "yearly", "0.3"),
     ]
+    base = request.url_root.rstrip("/")
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for loc, freq, pr in pages:
         xml.append("<url>")
-        xml.append(f"  <loc>{loc}</loc>")
+        xml.append(f"  <loc>{base}{loc}</loc>")
         xml.append(f"  <changefreq>{freq}</changefreq>")
         xml.append(f"  <priority>{pr}</priority>")
         xml.append("</url>")
@@ -245,6 +256,19 @@ def contact_post():
     )
     send_email(to_email=current_app.config.get("NOTIFY_EMAIL"), subject=f"[Overcomers] Contact: {msg.subject}", body=body)
 
+    # Confirmation email to sender
+    first_name = msg.name.split()[0] if msg.name else "there"
+    confirm_body = (
+        f"Hi {first_name},\n\n"
+        "Thanks for reaching out to Overcomers. We received your message "
+        "and will get back to you within 24 hours.\n\n"
+        "If this is urgent, you can call us directly or reply to this email.\n\n"
+        "— The Overcomers Team\n"
+        "Grover Beach, CA\n"
+        "info@overcomersrc.com\n"
+    )
+    send_email(to_email=msg.email, subject="We got your message — Overcomers", body=confirm_body)
+
     flash("Thanks — we got your message and will respond within 24 hours.", "success")
     return redirect(url_for("public.contact"))
 
@@ -285,6 +309,22 @@ def tour_post():
     )
     send_email(to_email=current_app.config.get("NOTIFY_EMAIL"), subject="[Overcomers] Tour request", body=body)
 
+    # Confirmation email to the visitor
+    first_name = req.name.split()[0] if req.name else "there"
+    confirm_body = (
+        f"Hi {first_name},\n\n"
+        "Thanks for requesting a tour of Overcomers. We'll confirm a time "
+        "within 24 hours — check your email for details.\n\n"
+        "Tours are low-key and no-pressure. You'll see the rooms, common "
+        "areas, and neighborhood. Feel free to bring anyone who supports you.\n\n"
+        "If you need to reschedule or have questions before the visit, "
+        "just reply to this email.\n\n"
+        "— The Overcomers Team\n"
+        "Grover Beach, CA\n"
+        "info@overcomersrc.com\n"
+    )
+    send_email(to_email=req.email, subject="Tour request received — Overcomers", body=confirm_body)
+
     flash("Tour request sent! We'll respond within 24 hours to confirm a time.", "success")
     return redirect(url_for("public.tour"))
 
@@ -323,6 +363,25 @@ def apply_post():
     )
     send_email(to_email=current_app.config.get("NOTIFY_EMAIL"), subject="[Overcomers] New application", body=body)
 
+    # Confirmation email to the applicant
+    first_name = app_row.full_name.split()[0] if app_row.full_name else "there"
+    confirm_body = (
+        f"Hi {first_name},\n\n"
+        "Thank you for applying to Overcomers. We received your application "
+        "and someone from our team will reach out within 24 hours to talk "
+        "through next steps.\n\n"
+        "In the meantime, here are a few things you can do:\n\n"
+        "  - Read our Resident Guide to learn what to expect\n"
+        "  - Schedule a tour if you'd like to see the home in person\n"
+        "  - Reply to this email if you have any questions\n\n"
+        "We're glad you reached out. This is a big step and we're here "
+        "to help make it as smooth as possible.\n\n"
+        "— The Overcomers Team\n"
+        "Grover Beach, CA\n"
+        "info@overcomersrc.com\n"
+    )
+    send_email(to_email=app_row.email, subject="We received your application — Overcomers", body=confirm_body)
+
     flash("Application received — we'll reach out within 24 hours.", "success")
     return redirect(url_for("public.apply"))
 
@@ -334,14 +393,19 @@ def apply_post():
 def interest_post():
     form = InterestForm()
     if form.validate_on_submit():
-        signup = InterestSignup(email=form.email.data.strip().lower())
-        try:
-            db.session.add(signup)
-            db.session.commit()
-            flash("You're on the list! We'll email you when a spot opens.", "success")
-        except Exception:
-            db.session.rollback()
+        email = form.email.data.strip().lower()
+        existing = InterestSignup.query.filter_by(email=email).first()
+        if existing:
             flash("You're already on the list.", "info")
+        else:
+            signup = InterestSignup(email=email)
+            try:
+                db.session.add(signup)
+                db.session.commit()
+                flash("You're on the list! We'll email you when a spot opens.", "success")
+            except Exception:
+                db.session.rollback()
+                flash("You're already on the list.", "info")
     else:
         flash("Please enter a valid email.", "error")
     return redirect(url_for("public.openings"))

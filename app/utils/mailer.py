@@ -1,3 +1,4 @@
+
 from __future__ import annotations
 
 import smtplib
@@ -16,6 +17,9 @@ def send_email(to_email: str, subject: str, body: str) -> None:
     if not host or not from_email:
         current_app.logger.info("SMTP not configured; skipping email.")
         return
+
+    # Sanitize subject to prevent header injection
+    subject = subject.replace("\r", "").replace("\n", " ").strip()[:200]
 
     msg = EmailMessage()
     msg["From"] = from_email

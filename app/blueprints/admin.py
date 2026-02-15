@@ -1,6 +1,7 @@
+
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for, Response
@@ -74,7 +75,11 @@ def export_applications():
     items = Application.query.order_by(Application.created_at.desc()).limit(5000).all()
 
     def esc(v: str) -> str:
-        v = (v or "").replace('"', '""')
+        v = (v or "")
+        # Prevent CSV formula injection (=, +, -, @, tab, CR)
+        if v and v[0] in ("=", "+", "-", "@", "\t", "\r"):
+            v = "'" + v
+        v = v.replace('"', '""')
         return f'"{v}"'
 
     lines = ["created_at,full_name,email,phone,status,message"]
@@ -125,7 +130,7 @@ def stories():
 def approve_story(story_id: int):
     story = Story.query.get_or_404(story_id)
     story.status = "approved"
-    story.reviewed_at = datetime.utcnow()
+    story.reviewed_at = datetime.now(timezone.utc)
     story.reviewed_by = current_user.id
     db.session.commit()
     flash("Story approved.", "success")
@@ -137,7 +142,7 @@ def approve_story(story_id: int):
 def reject_story(story_id: int):
     story = Story.query.get_or_404(story_id)
     story.status = "rejected"
-    story.reviewed_at = datetime.utcnow()
+    story.reviewed_at = datetime.now(timezone.utc)
     story.reviewed_by = current_user.id
     db.session.commit()
     flash("Story rejected.", "info")
@@ -181,7 +186,7 @@ def page_builder():
             return redirect(url_for("admin.page_builder"))
 
         layout.layout_json = raw
-        layout.updated_at = datetime.utcnow()
+        layout.updated_at = datetime.now(timezone.utc)
         db.session.commit()
         flash("Page layout saved.", "success")
         return redirect(url_for("admin.page_builder"))
@@ -192,7 +197,7 @@ def page_builder():
         parsed = json.loads(_default_home_layout_json())
 
     raw = layout.layout_json or _default_home_layout_json()
-    return render_template("admin/page_builder.html", raw_json=raw, parsed=parsed, layout_data=parsed, active="builder", title="Page Builder")
+    return render_template("admin/page_builder.html", raw_json=raw, layout_data=parsed, active="builder", title="Page Builder")
 
 
 # ----------------------------

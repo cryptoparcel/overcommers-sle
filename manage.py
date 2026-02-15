@@ -1,3 +1,4 @@
+
 """OVERCOMERS management CLI.
 
 This project intentionally has **no** "make yourself admin" button.
@@ -15,6 +16,12 @@ Flask CLI alternatives (also supported):
 """
 
 from __future__ import annotations
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 import click
 

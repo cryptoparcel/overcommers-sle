@@ -1,3 +1,4 @@
+
 // Minimal front-end JS
 (function () {
   function track(name, extra) {

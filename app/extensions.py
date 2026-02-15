@@ -1,3 +1,4 @@
+
 from __future__ import annotations
 
 from flask_login import LoginManager
@@ -13,8 +14,9 @@ csrf = CSRFProtect()
 migrate = Migrate()
 
 
-# Rate limiting (defaults empty; apply limits per-route)
+# Rate limiting (global + per-route)
 limiter = Limiter(
     key_func=get_remote_address,
-    default_limits=[],
+    default_limits=["120 per minute", "2000 per hour"],
+    storage_uri="memory://",
 )

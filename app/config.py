@@ -1,3 +1,4 @@
+
 from __future__ import annotations
 import os
 
@@ -17,6 +18,16 @@ class Config:
         self.SECRET_KEY = os.environ.get("SECRET_KEY", "dev-not-secure-change-me")
         self.SQLALCHEMY_DATABASE_URI = _normalize_database_url(os.environ.get("DATABASE_URL"))
         self.SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+        # Connection pooling for PostgreSQL (high-traffic resilience)
+        if self.SQLALCHEMY_DATABASE_URI.startswith("postgresql"):
+            self.SQLALCHEMY_ENGINE_OPTIONS = {
+                "pool_size": 5,
+                "max_overflow": 10,
+                "pool_timeout": 30,
+                "pool_recycle": 1800,
+                "pool_pre_ping": True,
+            }
 
         # Safety: crash loudly if deployed with default secret
         if os.environ.get("RENDER") and self.SECRET_KEY == "dev-not-secure-change-me":
@@ -44,6 +55,9 @@ class Config:
         # Optional reCAPTCHA (v2 checkbox)
         self.RECAPTCHA_SITE_KEY = os.environ.get("RECAPTCHA_SITE_KEY", "")
         self.RECAPTCHA_SECRET_KEY = os.environ.get("RECAPTCHA_SECRET_KEY", "")
+
+        # Analytics (set to your domain, e.g. "overcomersrc.com")
+        self.PLAUSIBLE_DOMAIN = os.environ.get("PLAUSIBLE_DOMAIN", "")
 
         # Auto-bootstrap admin from env (optional)
         self.ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "")

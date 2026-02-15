@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 {% block content %}
 <section class="section">
@@ -62,11 +63,11 @@
                 <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;">
                   <div>
                     <div class="muted tiny">Monthly</div>
-                    <div style="font-weight:900; font-size:1.25rem;">{{ monthly }}</div>
+                    <div style="font-weight:900; font-size:1.25rem;">{{ opening.price_monthly }}</div>
                   </div>
                   <div>
                     <div class="muted tiny">Deposit</div>
-                    <div style="font-weight:900; font-size:1.25rem;">{{ deposit }}</div>
+                    <div style="font-weight:900; font-size:1.25rem;">{{ opening.deposit }}</div>
                   </div>
                   <div>
                     <div class="muted tiny">Due at move-in</div>

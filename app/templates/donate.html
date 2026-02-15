@@ -1,0 +1,197 @@
+
+{% extends "base.html" %}
+{% block content %}
+<section class="page" style="padding:32px 0;">
+  <div class="container" style="max-width:640px;">
+
+    <div class="card" style="padding:0;overflow:hidden;">
+
+      <!-- Hero banner -->
+      <div class="donate-hero">
+        <p class="donate-hero__eyebrow">Make a difference today</p>
+        <h1 class="donate-hero__title">Support a Fresh Start</h1>
+        <p class="donate-hero__lead">Your generosity helps someone find safe housing, learn new skills, and rebuild their life.</p>
+      </div>
+
+      <div class="donate-body">
+
+        <!-- Amount selection -->
+        <label class="donate-label">Choose an amount</label>
+        <div class="amt-grid" id="amt-grid">
+          <button class="amt-btn" type="button" data-amt="25" onclick="selectAmt(this)">$25</button>
+          <button class="amt-btn" type="button" data-amt="50" onclick="selectAmt(this)">$50</button>
+          <button class="amt-btn active" type="button" data-amt="100" onclick="selectAmt(this)">$100</button>
+          <button class="amt-btn" type="button" data-amt="250" onclick="selectAmt(this)">$250</button>
+          <button class="amt-btn" type="button" data-amt="500" onclick="selectAmt(this)">$500</button>
+          <div class="amt-custom-wrap">
+            <span class="amt-custom-prefix">$</span>
+            <input type="number" id="custom-amt" class="amt-custom-input" placeholder="Other" min="1" max="99999" step="1" onfocus="clearPresets()" oninput="updateFromCustom(this)" />
+          </div>
+        </div>
+        <p class="donate-helper" id="amt-helper">
+          <strong>$100</strong> provides a month of life-skills workshops for one resident.
+        </p>
+
+        <!-- Frequency toggle -->
+        <label class="donate-label">Frequency</label>
+        <div class="freq-bar" id="freq-bar">
+          <button class="freq-btn active" type="button" data-freq="once" onclick="selectFreq(this)">One-time</button>
+          <button class="freq-btn" type="button" data-freq="monthly" onclick="selectFreq(this)">Monthly</button>
+          <button class="freq-btn" type="button" data-freq="quarterly" onclick="selectFreq(this)">Quarterly</button>
+        </div>
+
+        <!-- Dedication (collapsible) -->
+        <details class="donate-details" id="dedication">
+          <summary class="donate-details__summary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            Dedicate this gift
+            <span class="donate-details__optional">Optional</span>
+          </summary>
+          <div class="donate-details__body">
+            <div class="ded-bar">
+              <button class="ded-btn active" type="button" onclick="selectDed(this)">In honor of</button>
+              <button class="ded-btn" type="button" onclick="selectDed(this)">In memory of</button>
+            </div>
+            <input type="text" id="honoree-name" class="donate-input" placeholder="Honoree's name" />
+          </div>
+        </details>
+
+        <!-- Fund designation -->
+        <label class="donate-label">Direct my gift toward</label>
+        <select class="donate-select" id="fund-select">
+          <option value="general">Where it's needed most</option>
+          <option value="housing">Housing &amp; move-in support</option>
+          <option value="skills">Life-skills &amp; workshops</option>
+          <option value="employment">Employment pathway</option>
+          <option value="essentials">Meals &amp; daily essentials</option>
+        </select>
+
+        <!-- CTA button -->
+        <a class="btn btn--donate donate-cta" id="donate-cta" href="https://www.paypal.com/donate/?hosted_button_id=2WACLSNCJVQ46&amount=100" target="_blank" rel="noopener">
+          <em class="heart">🤍</em> <span id="cta-text">Donate $100</span>
+        </a>
+
+        <!-- Security note -->
+        <div class="donate-secure">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <p>Secure payment via PayPal. Cards accepted — no PayPal account needed.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Impact strip -->
+    <div class="donate-impact">
+      <div class="card donate-impact__card">
+        <p class="donate-impact__emoji">🏠</p>
+        <p class="donate-impact__amount">$25</p>
+        <p class="donate-impact__desc">A week of meals</p>
+      </div>
+      <div class="card donate-impact__card">
+        <p class="donate-impact__emoji">📋</p>
+        <p class="donate-impact__amount">$100</p>
+        <p class="donate-impact__desc">Month of workshops</p>
+      </div>
+      <div class="card donate-impact__card">
+        <p class="donate-impact__emoji">💼</p>
+        <p class="donate-impact__amount">$500</p>
+        <p class="donate-impact__desc">Move-in costs</p>
+      </div>
+    </div>
+
+    <!-- Other ways -->
+    <div class="card" style="margin-top:16px;padding:18px;text-align:center;">
+      <p style="font-weight:700;margin:0 0 4px;">Other ways to support</p>
+      <p class="muted small" style="margin-bottom:12px;">Every bit of help matters — not just money.</p>
+      <div class="actions" style="justify-content:center;">
+        <a class="btn" href="{{ url_for('public.referrals') }}">Refer someone</a>
+        <a class="btn" href="{{ url_for('public.contact') }}">Volunteer</a>
+        <a class="btn" href="{{ url_for('public.partnerships') }}">Partner with us</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function(){
+  var PAYPAL_BASE = "https://www.paypal.com/donate/?hosted_button_id=2WACLSNCJVQ46";
+  var currentAmt = 100;
+  var currentFreq = "once";
+
+  var helperMessages = {
+    25:  "covers a week of meals for one resident.",
+    50:  "provides essential supplies for two weeks.",
+    100: "provides a month of life-skills workshops for one resident.",
+    250: "supports job training and placement for one person.",
+    500: "helps cover move-in costs for someone starting over."
+  };
+
+  function formatAmt(n) {
+    return n.toLocaleString("en-US");
+  }
+
+  function updateCTA() {
+    var amt = currentAmt;
+    var label = "Donate $" + formatAmt(amt);
+    if (currentFreq === "monthly") label = "Donate $" + formatAmt(amt) + "/mo";
+    else if (currentFreq === "quarterly") label = "Donate $" + formatAmt(amt) + "/qtr";
+
+    document.getElementById("cta-text").textContent = label;
+
+    var url = PAYPAL_BASE + "&amount=" + amt + "&currency_code=USD";
+    if (currentFreq === "monthly") url += "&recurring=1";
+    document.getElementById("donate-cta").href = url;
+  }
+
+  function updateHelper(amt) {
+    var el = document.getElementById("amt-helper");
+    if (helperMessages[amt]) {
+      el.innerHTML = "<strong>$" + formatAmt(amt) + "</strong> " + helperMessages[amt];
+    } else if (amt > 0) {
+      el.innerHTML = "<strong>$" + formatAmt(amt) + "</strong> — every dollar helps someone rebuild their life.";
+    }
+  }
+
+  window.selectAmt = function(btn) {
+    document.querySelectorAll(".amt-btn").forEach(function(b){ b.classList.remove("active"); });
+    btn.classList.add("active");
+    document.getElementById("custom-amt").value = "";
+    currentAmt = parseInt(btn.dataset.amt, 10);
+    updateCTA();
+    updateHelper(currentAmt);
+  };
+
+  window.clearPresets = function() {
+    document.querySelectorAll(".amt-btn").forEach(function(b){ b.classList.remove("active"); });
+  };
+
+  window.updateFromCustom = function(input) {
+    var raw = input.value.replace(/[^0-9]/g, "");
+    var val = parseInt(raw, 10);
+    if (val && val > 0 && val <= 99999) {
+      currentAmt = val;
+      updateCTA();
+      updateHelper(val);
+    } else if (!raw) {
+      /* Field cleared — reset to default */
+      currentAmt = 100;
+      updateCTA();
+      updateHelper(100);
+    }
+  };
+
+  window.selectFreq = function(btn) {
+    document.querySelectorAll(".freq-btn").forEach(function(b){ b.classList.remove("active"); });
+    btn.classList.add("active");
+    currentFreq = btn.dataset.freq;
+    updateCTA();
+  };
+
+  window.selectDed = function(btn) {
+    document.querySelectorAll(".ded-btn").forEach(function(b){ b.classList.remove("active"); });
+    btn.classList.add("active");
+  };
+})();
+</script>
+{% endblock %}

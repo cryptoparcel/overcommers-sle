@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 {% block content %}
 <section class="section">
@@ -10,6 +11,21 @@
     </div>
 
     <div class="grid">
+      {% if not current_user.email_confirmed %}
+      <div class="card" style="grid-column: span 12; background:rgba(11,95,87,.04); border:1px solid rgba(11,95,87,.15);">
+        <div class="body" style="padding:16px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <div>
+            <strong style="color:var(--brand);">Email not confirmed</strong>
+            <p class="muted" style="margin:2px 0 0; font-size:14px;">Check your inbox for a confirmation link. Didn't get it?</p>
+          </div>
+          <form method="post" action="{{ url_for('auth.resend_confirmation') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn" type="submit" style="font-size:13px;">Resend confirmation email</button>
+          </form>
+        </div>
+      </div>
+      {% endif %}
+
       <div class="card" style="grid-column: span 6;">
         <div class="body">
           <h3>Profile</h3>

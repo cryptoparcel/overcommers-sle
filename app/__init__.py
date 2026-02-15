@@ -1,5 +1,7 @@
+
 from __future__ import annotations
 
+import os
 from flask import Flask
 from markupsafe import Markup
 from .config import Config
@@ -13,6 +15,7 @@ from .cli import register_cli
 def create_app() -> Flask:
     app = Flask(__name__)
     app.config.from_object(Config())
+    app.url_map.strict_slashes = False
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -39,6 +42,30 @@ def create_app() -> Flask:
     app.register_blueprint(errors_bp)
 
     register_cli(app)
+
+    # ── Security headers ─────────────────────────────────────
+    @app.after_request
+    def _security_headers(response):
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "SAMEORIGIN"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+        response.headers["Content-Security-Policy"] = (
+            "default-src 'self'; "
+            "script-src 'self' 'unsafe-inline' https://plausible.io https://www.google.com https://www.gstatic.com https://www.paypal.com; "
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+            "font-src 'self' https://fonts.gstatic.com; "
+            "img-src 'self' data: https:; "
+            "frame-src https://www.paypal.com https://www.google.com; "
+            "connect-src 'self' https://plausible.io https://www.google.com"
+        )
+        if os.environ.get("RENDER"):
+            response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        # Cache static assets aggressively (CSS, JS, images)
+        if response.content_type and any(t in response.content_type for t in ("css", "javascript", "image", "font")):
+            response.headers["Cache-Control"] = "public, max-age=2592000"  # 30 days
+        return response
 
     # ── Template filters ─────────────────────────────────────
     @app.template_filter("nl2br")
@@ -73,6 +100,7 @@ def create_app() -> Flask:
             if existing:
                 if not existing.is_admin:
                     existing.is_admin = True
+                    existing.email_confirmed = True
                     db.session.commit()
                     app.logger.info(f"Promoted {admin_email} to admin via env vars.")
                 return
@@ -80,6 +108,7 @@ def create_app() -> Flask:
                 name="Admin",
                 email=admin_email,
                 username=admin_email.split("@")[0],
+                email_confirmed=True,
             )
             user.set_password(admin_password)
             user.is_admin = True

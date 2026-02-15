@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -5,6 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="{{ meta_description or 'Overcomers — Transformative Thinking and Restorative Community. Supportive housing in the Grover Beach area, focused on safety, routine, recovery, and reentry.' }}" />
     <title>{{ title or "Overcomers" }}</title>
+
+    {# ── Open Graph / social sharing ── #}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Overcomers" />
+    <meta property="og:title" content="{{ title or 'Overcomers — Supportive Sober Living' }}" />
+    <meta property="og:description" content="{{ meta_description or 'Structured sober living for recovery & reentry — with clear routines, accountability, and practical next steps. Serving the Grover Beach, CA area.' }}" />
+    <meta property="og:image" content="{{ url_for('static', filename='assets/overcomers-emblem.png', _external=True) }}" />
+    <meta property="og:url" content="{{ request.url }}" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="{{ title or 'Overcomers — Supportive Sober Living' }}" />
+    <meta name="twitter:description" content="{{ meta_description or 'Structured sober living for recovery & reentry in Grover Beach, CA.' }}" />
+    <meta name="twitter:image" content="{{ url_for('static', filename='assets/overcomers-emblem.png', _external=True) }}" />
+
+    {# ── Analytics (Plausible — privacy-friendly, no cookies) ── #}
+    {% if config.get('PLAUSIBLE_DOMAIN') %}
+    <script defer data-domain="{{ config.get('PLAUSIBLE_DOMAIN') }}" src="https://plausible.io/js/script.js"></script>
+    {% endif %}
 
     <link rel="icon" href="{{ url_for('public.favicon') }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,6 +59,7 @@
           <a class="nav__mobile-only" href="{{ url_for('public.referrals') }}">Referrals</a>
           <a class="nav__mobile-only" href="{{ url_for('public.tour') }}">Tour</a>
           <a class="nav__mobile-only" href="{{ url_for('public.apply') }}">Apply</a>
+          <a class="nav__mobile-only" href="{{ url_for('public.donate') }}">🤍 Donate</a>
           {% if current_user.is_authenticated %}
             <a class="nav__mobile-only" href="{{ url_for('auth.account') }}">Account</a>
           {% else %}
@@ -50,6 +69,7 @@
 
         <div class="nav__cta">
           <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
+          <a class="btn btn--donate" href="{{ url_for('public.donate') }}"><em class="heart">🤍</em> Donate</a>
           {% if current_user.is_authenticated %}
             <div class="menu-wrap" data-menu>
               <button class="btn btn--ghost menu-btn" type="button" aria-haspopup="true" aria-expanded="false">Account</button>
@@ -134,6 +154,7 @@
             <a href="{{ url_for('public.openings') }}">Openings</a>
             <a href="{{ url_for('public.tour') }}">Tour</a>
             <a href="{{ url_for('public.apply') }}">Apply</a>
+            <a href="{{ url_for('public.donate') }}">Donate</a>
           </div>
         </div>
         <div>
@@ -170,8 +191,8 @@
 
     <div class="sticky-bar">
       <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
+      <a class="btn btn--donate" href="{{ url_for('public.donate') }}" style="font-size:13px;padding:8px 14px;min-height:38px;"><em class="heart">🤍</em> Donate</a>
       <a class="btn" href="{{ url_for('public.contact') }}">Contact</a>
-      <a class="btn" href="{{ url_for('public.tour') }}">Tour</a>
     </div>
 
     {% if config.get('RECAPTCHA_SITE_KEY') %}

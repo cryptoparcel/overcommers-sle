@@ -1,3 +1,4 @@
+
 """Add tour_requests, interest_signups tables and last_login column.
 
 Revision ID: 0002
@@ -8,7 +9,7 @@ import sqlalchemy as sa
 from alembic import op
 
 revision = "0002"
-down_revision = "0001"
+down_revision = "0001_initial"
 
 
 def upgrade():

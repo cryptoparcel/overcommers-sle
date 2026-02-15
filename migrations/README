@@ -1,3 +1,4 @@
+
 Database migrations for Overcomers RC.
 
 On Render the service runs `flask db upgrade` on boot, which applies the latest

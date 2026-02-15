@@ -1,7 +1,8 @@
+
 from __future__ import annotations
 
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 from .extensions import db
 from .models import PageLayout, Story
@@ -98,7 +99,7 @@ def seed_content() -> None:
                     image_url=s["image_url"] or None,
                     author_name=s["author_name"],
                     status=s["status"],
-                    created_at=datetime.utcnow(),
+                    created_at=datetime.now(timezone.utc),
                 )
             )
         db.session.commit()

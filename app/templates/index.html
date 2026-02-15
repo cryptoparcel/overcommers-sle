@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 {% block content %}
 <main class="home">
@@ -20,11 +21,18 @@
           <p class="muted small" style="margin-top:10px;">Emergency? Call 911. This site is informational and not medical advice.</p>
         </div>
 
-        <div class="card card--padded card--stretch">
-          <h2 class="section-title">Openings</h2>
-          <p class="muted">See what's available. Apply first — we confirm fit and share pricing.</p>
-          <div class="spacer"></div>
-          <a class="btn btn--primary" href="{{ url_for('public.openings') }}">View openings</a>
+        <div class="card card--padded card--stretch" style="background:linear-gradient(135deg,#0b5f57 0%,#0ea5a0 100%);color:#fff;border:none;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:-20px;right:-20px;font-size:120px;opacity:.08;pointer-events:none;">🏠</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);backdrop-filter:blur(4px);padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px;">
+            <span class="pulse-dot"></span>
+            Now accepting deposits
+          </div>
+          <h2 style="font-size:22px;font-weight:800;margin:0 0 8px;color:#fff;line-height:1.2;">We have openings</h2>
+          <p style="opacity:.85;font-size:14px;margin:0 0 16px;line-height:1.5;">Spots are available starting early April in our Grover Beach housing. Secure yours with a deposit — apply today.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <a class="btn" href="{{ url_for('public.apply') }}" style="background:#fff;color:#0b5f57;font-weight:700;border:none;">Apply now</a>
+            <a class="btn" href="{{ url_for('public.openings') }}" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);">Learn more</a>
+          </div>
         </div>
 
         <div class="card card--padded card--stretch">
@@ -138,40 +146,51 @@
     </div>
   </section>
 
-  {# ── Dynamic openings preview ─────────────────────────── #}
-  {% if openings_preview and openings_preview|length > 0 %}
+  {# ── Openings banner ───────────────────────────────────── #}
   <section class="section">
     <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>Current openings</h2>
-          <p class="muted">Apply first. We'll confirm fit and share exact pricing.</p>
-        </div>
-        <div class="actions">
-          <a class="btn" href="{{ url_for('public.openings') }}">See all</a>
-        </div>
-      </div>
-      <div class="grid cards">
-        {% for o in openings_preview %}
-        <article class="card">
-          <div class="card__body">
-            <h3 class="h3">{{ o.title }}</h3>
-            <p class="muted">
-              {% if o.city %}{{ o.city }}{% endif %}{% if o.state %}{% if o.city %}, {% endif %}{{ o.state }}{% endif %}
-              {% if o.available_on %} · Available {{ o.available_on.strftime('%b %d, %Y') }}{% endif %}
-              · Beds: {{ o.beds_available }}
-            </p>
-            <div class="actions" style="margin-top:12px;">
-              <a class="btn btn--primary" href="{{ url_for('public.opening_detail', slug=o.slug) }}">View</a>
-              <a class="btn" href="{{ url_for('public.apply') }}">Apply</a>
+      <div class="card" style="padding:0;overflow:hidden;border:2px solid rgba(11,95,87,.15);">
+        <div style="display:flex;align-items:stretch;flex-wrap:wrap;">
+          <div style="flex:1;min-width:280px;padding:28px;">
+            <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(11,95,87,.08);padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--brand);margin-bottom:12px;">
+              <span class="pulse-dot" style="background:#0b5f57;"></span>
+              Openings available
+            </div>
+            <h2 style="font-size:24px;font-weight:800;margin:0 0 8px;">We're accepting deposits now</h2>
+            <p class="muted" style="margin:0 0 6px;line-height:1.6;">We have spots opening early April in our Grover Beach sober living houses. Each home offers a safe, structured environment with shared rooms, house meetings, and peer accountability.</p>
+            <p class="muted" style="margin:0 0 16px;line-height:1.6;">Apply first — we'll confirm fit, answer your questions, and walk you through the deposit and move-in process.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply today</a>
+              <a class="btn" href="{{ url_for('public.tour') }}">Schedule a tour</a>
+              <a class="btn btn--ghost" href="{{ url_for('public.openings') }}">View details</a>
             </div>
           </div>
-        </article>
-        {% endfor %}
+          <div style="flex:0 0 260px;min-width:220px;background:linear-gradient(135deg,rgba(11,95,87,.04),rgba(11,95,87,.08));padding:28px;display:flex;flex-direction:column;justify-content:center;gap:16px;border-left:1px solid rgba(0,0,0,.06);">
+            <div>
+              <p style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 4px;">Move-in</p>
+              <p style="font-weight:700;margin:0;">Early April 2026</p>
+            </div>
+            <div>
+              <p style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 4px;">Location</p>
+              <p style="font-weight:700;margin:0;">Grover Beach, CA</p>
+            </div>
+            <div>
+              <p style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 4px;">Housing type</p>
+              <p style="font-weight:700;margin:0;">Shared sober living</p>
+            </div>
+            <div>
+              <p style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 4px;">Includes</p>
+              <p style="font-weight:700;margin:0;">Furnished, utilities, support</p>
+            </div>
+            <div>
+              <p style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 4px;">Status</p>
+              <p style="font-weight:700;margin:0;color:var(--brand);">✓ Taking deposits</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
-  {% endif %}
 
   {# ── Who we serve ─────────────────────────────────────── #}
   <section class="section">

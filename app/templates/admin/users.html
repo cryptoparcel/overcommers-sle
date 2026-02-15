@@ -1,3 +1,4 @@
+
 {% extends "admin/_base.html" %}
 {% set title = "Users" %}
 {% set active = "users" %}
@@ -9,15 +10,16 @@
       <p class="muted">No users yet.</p>
     {% else %}
       <div class="table">
-        <div class="row head" style="grid-template-columns: 120px 1fr 1fr 1fr 90px;">
-          <div>Created</div><div>Name</div><div>Username</div><div>Email</div><div>Admin</div>
+        <div class="row head" style="grid-template-columns: 100px 1fr 1fr 1fr 70px 70px;">
+          <div>Created</div><div>Name</div><div>Username</div><div>Email</div><div>Verified</div><div>Admin</div>
         </div>
         {% for u in users %}
-        <div class="row" style="grid-template-columns: 120px 1fr 1fr 1fr 90px;">
+        <div class="row" style="grid-template-columns: 100px 1fr 1fr 1fr 70px 70px;">
           <div class="muted">{{ u.created_at.strftime('%Y-%m-%d') }}</div>
           <div>{{ u.name }}</div>
           <div>{{ u.username }}</div>
           <div>{{ u.email }}</div>
+          <div>{% if u.email_confirmed %}<span style="color:var(--brand);">✓</span>{% else %}<span class="muted">—</span>{% endif %}</div>
           <div>{% if u.is_admin %}<span class="pill">Yes</span>{% else %}<span class="muted">No</span>{% endif %}</div>
         </div>
         {% endfor %}
