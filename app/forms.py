@@ -147,6 +147,8 @@ class OpeningForm(FlaskForm):
     contact_email = StringField("Contact email", validators=[Optional(), Email(), Length(max=255)])
     contact_phone = StringField("Contact phone", validators=[Optional(), Length(max=60)])
 
+    photos = TextAreaField("Photos (one URL per line)", validators=[Optional()])
+
     status = SelectField(
         "Status",
         choices=[("draft", "Draft"), ("published", "Published"), ("archived", "Archived")],

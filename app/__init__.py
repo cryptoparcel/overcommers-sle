@@ -53,12 +53,12 @@ def create_app() -> Flask:
         response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
         response.headers["Content-Security-Policy"] = (
             "default-src 'self'; "
-            "script-src 'self' 'unsafe-inline' https://plausible.io https://www.google.com https://www.gstatic.com https://www.paypal.com; "
+            "script-src 'self' 'unsafe-inline' https://plausible.io https://www.google.com https://www.gstatic.com https://www.paypal.com https://www.googletagmanager.com https://js.stripe.com; "
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
             "font-src 'self' https://fonts.gstatic.com; "
-            "img-src 'self' data: https:; "
-            "frame-src https://www.paypal.com https://www.google.com; "
-            "connect-src 'self' https://plausible.io https://www.google.com"
+            "img-src 'self' data: blob: https:; "
+            "frame-src https://www.paypal.com https://www.google.com https://js.stripe.com https://checkout.stripe.com; "
+            "connect-src 'self' https://plausible.io https://www.google.com https://www.google-analytics.com https://api.stripe.com"
         )
         if os.environ.get("RENDER"):
             response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"

@@ -1,14 +1,17 @@
 
 from __future__ import annotations
 
+import os
+import uuid
 from datetime import datetime, timezone
 import json
 
-from flask import Blueprint, flash, redirect, render_template, request, url_for, Response
+from flask import Blueprint, flash, redirect, render_template, request, url_for, Response, current_app, jsonify
 from flask_login import login_required, current_user
+from werkzeug.utils import secure_filename
 
 from ..extensions import db
-from ..models import Application, ContactMessage, Story, User, PageLayout, Opening, TourRequest, InterestSignup
+from ..models import Application, ContactMessage, Story, User, PageLayout, Opening, TourRequest, InterestSignup, DepositPayment
 from ..utils import admin_required
 from ..seed import _default_home_layout_json  # uses same defaults
 from ..forms import OpeningForm
@@ -33,6 +36,12 @@ def dashboard():
         interest_count = InterestSignup.query.count()
     except Exception:
         interest_count = 0
+    try:
+        deposit_count = DepositPayment.query.filter_by(status="paid").count()
+        deposit_pending = DepositPayment.query.filter_by(status="pending").count()
+    except Exception:
+        deposit_count = 0
+        deposit_pending = 0
     return render_template(
         "admin/dashboard.html",
         title="Admin dashboard",
@@ -43,6 +52,8 @@ def dashboard():
             "messages": msg_count,
             "tours": tour_count,
             "interest": interest_count,
+            "deposits_paid": deposit_count,
+            "deposits_pending": deposit_pending,
         },
         active="dashboard",
     )
@@ -204,6 +215,24 @@ def page_builder():
 # Openings (Admin)
 # ----------------------------
 
+def _photos_to_json(textarea_val: str) -> str | None:
+    """Convert newline-separated URLs to JSON array string."""
+    if not textarea_val:
+        return None
+    urls = [u.strip() for u in textarea_val.strip().splitlines() if u.strip()]
+    return json.dumps(urls) if urls else None
+
+
+def _photos_to_textarea(json_val: str | None) -> str:
+    """Convert JSON array string back to newline-separated URLs for the form."""
+    if not json_val:
+        return ""
+    try:
+        return "\n".join(json.loads(json_val))
+    except Exception:
+        return ""
+
+
 @admin_bp.get("/openings")
 @login_required
 @admin_required
@@ -254,6 +283,7 @@ def openings_new():
         contact_name=(form.contact_name.data or "").strip() or None,
         contact_email=(form.contact_email.data or "").strip().lower() or None,
         contact_phone=(form.contact_phone.data or "").strip() or None,
+        photos_json=_photos_to_json(form.photos.data),
         status=form.status.data,
     )
     db.session.add(row)
@@ -270,6 +300,7 @@ def openings_edit(opening_id: int):
     form = OpeningForm(obj=row)
 
     if request.method == "GET":
+        form.photos.data = _photos_to_textarea(row.photos_json)
         return render_template("admin/opening_form.html", form=form, opening=row, active="openings", title="Edit opening")
 
     if not form.validate_on_submit():
@@ -301,6 +332,7 @@ def openings_edit(opening_id: int):
     row.contact_name = (form.contact_name.data or "").strip() or None
     row.contact_email = (form.contact_email.data or "").strip().lower() or None
     row.contact_phone = (form.contact_phone.data or "").strip() or None
+    row.photos_json = _photos_to_json(form.photos.data)
     row.status = form.status.data
 
     db.session.commit()
@@ -317,6 +349,44 @@ def openings_delete(opening_id: int):
     db.session.commit()
     flash("Opening deleted.", "info")
     return redirect(url_for("admin.openings"))
+
+
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
+
+
+def _allowed_file(filename: str) -> bool:
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@admin_bp.post("/upload-photo")
+@login_required
+@admin_required
+def upload_photo():
+    """Handle photo file upload — saves to static/uploads/ and returns URL."""
+    if "file" not in request.files:
+        return jsonify({"error": "No file provided"}), 400
+
+    f = request.files["file"]
+    if not f or not f.filename:
+        return jsonify({"error": "No file selected"}), 400
+
+    if not _allowed_file(f.filename):
+        return jsonify({"error": "Only images allowed (jpg, png, gif, webp)"}), 400
+
+    # Generate unique filename
+    ext = f.filename.rsplit(".", 1)[1].lower()
+    unique_name = f"{uuid.uuid4().hex[:12]}.{ext}"
+    safe_name = secure_filename(unique_name)
+
+    upload_dir = current_app.config.get("UPLOAD_FOLDER", "app/static/uploads")
+    os.makedirs(upload_dir, exist_ok=True)
+
+    filepath = os.path.join(upload_dir, safe_name)
+    f.save(filepath)
+
+    # Return the static URL
+    photo_url = url_for("static", filename=f"uploads/{safe_name}", _external=True)
+    return jsonify({"url": photo_url, "filename": safe_name})
 
 
 # ── Tour Requests (Admin) ────────────────────────────────────
@@ -343,3 +413,16 @@ def interest_list():
     except Exception:
         items = []
     return render_template("admin/interest_list.html", signups=items, active="interest", title="Interest List")
+
+
+# ── Deposit Payments (Admin) ─────────────────────────────────
+
+@admin_bp.get("/deposits")
+@login_required
+@admin_required
+def deposits():
+    try:
+        items = DepositPayment.query.order_by(DepositPayment.created_at.desc()).limit(300).all()
+    except Exception:
+        items = []
+    return render_template("admin/deposits.html", deposits=items, active="deposits", title="Deposit Payments")

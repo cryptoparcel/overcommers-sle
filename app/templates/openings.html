@@ -6,7 +6,7 @@
     <div class="section-head">
       <div>
         <h1>Upcoming Openings</h1>
-        <p class="muted">Apply first — we'll confirm fit and share exact pricing and move-in steps.</p>
+        <p class="muted">Tour first, apply when ready — we'll confirm fit and share pricing.</p>
       </div>
       <div class="actions">
         <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply now</a>
@@ -18,12 +18,21 @@
       <div class="grid cards">
         {% for o in openings %}
         <article class="card">
+          {% set card_photos = o.photos %}
+          {% if card_photos|length > 0 %}
+          <a href="{{ url_for('public.opening_detail', slug=o.slug) }}" style="display:block;position:relative;overflow:hidden;">
+            <img src="{{ card_photos[0] }}" alt="{{ o.title }}" style="width:100%;height:190px;object-fit:cover;display:block;">
+            {% if card_photos|length > 1 %}
+              <span style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;">📷 {{ card_photos|length }} photos</span>
+            {% endif %}
+          </a>
+          {% endif %}
           <div class="card__body">
             <h3 class="h3">{{ o.title }}</h3>
             <p class="muted">
               {% if o.city %}{{ o.city }}{% endif %}{% if o.state %}{% if o.city %}, {% endif %}{{ o.state }}{% endif %}
               {% if o.available_on %} · Available {{ o.available_on.strftime('%b %d, %Y') }}{% endif %}
-              · Beds: {{ o.beds_available }}
+              · {{ o.beds_available }} bed{{ 's' if o.beds_available != 1 else '' }} open
             </p>
             {% if o.summary %}
               <p class="muted">{{ o.summary }}</p>
@@ -33,17 +42,39 @@
 
             <div class="actions" style="margin-top:12px;">
               <a class="btn btn--primary" href="{{ url_for('public.opening_detail', slug=o.slug) }}">View details</a>
-              <a class="btn" href="{{ url_for('public.apply') }}">Apply</a>
+              <a class="btn" href="{{ url_for('public.tour') }}">Tour</a>
             </div>
 
             {% if not o.hide_price and o.price_monthly %}
               <p class="muted small" style="margin-top:10px;">{{ o.price_monthly }}{% if o.deposit %} · {{ o.deposit }}{% endif %}</p>
             {% else %}
-              <p class="muted small" style="margin-top:10px;">Pricing shared after application.</p>
+              <p class="muted small" style="margin-top:10px;">Pricing shared after tour or application.</p>
             {% endif %}
           </div>
         </article>
         {% endfor %}
+
+        {# Coming Soon card #}
+        <article class="card" style="position:relative;overflow:hidden;">
+          <div style="height:190px;background:linear-gradient(135deg,rgba(11,95,87,.08) 0%,rgba(11,95,87,.15) 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
+            <span style="font-size:42px;">🏡</span>
+            <span style="background:var(--brand);color:#fff;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.03em;">COMING SOON</span>
+          </div>
+          <div class="card__body">
+            <h3 class="h3">Grover Beach — Home B</h3>
+            <p class="muted">
+              Grover Beach, CA · Opening 2026
+            </p>
+            <p class="muted">
+              A second structured home is being prepared. Same standards, same support. Get notified when it opens.
+            </p>
+            <div class="actions" style="margin-top:12px;">
+              <a class="btn btn--primary" href="{{ url_for('public.contact') }}?subject=Home+B+Interest">Get Notified</a>
+              <a class="btn" href="{{ url_for('public.tour') }}">Tour Home A</a>
+            </div>
+            <p class="muted small" style="margin-top:10px;">Pricing and details announced soon.</p>
+          </div>
+        </article>
       </div>
     {% else %}
       <div class="card">

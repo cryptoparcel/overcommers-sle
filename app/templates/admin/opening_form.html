@@ -103,6 +103,160 @@
         </div>
       </div>
 
+      <!-- Photos -->
+      <div class="card">
+        <div class="card__body">
+          <h3 class="h3">Photos</h3>
+
+          <!-- Drag & drop upload zone -->
+          <div id="dropZone" style="border:2px dashed rgba(11,95,87,.25);border-radius:14px;padding:28px 20px;text-align:center;cursor:pointer;margin-bottom:14px;background:rgba(11,95,87,.02);transition:all .2s;">
+            <div style="font-size:32px;margin-bottom:6px;">📸</div>
+            <p style="font-weight:600;margin:0 0 4px;">Drag & drop photos here</p>
+            <p class="muted small" style="margin:0;">or <span style="color:var(--brand);text-decoration:underline;cursor:pointer;" id="browseBtn">click to browse</span></p>
+            <p class="muted tiny" style="margin:8px 0 0;">Accepts JPG, PNG, GIF, WebP — max 16 MB each</p>
+            <input type="file" id="fileInput" multiple accept="image/*" style="display:none;">
+          </div>
+          <div id="uploadProgress" style="display:none;margin-bottom:10px;">
+            <div style="background:rgba(11,95,87,.08);border-radius:8px;height:6px;overflow:hidden;">
+              <div id="uploadBar" style="background:var(--brand);height:100%;width:0%;transition:width .3s;border-radius:8px;"></div>
+            </div>
+            <p class="muted tiny" id="uploadStatus" style="margin-top:4px;">Uploading...</p>
+          </div>
+
+          <p class="muted small" style="margin-bottom:6px;">You can also paste image URLs directly (one per line):</p>
+          <div class="field">
+            {{ form.photos(class_="textarea", rows="5", id="photosInput", placeholder="https://i.ibb.co/example1.jpg\nhttps://i.ibb.co/example2.jpg", style="font-family:monospace;font-size:13px;") }}
+          </div>
+
+          <!-- Live preview -->
+          <div id="photoPreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;"></div>
+
+          <script>
+          (function(){
+            var input = document.getElementById('photosInput');
+            var preview = document.getElementById('photoPreview');
+            var dropZone = document.getElementById('dropZone');
+            var fileInput = document.getElementById('fileInput');
+            var browseBtn = document.getElementById('browseBtn');
+            var uploadProgress = document.getElementById('uploadProgress');
+            var uploadBar = document.getElementById('uploadBar');
+            var uploadStatus = document.getElementById('uploadStatus');
+
+            // Get CSRF token
+            var csrfToken = document.querySelector('input[name="csrf_token"]').value;
+
+            function updatePreview(){
+              var urls = input.value.split('\n').map(function(u){return u.trim();}).filter(function(u){return u && (u.startsWith('http') || u.startsWith('/'));});
+              preview.innerHTML = '';
+              if(urls.length === 0){
+                preview.innerHTML = '<p class="muted tiny">No photos yet — upload or paste URLs above</p>';
+                return;
+              }
+              urls.forEach(function(url, i){
+                var wrap = document.createElement('div');
+                wrap.style.cssText = 'position:relative;width:88px;height:66px;border-radius:8px;overflow:hidden;border:2px solid ' + (i===0 ? '#0b5f57' : 'rgba(0,0,0,.1)') + ';';
+                var img = document.createElement('img');
+                img.src = url;
+                img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+                img.onerror = function(){ wrap.style.background='#fee'; wrap.innerHTML='<span style="font-size:10px;color:#b91c1c;padding:4px;">Bad URL</span>'; };
+                var badge = document.createElement('span');
+                badge.textContent = i===0 ? 'Cover' : (i+1);
+                badge.style.cssText = 'position:absolute;bottom:2px;left:2px;background:rgba(0,0,0,.6);color:#fff;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:700;';
+                // Delete button
+                var del = document.createElement('button');
+                del.type = 'button';
+                del.textContent = '×';
+                del.style.cssText = 'position:absolute;top:2px;right:2px;background:rgba(0,0,0,.6);color:#fff;border:none;width:18px;height:18px;border-radius:50%;font-size:12px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;';
+                del.setAttribute('data-idx', i);
+                del.onclick = function(){
+                  var lines = input.value.split('\n').map(function(u){return u.trim();}).filter(function(u){return u;});
+                  lines.splice(parseInt(this.getAttribute('data-idx')), 1);
+                  input.value = lines.join('\n');
+                  updatePreview();
+                };
+                wrap.appendChild(img);
+                wrap.appendChild(badge);
+                wrap.appendChild(del);
+                preview.appendChild(wrap);
+              });
+            }
+            input.addEventListener('input', updatePreview);
+            updatePreview();
+
+            // Upload handler
+            function uploadFiles(files){
+              var filesToUpload = Array.from(files).filter(function(f){ return f.type.startsWith('image/'); });
+              if(filesToUpload.length === 0) return;
+
+              uploadProgress.style.display = 'block';
+              var done = 0;
+              var total = filesToUpload.length;
+
+              filesToUpload.forEach(function(file){
+                var formData = new FormData();
+                formData.append('file', file);
+                formData.append('csrf_token', csrfToken);
+
+                uploadStatus.textContent = 'Uploading ' + (done+1) + ' of ' + total + '...';
+                uploadBar.style.width = Math.round((done/total)*100) + '%';
+
+                fetch('{{ url_for("admin.upload_photo") }}', {
+                  method: 'POST',
+                  body: formData,
+                  credentials: 'same-origin'
+                })
+                .then(function(r){ return r.json(); })
+                .then(function(data){
+                  if(data.url){
+                    var current = input.value.trim();
+                    input.value = current ? current + '\n' + data.url : data.url;
+                    updatePreview();
+                  } else {
+                    alert('Upload failed: ' + (data.error || 'Unknown error'));
+                  }
+                })
+                .catch(function(err){
+                  alert('Upload error: ' + err.message);
+                })
+                .finally(function(){
+                  done++;
+                  uploadBar.style.width = Math.round((done/total)*100) + '%';
+                  uploadStatus.textContent = done < total ? ('Uploading ' + (done+1) + ' of ' + total + '...') : ('Done — ' + done + ' photo' + (done>1?'s':'') + ' uploaded');
+                  if(done >= total){
+                    setTimeout(function(){ uploadProgress.style.display = 'none'; }, 2000);
+                  }
+                });
+              });
+            }
+
+            // Drag & drop
+            dropZone.addEventListener('dragover', function(e){ e.preventDefault(); dropZone.style.borderColor = '#0b5f57'; dropZone.style.background = 'rgba(11,95,87,.06)'; });
+            dropZone.addEventListener('dragleave', function(e){ dropZone.style.borderColor = 'rgba(11,95,87,.25)'; dropZone.style.background = 'rgba(11,95,87,.02)'; });
+            dropZone.addEventListener('drop', function(e){
+              e.preventDefault();
+              dropZone.style.borderColor = 'rgba(11,95,87,.25)';
+              dropZone.style.background = 'rgba(11,95,87,.02)';
+              if(e.dataTransfer.files.length) uploadFiles(e.dataTransfer.files);
+            });
+
+            // Click to browse
+            browseBtn.addEventListener('click', function(){ fileInput.click(); });
+            dropZone.addEventListener('click', function(e){ if(e.target !== browseBtn) fileInput.click(); });
+            fileInput.addEventListener('change', function(){ if(this.files.length) uploadFiles(this.files); this.value=''; });
+          })();
+          </script>
+
+          <div style="margin-top:12px;padding:10px 14px;background:rgba(11,95,87,.03);border-radius:10px;border:1px solid rgba(11,95,87,.08);">
+            <p class="muted tiny" style="margin:0;">
+              <strong>💡 Tip:</strong> Photos are stored on your server. For best results, use landscape photos at least 1200px wide. The first photo becomes the cover image shown on listing cards.
+            </p>
+            <p class="muted tiny" style="margin:4px 0 0;">
+              <strong>Alternative:</strong> Upload to <a href="https://imgbb.com" target="_blank" style="color:var(--brand);">imgbb.com</a> and paste the "Direct link" URLs above.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div class="actions" style="margin-top:14px;">
         <button class="btn btn--primary" type="submit">Save</button>
         <a class="btn" href="{{ url_for('admin.openings') }}">Cancel</a>

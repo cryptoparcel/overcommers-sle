@@ -3,14 +3,14 @@ from __future__ import annotations
 
 import json
 from sqlalchemy import text
-from flask import Blueprint, flash, redirect, render_template, url_for, send_from_directory, current_app, request, Response
+from flask import Blueprint, flash, redirect, render_template, url_for, send_from_directory, current_app, request, Response, jsonify
 from flask_login import current_user
 
-from ..extensions import db, limiter
+from ..extensions import db, limiter, csrf
 from ..utils import slugify
 from ..utils.mailer import send_email
 from ..forms import ApplyForm, ContactForm, StorySubmitForm, TourRequestForm, InterestForm
-from ..models import Application, ContactMessage, Story, PageLayout, Opening, TourRequest, InterestSignup
+from ..models import Application, ContactMessage, Story, PageLayout, Opening, TourRequest, InterestSignup, DepositPayment
 
 public_bp = Blueprint("public", __name__)
 
@@ -77,6 +77,10 @@ def sitemap():
         ("/shop", "monthly", "0.5"),
         ("/privacy", "yearly", "0.3"),
         ("/terms", "yearly", "0.3"),
+        ("/deposit", "weekly", "0.7"),
+        ("/sober-living-grover-beach", "monthly", "0.8"),
+        ("/sober-living-central-coast", "monthly", "0.8"),
+        ("/sober-living-san-luis-obispo", "monthly", "0.8"),
     ]
     base = request.url_root.rstrip("/")
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
@@ -265,7 +269,7 @@ def contact_post():
         "If this is urgent, you can call us directly or reply to this email.\n\n"
         "— The Overcomers Team\n"
         "Grover Beach, CA\n"
-        "info@overcomersrc.com\n"
+        "support@overcomersrc.com\n"
     )
     send_email(to_email=msg.email, subject="We got your message — Overcomers", body=confirm_body)
 
@@ -321,7 +325,7 @@ def tour_post():
         "just reply to this email.\n\n"
         "— The Overcomers Team\n"
         "Grover Beach, CA\n"
-        "info@overcomersrc.com\n"
+        "support@overcomersrc.com\n"
     )
     send_email(to_email=req.email, subject="Tour request received — Overcomers", body=confirm_body)
 
@@ -378,7 +382,7 @@ def apply_post():
         "to help make it as smooth as possible.\n\n"
         "— The Overcomers Team\n"
         "Grover Beach, CA\n"
-        "info@overcomersrc.com\n"
+        "support@overcomersrc.com\n"
     )
     send_email(to_email=app_row.email, subject="We received your application — Overcomers", body=confirm_body)
 
@@ -527,3 +531,182 @@ def login_shortcut():
 @public_bp.get("/register")
 def register_shortcut():
     return redirect(url_for("auth.register"), code=302)
+
+
+# ── Deposit Payment (Stripe) ────────────────────────────────
+
+@public_bp.get("/deposit")
+def deposit():
+    stripe_key = current_app.config.get("STRIPE_PUBLISHABLE_KEY", "")
+    amount_dollars = current_app.config.get("DEPOSIT_AMOUNT_CENTS", 100000) / 100
+    return render_template(
+        "deposit.html",
+        title="Secure Your Spot — Deposit",
+        stripe_key=stripe_key,
+        amount_dollars=amount_dollars,
+    )
+
+
+@public_bp.post("/deposit/create-checkout")
+@limiter.limit("5 per hour")
+def deposit_create_checkout():
+    """Create a Stripe Checkout session for deposit payment."""
+    sk = current_app.config.get("STRIPE_SECRET_KEY", "")
+    if not sk:
+        flash("Online payments are not configured yet. Please contact us directly.", "error")
+        return redirect(url_for("public.deposit"))
+
+    import stripe
+    stripe.api_key = sk
+
+    name = (request.form.get("full_name", "") or "").strip()
+    email = (request.form.get("email", "") or "").strip()
+    phone = (request.form.get("phone", "") or "").strip()
+
+    if not name or not email:
+        flash("Please provide your name and email.", "error")
+        return redirect(url_for("public.deposit"))
+
+    amount = current_app.config.get("DEPOSIT_AMOUNT_CENTS", 100000)
+
+    try:
+        session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            customer_email=email,
+            line_items=[{
+                "price_data": {
+                    "currency": "usd",
+                    "product_data": {
+                        "name": "Overcomers — Deposit to Secure Your Spot",
+                        "description": f"Refundable deposit for sober living housing. We will contact {name} to schedule move-in.",
+                    },
+                    "unit_amount": amount,
+                },
+                "quantity": 1,
+            }],
+            mode="payment",
+            success_url=url_for("public.deposit_success", _external=True) + "?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=url_for("public.deposit_cancel", _external=True),
+            metadata={"full_name": name, "phone": phone},
+        )
+    except Exception as e:
+        current_app.logger.error(f"Stripe error: {e}")
+        flash("Something went wrong with the payment system. Please try again or contact us.", "error")
+        return redirect(url_for("public.deposit"))
+
+    # Save pending record
+    payment = DepositPayment(
+        full_name=name,
+        email=email,
+        phone=phone or None,
+        stripe_session_id=session.id,
+        amount_cents=amount,
+        status="pending",
+    )
+    db.session.add(payment)
+    db.session.commit()
+
+    return redirect(session.url, code=303)
+
+
+@public_bp.get("/deposit/success")
+def deposit_success():
+    session_id = request.args.get("session_id", "")
+    payment = None
+    if session_id:
+        payment = DepositPayment.query.filter_by(stripe_session_id=session_id).first()
+        if payment and payment.status == "pending":
+            payment.status = "paid"
+            db.session.commit()
+
+            # Notify admin
+            try:
+                send_email(
+                    to_email=current_app.config.get("NOTIFY_EMAIL"),
+                    subject="[Overcomers] 💰 New deposit payment!",
+                    body=(
+                        f"Deposit received!\n\n"
+                        f"Name: {payment.full_name}\n"
+                        f"Email: {payment.email}\n"
+                        f"Phone: {payment.phone or 'not provided'}\n"
+                        f"Amount: ${payment.amount_cents / 100:.2f}\n\n"
+                        f"Contact them to schedule move-in.\n"
+                    ),
+                )
+            except Exception:
+                pass
+
+            # Confirmation to payer
+            try:
+                send_email(
+                    to_email=payment.email,
+                    subject="Deposit received — Overcomers",
+                    body=(
+                        f"Hi {payment.full_name.split()[0]},\n\n"
+                        f"We received your deposit of ${payment.amount_cents / 100:.2f}. Thank you!\n\n"
+                        f"Next steps:\n"
+                        f"  1. We'll call or text you within 24 hours to confirm details\n"
+                        f"  2. We'll schedule your move-in date\n"
+                        f"  3. You'll receive a welcome packet with house guidelines\n\n"
+                        f"If you have questions, reply to this email or call (805) 202-8473.\n\n"
+                        f"— The Overcomers Team\n"
+                        f"support@overcomersrc.com\n"
+                    ),
+                )
+            except Exception:
+                pass
+
+    return render_template("deposit_success.html", title="Deposit Received", payment=payment)
+
+
+@public_bp.get("/deposit/cancel")
+def deposit_cancel():
+    return render_template("deposit_cancel.html", title="Deposit Cancelled")
+
+
+@public_bp.post("/stripe/webhook")
+@csrf.exempt
+def stripe_webhook():
+    """Handle Stripe webhook events."""
+    import stripe
+
+    sk = current_app.config.get("STRIPE_SECRET_KEY", "")
+    wh_secret = current_app.config.get("STRIPE_WEBHOOK_SECRET", "")
+    if not sk or not wh_secret:
+        return jsonify({"error": "not configured"}), 400
+
+    stripe.api_key = sk
+    payload = request.get_data(as_text=True)
+    sig = request.headers.get("Stripe-Signature", "")
+
+    try:
+        event = stripe.Webhook.construct_event(payload, sig, wh_secret)
+    except Exception:
+        return jsonify({"error": "invalid signature"}), 400
+
+    if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
+        payment = DepositPayment.query.filter_by(stripe_session_id=session["id"]).first()
+        if payment:
+            payment.status = "paid"
+            payment.stripe_payment_intent = session.get("payment_intent", "")
+            db.session.commit()
+
+    return jsonify({"status": "ok"}), 200
+
+
+# ── SEO Landing Pages ────────────────────────────────────────
+
+@public_bp.get("/sober-living-grover-beach")
+def seo_grover_beach():
+    return render_template("seo/grover_beach.html", title="Sober Living in Grover Beach, CA — Overcomers")
+
+
+@public_bp.get("/sober-living-central-coast")
+def seo_central_coast():
+    return render_template("seo/central_coast.html", title="Sober Living on the Central Coast, CA — Overcomers")
+
+
+@public_bp.get("/sober-living-san-luis-obispo")
+def seo_san_luis_obispo():
+    return render_template("seo/san_luis_obispo.html", title="Sober Living near San Luis Obispo, CA — Overcomers")

@@ -17,6 +17,7 @@
             <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
             <a class="btn btn--ghost" href="{{ url_for('public.openings') }}">View openings</a>
             <a class="btn btn--ghost" href="{{ url_for('public.tour') }}">Schedule a tour</a>
+            <a class="btn btn--ghost" href="{{ url_for('public.deposit') }}" style="border-color:var(--brand);color:var(--brand);">💳 Pay Deposit</a>
           </div>
           <p class="muted small" style="margin-top:10px;">Emergency? Call 911. This site is informational and not medical advice.</p>
         </div>
@@ -30,7 +31,8 @@
           <h2 style="font-size:22px;font-weight:800;margin:0 0 8px;color:#fff;line-height:1.2;">We have openings</h2>
           <p style="opacity:.85;font-size:14px;margin:0 0 16px;line-height:1.5;">Spots are available starting early April in our Grover Beach housing. Secure yours with a deposit — apply today.</p>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <a class="btn" href="{{ url_for('public.apply') }}" style="background:#fff;color:#0b5f57;font-weight:700;border:none;">Apply now</a>
+            <a class="btn" href="{{ url_for('public.deposit') }}" style="background:#fff;color:#0b5f57;font-weight:700;border:none;">💳 Pay Deposit</a>
+            <a class="btn" href="{{ url_for('public.apply') }}" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);">Apply now</a>
             <a class="btn" href="{{ url_for('public.openings') }}" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);">Learn more</a>
           </div>
         </div>

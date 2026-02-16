@@ -50,7 +50,7 @@ class Config:
         self.SMTP_USERNAME = os.environ.get("SMTP_USERNAME", "")
         self.SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD", "")
         self.SMTP_FROM = os.environ.get("SMTP_FROM", "") or self.SMTP_USERNAME or "no-reply@overcomersrc.com"
-        self.NOTIFY_EMAIL = os.environ.get("NOTIFY_EMAIL", "info@overcomersrc.com")
+        self.NOTIFY_EMAIL = os.environ.get("NOTIFY_EMAIL", "support@overcomersrc.com")
 
         # Optional reCAPTCHA (v2 checkbox)
         self.RECAPTCHA_SITE_KEY = os.environ.get("RECAPTCHA_SITE_KEY", "")
@@ -59,6 +59,19 @@ class Config:
         # Analytics (set to your domain, e.g. "overcomersrc.com")
         self.PLAUSIBLE_DOMAIN = os.environ.get("PLAUSIBLE_DOMAIN", "")
 
+        # Google Analytics 4
+        self.GA_MEASUREMENT_ID = os.environ.get("GA_MEASUREMENT_ID", "")  # e.g. G-XXXXXXXXXX
+
+        # Stripe (for deposit payments)
+        self.STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
+        self.STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+        self.STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
+        self.DEPOSIT_AMOUNT_CENTS = int(os.environ.get("DEPOSIT_AMOUNT_CENTS", "100000"))  # $1000 default
+
         # Auto-bootstrap admin from env (optional)
         self.ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "")
         self.ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
+
+        # File uploads
+        self.MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB max upload
+        self.UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.dirname(__file__)), "app", "static", "uploads")

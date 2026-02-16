@@ -1,0 +1,132 @@
+
+{% extends "base.html" %}
+{% block content %}
+
+{# JSON-LD structured data for local SEO #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Overcomers — Sober Living Grover Beach",
+  "description": "Structured, peer-based sober living homes in Grover Beach, CA. Clean housing, accountability, and recovery support on California's Central Coast.",
+  "url": "{{ request.url }}",
+  "telephone": "+18052028473",
+  "email": "support@overcomersrc.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Grover Beach",
+    "addressRegion": "CA",
+    "postalCode": "93433",
+    "addressCountry": "US"
+  },
+  "areaServed": ["Grover Beach", "Pismo Beach", "Arroyo Grande", "San Luis Obispo County"],
+  "priceRange": "$$"
+}
+</script>
+
+<section class="section">
+  <div class="container" style="max-width:780px;">
+
+    <div style="margin-bottom:24px;">
+      <h1>Sober Living in Grover Beach, CA</h1>
+      <p class="muted" style="font-size:17px;">
+        Overcomers provides structured, peer-based sober living homes in Grover Beach on California's Central Coast. If you or someone you know needs stable, drug-free housing with built-in accountability and support — we have beds available now.
+      </p>
+      <div class="actions" style="margin-top:14px;">
+        <a class="btn btn--primary" href="{{ url_for('public.openings') }}">View Available Beds</a>
+        <a class="btn" href="{{ url_for('public.tour') }}">Schedule a Tour</a>
+        <a class="btn" href="{{ url_for('public.deposit') }}" style="border-color:var(--brand);color:var(--brand);">💳 Pay Deposit</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__body">
+        <h2 style="font-size:20px;">Why Grover Beach?</h2>
+        <div class="prose">
+          Grover Beach is a small, quiet coastal town between Pismo Beach and Arroyo Grande. It's close enough to services in San Luis Obispo County but far enough from big-city triggers. Residents benefit from walkable neighborhoods, ocean air, parks, and a tight-knit community that supports recovery.
+        </div>
+        <div class="prose" style="margin-top:10px;">
+          The cost of living is lower than nearby Pismo Beach or San Luis Obispo, and the pace of life helps residents focus on building routines, finding work, and staying accountable. There are AA and NA meetings within a short drive, local employers who hire in recovery, and a community that understands second chances.
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <h2 style="font-size:20px;">What we offer</h2>
+        <div class="prose">
+          Our homes are clean, furnished, and structured. Every resident gets a bed, closet space, and access to shared living areas — full kitchen, living room, laundry, and outdoor space. All utilities, Wi-Fi, and household supplies are included.
+        </div>
+        <div class="prose" style="margin-top:10px;">
+          Beyond housing, Overcomers provides weekly house meetings, life-skills development, employment connections, and a peer support network. We hold each other accountable through random drug testing, shared responsibilities, and honest conversations.
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <h2 style="font-size:20px;">Who it's for</h2>
+        <div class="prose">
+          Overcomers welcomes men and women in early recovery, reentry, or life transition who are ready for a structured, substance-free environment. We don't require insurance, a clinical referral, or prior treatment. What we do require is willingness to stay sober, follow house expectations, and contribute to the household.
+        </div>
+        <div class="prose" style="margin-top:10px;">
+          We also serve <a href="{{ url_for('public.veterans') }}" style="color:var(--brand);">veterans</a>, work with <a href="{{ url_for('public.referrals') }}" style="color:var(--brand);">referral partners</a>, and support <a href="{{ url_for('public.families') }}" style="color:var(--brand);">families</a> who want the best for their loved ones.
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <h2 style="font-size:20px;">How to get started</h2>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="background:var(--brand);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">1</span>
+            <div>
+              <p style="margin:0;font-weight:700;">Read the guide</p>
+              <p class="muted" style="margin:2px 0;">Our <a href="{{ url_for('public.guide') }}" style="color:var(--brand);">resident guide</a> explains what to expect, what's required, and how to prepare.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="background:var(--brand);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">2</span>
+            <div>
+              <p style="margin:0;font-weight:700;">Schedule a tour or apply</p>
+              <p class="muted" style="margin:2px 0;"><a href="{{ url_for('public.tour') }}" style="color:var(--brand);">Tour the home</a> or <a href="{{ url_for('public.apply') }}" style="color:var(--brand);">apply online</a> — both take 2-3 minutes.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="background:var(--brand);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">3</span>
+            <div>
+              <p style="margin:0;font-weight:700;">We confirm and you move in</p>
+              <p class="muted" style="margin:2px 0;">We call within 24 hours. Once confirmed, <a href="{{ url_for('public.deposit') }}" style="color:var(--brand);">pay your deposit</a> and we schedule move-in.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;background:rgba(11,95,87,.03);">
+      <div class="card__body" style="text-align:center;">
+        <h2 style="font-size:20px;">Ready to take the next step?</h2>
+        <p class="muted">Beds are limited. Apply today or call us directly.</p>
+        <div class="actions" style="justify-content:center;margin-top:12px;">
+          <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply Now</a>
+          <a class="btn" href="tel:+18052028473">Call (805) 202-8473</a>
+          <a class="btn" href="{{ url_for('public.contact') }}">Ask a Question</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <p class="muted small">
+          <strong>Also serving:</strong>
+          <a href="{{ url_for('public.seo_central_coast') }}" style="color:var(--brand);">Central Coast</a> ·
+          <a href="{{ url_for('public.seo_san_luis_obispo') }}" style="color:var(--brand);">San Luis Obispo</a> ·
+          Pismo Beach · Arroyo Grande · Oceano · Nipomo · Santa Maria
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

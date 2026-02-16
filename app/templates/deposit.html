@@ -1,0 +1,98 @@
+
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container" style="max-width:680px;">
+    <div class="section-head" style="flex-direction:column;align-items:flex-start;">
+      <h1>Secure Your Spot</h1>
+      <p class="muted">Pay your deposit online to lock in your bed. We'll contact you within 24 hours to schedule your move-in.</p>
+    </div>
+
+    <div class="card">
+      <div class="card__body">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+          <div style="width:50px;height:50px;background:rgba(11,95,87,.08);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;">🔒</div>
+          <div>
+            <h3 class="h3" style="margin:0;">Refundable Deposit</h3>
+            <p class="muted" style="margin:2px 0;font-size:20px;font-weight:800;color:var(--ink);">${{ "%.0f"|format(amount_dollars) }}</p>
+          </div>
+        </div>
+
+        <div style="background:rgba(11,95,87,.03);border-radius:12px;padding:14px 16px;margin-bottom:18px;">
+          <p class="muted" style="margin:0 0 8px;font-weight:600;color:var(--ink);">What happens next:</p>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="background:var(--brand);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">1</span>
+              <span class="muted" style="font-size:14px;">Fill out your info below and pay securely via Stripe</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="background:var(--brand);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">2</span>
+              <span class="muted" style="font-size:14px;">We call or text you within 24 hours to confirm details</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="background:var(--brand);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">3</span>
+              <span class="muted" style="font-size:14px;">We schedule your move-in and send a welcome packet</span>
+            </div>
+          </div>
+        </div>
+
+        {% if stripe_key %}
+        <form method="post" action="{{ url_for('public.deposit_create_checkout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="field" style="margin-bottom:12px;">
+            <label class="label" style="font-weight:600;">Full name *</label>
+            <input class="input" type="text" name="full_name" required placeholder="Your full name" autocomplete="name">
+          </div>
+          <div class="field" style="margin-bottom:12px;">
+            <label class="label" style="font-weight:600;">Email *</label>
+            <input class="input" type="email" name="email" required placeholder="you@email.com" autocomplete="email">
+          </div>
+          <div class="field" style="margin-bottom:18px;">
+            <label class="label" style="font-weight:600;">Phone (so we can reach you fast)</label>
+            <input class="input" type="tel" name="phone" placeholder="(805) 555-1234" autocomplete="tel">
+          </div>
+          <button class="btn btn--primary" type="submit" style="width:100%;justify-content:center;font-size:16px;padding:14px 20px;">
+            Pay ${{ "%.0f"|format(amount_dollars) }} Deposit — Secure Checkout
+          </button>
+          <p class="muted tiny" style="margin-top:10px;text-align:center;">
+            Payments processed securely by <strong>Stripe</strong>. Your card info never touches our server.<br>
+            Questions? <a href="{{ url_for('public.contact') }}" style="color:var(--brand);">Contact us</a> or call <a href="tel:+18052028473" style="color:var(--brand);">(805) 202-8473</a>.
+          </p>
+        </form>
+        {% else %}
+        <div style="text-align:center;padding:20px;">
+          <p style="font-weight:700;font-size:18px;">Online deposits coming soon</p>
+          <p class="muted">In the meantime, call or text us to arrange your deposit.</p>
+          <div class="actions" style="justify-content:center;margin-top:14px;">
+            <a class="btn btn--primary" href="tel:+18052028473">Call (805) 202-8473</a>
+            <a class="btn" href="mailto:support@overcomersrc.com">Email Us</a>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <h3 class="h3">Frequently asked</h3>
+        <details style="margin-bottom:10px;">
+          <summary style="cursor:pointer;font-weight:600;">Is the deposit refundable?</summary>
+          <p class="muted" style="margin-top:6px;">Yes. If we determine it's not a good fit during the confirmation call, or if you cancel before move-in, your deposit is fully refunded.</p>
+        </details>
+        <details style="margin-bottom:10px;">
+          <summary style="cursor:pointer;font-weight:600;">What does the deposit cover?</summary>
+          <p class="muted" style="margin-top:6px;">The deposit secures your bed and is applied toward your first month. It shows commitment and helps us hold the spot for you.</p>
+        </details>
+        <details style="margin-bottom:10px;">
+          <summary style="cursor:pointer;font-weight:600;">Do I need to apply first?</summary>
+          <p class="muted" style="margin-top:6px;">Not necessarily. If you already toured or spoke with us, you can go straight to deposit. If not, we'll do a quick phone screening after payment.</p>
+        </details>
+        <details>
+          <summary style="cursor:pointer;font-weight:600;">Can I pay in person instead?</summary>
+          <p class="muted" style="margin-top:6px;">Yes — call <a href="tel:+18052028473" style="color:var(--brand);">(805) 202-8473</a> and we'll arrange it.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

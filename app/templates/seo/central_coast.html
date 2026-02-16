@@ -1,0 +1,117 @@
+
+{% extends "base.html" %}
+{% block content %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Overcomers — Sober Living Central Coast",
+  "description": "Structured sober living on California's Central Coast. Peer-based recovery housing in Grover Beach serving the entire Central Coast region.",
+  "url": "{{ request.url }}",
+  "telephone": "+18052028473",
+  "email": "support@overcomersrc.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Grover Beach",
+    "addressRegion": "CA",
+    "postalCode": "93433",
+    "addressCountry": "US"
+  },
+  "areaServed": ["Central Coast", "San Luis Obispo County", "Santa Barbara County", "Grover Beach", "Pismo Beach", "Arroyo Grande", "Paso Robles", "Atascadero", "Santa Maria"]
+}
+</script>
+
+<section class="section">
+  <div class="container" style="max-width:780px;">
+
+    <div style="margin-bottom:24px;">
+      <h1>Sober Living on the Central Coast, CA</h1>
+      <p class="muted" style="font-size:17px;">
+        Looking for sober living on California's Central Coast? Overcomers operates structured, supportive housing in Grover Beach — serving residents from across San Luis Obispo County, Santa Barbara County, and beyond.
+      </p>
+      <div class="actions" style="margin-top:14px;">
+        <a class="btn btn--primary" href="{{ url_for('public.openings') }}">View Available Beds</a>
+        <a class="btn" href="{{ url_for('public.tour') }}">Schedule a Tour</a>
+        <a class="btn" href="{{ url_for('public.deposit') }}" style="border-color:var(--brand);color:var(--brand);">💳 Pay Deposit</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__body">
+        <h2 style="font-size:20px;">Central Coast sober living with structure</h2>
+        <div class="prose">
+          The Central Coast offers something LA and the Bay Area can't: space, quiet, and a real community. Our homes in Grover Beach are close to Pismo Beach, Arroyo Grande, and San Luis Obispo — with easy access to jobs, meetings, and services — without the chaos of a big city.
+        </div>
+        <div class="prose" style="margin-top:10px;">
+          We welcome residents from Paso Robles, Atascadero, Santa Maria, Lompoc, and anywhere on the coast who are ready for a fresh start. The Central Coast's recovery community is strong, with AA/NA meetings throughout the county, sober social events, and employers who understand and support people in recovery.
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <h2 style="font-size:20px;">What makes Overcomers different</h2>
+        <div class="prose">
+          We're not a treatment facility. We don't charge insurance or require a clinical referral. Overcomers is peer-based sober living: clean housing, clear expectations, and real accountability. Residents contribute to the household, attend weekly meetings, submit to random drug testing, and support each other.
+        </div>
+        <div class="prose" style="margin-top:10px;">
+          Every home includes furnished beds, all utilities, Wi-Fi, laundry, kitchen access, and outdoor space. We also connect residents with employment opportunities, life-skills workshops, and local recovery resources throughout the Central Coast.
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <h2 style="font-size:20px;">Areas we serve</h2>
+        <div class="prose">
+          Our homes are in Grover Beach, but we regularly welcome residents from across the region. Here's a sense of distance from common cities:
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;">
+          <div style="padding:8px 12px;background:rgba(11,95,87,.03);border-radius:8px;font-size:14px;"><strong>San Luis Obispo</strong> — 15 min</div>
+          <div style="padding:8px 12px;background:rgba(11,95,87,.03);border-radius:8px;font-size:14px;"><strong>Pismo Beach</strong> — 5 min</div>
+          <div style="padding:8px 12px;background:rgba(11,95,87,.03);border-radius:8px;font-size:14px;"><strong>Arroyo Grande</strong> — 8 min</div>
+          <div style="padding:8px 12px;background:rgba(11,95,87,.03);border-radius:8px;font-size:14px;"><strong>Santa Maria</strong> — 30 min</div>
+          <div style="padding:8px 12px;background:rgba(11,95,87,.03);border-radius:8px;font-size:14px;"><strong>Paso Robles</strong> — 45 min</div>
+          <div style="padding:8px 12px;background:rgba(11,95,87,.03);border-radius:8px;font-size:14px;"><strong>Atascadero</strong> — 35 min</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <h2 style="font-size:20px;">Getting started</h2>
+        <div class="prose">
+          Start by reading our <a href="{{ url_for('public.guide') }}" style="color:var(--brand);">resident guide</a>, then <a href="{{ url_for('public.apply') }}" style="color:var(--brand);">apply online</a> or <a href="{{ url_for('public.tour') }}" style="color:var(--brand);">schedule a tour</a>. We respond within 24 hours. If it's a fit, you can <a href="{{ url_for('public.deposit') }}" style="color:var(--brand);">pay your deposit online</a> and we'll schedule your move-in date.
+        </div>
+        <div class="prose" style="margin-top:10px;">
+          We also work with <a href="{{ url_for('public.referrals') }}" style="color:var(--brand);">referral partners</a> including counselors, probation officers, treatment centers, and social workers. If you're referring someone, we make the process simple and transparent.
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;background:rgba(11,95,87,.03);">
+      <div class="card__body" style="text-align:center;">
+        <h2 style="font-size:20px;">Beds available now</h2>
+        <p class="muted">Don't wait. Apply today or call us — no pressure, just real help.</p>
+        <div class="actions" style="justify-content:center;margin-top:12px;">
+          <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply Now</a>
+          <a class="btn" href="tel:+18052028473">Call (805) 202-8473</a>
+          <a class="btn" href="{{ url_for('public.contact') }}">Ask a Question</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <p class="muted small">
+          <strong>Also see:</strong>
+          <a href="{{ url_for('public.seo_grover_beach') }}" style="color:var(--brand);">Sober Living in Grover Beach</a> ·
+          <a href="{{ url_for('public.seo_san_luis_obispo') }}" style="color:var(--brand);">Sober Living near San Luis Obispo</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

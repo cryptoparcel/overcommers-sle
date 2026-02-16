@@ -1,0 +1,113 @@
+
+{% extends "base.html" %}
+{% block content %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Overcomers — Sober Living near San Luis Obispo",
+  "description": "Structured sober living 15 minutes from San Luis Obispo. Peer-based recovery housing in Grover Beach, CA.",
+  "url": "{{ request.url }}",
+  "telephone": "+18052028473",
+  "email": "support@overcomersrc.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Grover Beach",
+    "addressRegion": "CA",
+    "postalCode": "93433",
+    "addressCountry": "US"
+  },
+  "areaServed": ["San Luis Obispo", "SLO County", "Grover Beach", "Pismo Beach", "Arroyo Grande"]
+}
+</script>
+
+<section class="section">
+  <div class="container" style="max-width:780px;">
+
+    <div style="margin-bottom:24px;">
+      <h1>Sober Living near San Luis Obispo, CA</h1>
+      <p class="muted" style="font-size:17px;">
+        Just 15 minutes from San Luis Obispo, Overcomers provides structured sober living in Grover Beach. Drug-free housing with real accountability and peer support — beds available now.
+      </p>
+      <div class="actions" style="margin-top:14px;">
+        <a class="btn btn--primary" href="{{ url_for('public.openings') }}">View Available Beds</a>
+        <a class="btn" href="{{ url_for('public.tour') }}">Schedule a Tour</a>
+        <a class="btn" href="{{ url_for('public.deposit') }}" style="border-color:var(--brand);color:var(--brand);">💳 Pay Deposit</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__body">
+        <h2 style="font-size:20px;">Close to SLO, away from the noise</h2>
+        <div class="prose">
+          San Luis Obispo County has strong recovery resources — meetings, counseling, job programs — but affordable sober housing can be hard to find. Our homes in Grover Beach are a short drive from SLO's services while offering a quieter, more affordable setting.
+        </div>
+        <div class="prose" style="margin-top:10px;">
+          Residents stay connected to SLO recovery meetings, employment, and community while living in a structured, supportive household. You get the benefits of SLO County resources without the higher rent of living in the city itself.
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <h2 style="font-size:20px;">What's included</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px;">
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(11,95,87,.03);border-radius:8px;font-size:14px;"><span style="color:var(--brand);font-weight:800;">✓</span> Furnished bed & closet</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(11,95,87,.03);border-radius:8px;font-size:14px;"><span style="color:var(--brand);font-weight:800;">✓</span> All utilities & Wi-Fi</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(11,95,87,.03);border-radius:8px;font-size:14px;"><span style="color:var(--brand);font-weight:800;">✓</span> Full kitchen access</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(11,95,87,.03);border-radius:8px;font-size:14px;"><span style="color:var(--brand);font-weight:800;">✓</span> Washer & dryer</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(11,95,87,.03);border-radius:8px;font-size:14px;"><span style="color:var(--brand);font-weight:800;">✓</span> Weekly house meetings</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(11,95,87,.03);border-radius:8px;font-size:14px;"><span style="color:var(--brand);font-weight:800;">✓</span> Employment connections</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(11,95,87,.03);border-radius:8px;font-size:14px;"><span style="color:var(--brand);font-weight:800;">✓</span> Random drug testing</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(11,95,87,.03);border-radius:8px;font-size:14px;"><span style="color:var(--brand);font-weight:800;">✓</span> Peer accountability</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <h2 style="font-size:20px;">SLO recovery resources nearby</h2>
+        <div class="prose">
+          Living in Grover Beach puts you within easy reach of San Luis Obispo County's recovery infrastructure: multiple daily AA/NA meetings in SLO, Arroyo Grande, and Pismo Beach; county mental health services; workforce development programs; community colleges for continuing education; and employers across the Five Cities area who actively hire people in recovery.
+        </div>
+        <div class="prose" style="margin-top:10px;">
+          Our staff can help connect you to the right resources for your situation. See our <a href="{{ url_for('public.resources') }}" style="color:var(--brand);">resources page</a> for more.
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <h2 style="font-size:20px;">How to get started</h2>
+        <div class="prose">
+          Read our <a href="{{ url_for('public.guide') }}" style="color:var(--brand);">resident guide</a> to learn what to expect. Then <a href="{{ url_for('public.apply') }}" style="color:var(--brand);">apply online</a> (2-3 min) or <a href="{{ url_for('public.tour') }}" style="color:var(--brand);">schedule a tour</a>. We respond within 24 hours. Once confirmed, <a href="{{ url_for('public.deposit') }}" style="color:var(--brand);">pay your deposit online</a> to lock in your bed and we'll schedule move-in.
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;background:rgba(11,95,87,.03);">
+      <div class="card__body" style="text-align:center;">
+        <h2 style="font-size:20px;">Don't wait — beds fill up fast</h2>
+        <p class="muted">Apply today or call us. No pressure, no commitment until you're ready.</p>
+        <div class="actions" style="justify-content:center;margin-top:12px;">
+          <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply Now</a>
+          <a class="btn" href="tel:+18052028473">Call (805) 202-8473</a>
+          <a class="btn" href="{{ url_for('public.contact') }}">Ask a Question</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <p class="muted small">
+          <strong>Also see:</strong>
+          <a href="{{ url_for('public.seo_grover_beach') }}" style="color:var(--brand);">Sober Living in Grover Beach</a> ·
+          <a href="{{ url_for('public.seo_central_coast') }}" style="color:var(--brand);">Sober Living on the Central Coast</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

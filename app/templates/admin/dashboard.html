@@ -50,6 +50,15 @@
   </article>
   <article class="card">
     <div class="card__body">
+      <h3 class="h3">💰 Deposits</h3>
+      <p class="muted"><strong>{{ counts.deposits_paid }}</strong> paid{% if counts.deposits_pending %} &nbsp;/&nbsp; <strong>{{ counts.deposits_pending }}</strong> pending{% endif %}</p>
+      <div class="actions" style="margin-top:8px;">
+        <a class="btn" href="{{ url_for('admin.deposits') }}">View</a>
+      </div>
+    </div>
+  </article>
+  <article class="card">
+    <div class="card__body">
       <h3 class="h3">Quick links</h3>
       <div class="actions" style="margin-top:8px;">
         <a class="btn" href="{{ url_for('admin.openings') }}">Openings</a>

@@ -145,7 +145,44 @@ class Opening(db.Model):
     contact_email = db.Column(db.String(255), nullable=True)
     contact_phone = db.Column(db.String(60), nullable=True)
 
+    photos_json = db.Column(db.Text, nullable=True)  # JSON array of image URLs
+
     status = db.Column(db.String(20), nullable=False, default="draft", index=True)
+
+    @property
+    def photos(self) -> list:
+        """Return list of photo URLs from JSON field."""
+        if not self.photos_json:
+            return []
+        try:
+            import json
+            data = json.loads(self.photos_json)
+            return [url.strip() for url in data if url and url.strip()]
+        except Exception:
+            return []
 
     def __repr__(self) -> str:
         return f"<Opening {self.id} {self.status} {self.slug}>"
+
+
+class DepositPayment(db.Model):
+    """Tracks deposit payments via Stripe."""
+
+    __tablename__ = "deposit_payments"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=_utcnow)
+
+    full_name = db.Column(db.String(180), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    phone = db.Column(db.String(60), nullable=True)
+
+    stripe_session_id = db.Column(db.String(255), nullable=True, unique=True)
+    stripe_payment_intent = db.Column(db.String(255), nullable=True)
+    amount_cents = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String(30), nullable=False, default="pending")  # pending, paid, failed
+
+    notes = db.Column(db.Text, nullable=True)
+
+    def __repr__(self) -> str:
+        return f"<DepositPayment {self.id} {self.status} {self.email}>"
