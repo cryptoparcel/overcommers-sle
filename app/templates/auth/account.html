@@ -55,17 +55,32 @@
             {{ password_form.hidden_tag() }}
             <div class="field">
               <label>{{ password_form.current_password.label }}</label>
-              {{ password_form.current_password(class_="input", type="password") }}
+              <div class="input-wrap">
+                {{ password_form.current_password(class_="input", type="password", id="curPw") }}
+                <button type="button" class="pw-toggle" onclick="togglePw('curPw', this)" aria-label="Show password">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
               {% for e in password_form.current_password.errors %}<div class="error">{{ e }}</div>{% endfor %}
             </div>
             <div class="field">
               <label>{{ password_form.new_password.label }}</label>
-              {{ password_form.new_password(class_="input", type="password") }}
+              <div class="input-wrap">
+                {{ password_form.new_password(class_="input", type="password", id="newPw") }}
+                <button type="button" class="pw-toggle" onclick="togglePw('newPw', this)" aria-label="Show password">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
               {% for e in password_form.new_password.errors %}<div class="error">{{ e }}</div>{% endfor %}
             </div>
             <div class="field">
               <label>{{ password_form.confirm_new_password.label }}</label>
-              {{ password_form.confirm_new_password(class_="input", type="password") }}
+              <div class="input-wrap">
+                {{ password_form.confirm_new_password(class_="input", type="password", id="confirmPw") }}
+                <button type="button" class="pw-toggle" onclick="togglePw('confirmPw', this)" aria-label="Show password">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
               {% for e in password_form.confirm_new_password.errors %}<div class="error">{{ e }}</div>{% endfor %}
             </div>
             <div class="actions">

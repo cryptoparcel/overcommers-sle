@@ -70,6 +70,13 @@
             <a class="btn btn--primary" href="tel:+18052028473">Call (805) 202-8473</a>
             <a class="btn" href="mailto:support@overcomersrc.com">Email Us</a>
           </div>
+          {% if current_user.is_authenticated and current_user.is_admin %}
+          <div style="margin-top:20px;padding:14px;background:#fef3c7;border:1px solid #f59e0b;border-radius:10px;text-align:left;font-size:13px;">
+            <strong>Admin note:</strong> The payment form is hidden because Stripe keys are not configured. To enable deposits, add these environment variables on Render:
+            <br><code style="font-size:12px;">STRIPE_PUBLISHABLE_KEY</code>, <code style="font-size:12px;">STRIPE_SECRET_KEY</code>, <code style="font-size:12px;">STRIPE_WEBHOOK_SECRET</code>
+            <br>Get them from <a href="https://dashboard.stripe.com/apikeys" target="_blank" rel="noopener" style="color:var(--brand);font-weight:600;">dashboard.stripe.com/apikeys</a>
+          </div>
+          {% endif %}
         </div>
         {% endif %}
       </div>

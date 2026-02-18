@@ -9,6 +9,12 @@ def rate_limited(_e):
     return render_template("429.html", title="Too many requests"), 429
 
 
+@errors_bp.app_errorhandler(401)
+def unauthorized(_e):
+    from flask import redirect, url_for
+    return redirect(url_for("auth.login"))
+
+
 @errors_bp.app_errorhandler(404)
 def not_found(_e):
     return render_template("404.html", title="Not found"), 404

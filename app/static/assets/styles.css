@@ -193,8 +193,9 @@ h3,.h3{font-size:17px;font-weight:700;line-height:1.35;margin:0 0 6px}
 @media(max-width:600px){.nav__cta{display:none}h1,.h1{font-size:26px}h2,.h2{font-size:22px}}
 
 /* ── Animations ── */
-.fade-up{opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease}
-.fade-up.visible{opacity:1;transform:translateY(0)}
+.fade-up{opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease;animation:fadeUpFallback .5s ease .8s forwards}
+.fade-up.visible{opacity:1;transform:translateY(0);animation:none}
+@keyframes fadeUpFallback{to{opacity:1;transform:translateY(0)}}
 .fade-up.d1{transition-delay:.06s}.fade-up.d2{transition-delay:.12s}.fade-up.d3{transition-delay:.18s}.fade-up.d4{transition-delay:.24s}
 
 /* ── Existing page styles ── */
@@ -224,6 +225,7 @@ h3,.h3{font-size:17px;font-weight:700;line-height:1.35;margin:0 0 6px}
 .impact-icon{width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:14px;background:rgba(11,95,87,.08);color:var(--brand);font-size:22px;margin-bottom:6px}
 .menu-wrap{position:relative}.menu-btn{cursor:pointer}
 .menu{display:none;position:absolute;right:0;top:100%;min-width:180px;background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.1);padding:6px 0;z-index:30}
+.menu.open{display:block}
 .menu[aria-hidden="false"]{display:block}
 .menu__item{display:block;padding:8px 16px;text-decoration:none;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer}.menu__item:hover{background:rgba(0,0,0,.04)}
 .menu__item--button{width:100%;text-align:left;background:none;border:none;font:inherit}.menu__form{margin:0}
@@ -492,3 +494,4 @@ h3,.h3{font-size:17px;font-weight:700;line-height:1.35;margin:0 0 6px}
 .help-card{padding:20px;border-radius:var(--radius);background:rgba(11,95,87,.03);border:1px solid rgba(11,95,87,.08);text-align:center;margin-top:8px}
 .help-card p{color:var(--muted);font-size:14px}
 .help-card a{color:var(--brand);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.input-wrap{position:relative;display:flex;align-items:center}.input-wrap .input{flex:1;padding-right:44px}.pw-toggle{position:absolute;right:8px;background:none;border:none;cursor:pointer;color:var(--muted);padding:6px;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:color var(--ease)}.pw-toggle:hover{color:var(--ink)}.pw-toggle.active{color:var(--brand)}

@@ -223,3 +223,13 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 });
+
+/* ── Password visibility toggle ─────────────────────────── */
+function togglePw(id, btn) {
+  var inp = document.getElementById(id);
+  if (!inp) return;
+  var show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.classList.toggle('active', show);
+  btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+}
