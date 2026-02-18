@@ -43,6 +43,33 @@ def create_app() -> Flask:
 
     register_cli(app)
 
+    # ── Activity logging middleware ──────────────────────────
+    @app.after_request
+    def _log_activity(response):
+        """Log page views and form submissions for audit trail."""
+        from flask import request as req
+        # Skip static files, health checks, and API endpoints
+        path = req.path or ""
+        if any(path.startswith(p) for p in ("/static/", "/favicon", "/robots", "/health", "/manifest", "/sitemap")):
+            return response
+        # Skip AJAX/API and redirects (to avoid double-logging)
+        if req.is_json or response.status_code in (301, 302, 304):
+            return response
+
+        try:
+            from .utils import log_activity
+            if req.method == "POST":
+                # Log form submissions
+                action = f"form_submit:{path}"
+                log_activity(action=action, category="form_submit", level="info")
+            elif req.method == "GET" and response.status_code == 200:
+                # Log page views (sample: only log unique paths per session to reduce volume)
+                action = f"page_view:{path}"
+                log_activity(action=action, category="page_view", level="info")
+        except Exception:
+            pass  # Never break the app for logging
+        return response
+
     # ── Security headers ─────────────────────────────────────
     @app.after_request
     def _security_headers(response):

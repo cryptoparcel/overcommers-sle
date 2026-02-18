@@ -491,35 +491,37 @@ def activity_log():
     level = request.args.get("level", "")
     search = request.args.get("q", "").strip()
 
-    q = ActivityLog.query
+    items = []
+    pagination = None
+    categories = []
+    total_logs = today_logs = warning_count = error_count = 0
 
-    if category:
-        q = q.filter_by(category=category)
-    if level:
-        q = q.filter_by(level=level)
-    if search:
-        q = q.filter(
-            db.or_(
-                ActivityLog.action.ilike(f"%{search}%"),
-                ActivityLog.details.ilike(f"%{search}%"),
-                ActivityLog.ip_address.ilike(f"%{search}%"),
-                ActivityLog.path.ilike(f"%{search}%"),
+    try:
+        q = ActivityLog.query
+
+        if category:
+            q = q.filter_by(category=category)
+        if level:
+            q = q.filter_by(level=level)
+        if search:
+            q = q.filter(
+                db.or_(
+                    ActivityLog.action.ilike(f"%{search}%"),
+                    ActivityLog.details.ilike(f"%{search}%"),
+                    ActivityLog.ip_address.ilike(f"%{search}%"),
+                    ActivityLog.path.ilike(f"%{search}%"),
+                )
             )
+
+        pagination = q.order_by(ActivityLog.created_at.desc()).paginate(
+            page=page, per_page=per_page, error_out=False
         )
+        items = pagination.items
 
-    pagination = q.order_by(ActivityLog.created_at.desc()).paginate(
-        page=page, per_page=per_page, error_out=False
-    )
-    items = pagination.items
-
-    # Get distinct categories for filter dropdown
-    try:
+        # Get distinct categories for filter dropdown
         categories = [r[0] for r in db.session.query(ActivityLog.category).distinct().all() if r[0]]
-    except Exception:
-        categories = []
 
-    # Log counts for quick stats
-    try:
+        # Log counts for quick stats
         total_logs = ActivityLog.query.count()
         today_logs = ActivityLog.query.filter(
             ActivityLog.created_at >= datetime.now(timezone.utc).replace(hour=0, minute=0, second=0)
@@ -527,7 +529,7 @@ def activity_log():
         warning_count = ActivityLog.query.filter_by(level="warning").count()
         error_count = ActivityLog.query.filter_by(level="error").count()
     except Exception:
-        total_logs = today_logs = warning_count = error_count = 0
+        flash("Activity log table may not be set up yet. Run: flask db upgrade", "error")
 
     return render_template(
         "admin/activity_log.html",
@@ -551,7 +553,10 @@ def activity_log():
 @admin_required
 def export_activity_log():
     """Export activity logs as CSV."""
-    items = ActivityLog.query.order_by(ActivityLog.created_at.desc()).limit(10000).all()
+    try:
+        items = ActivityLog.query.order_by(ActivityLog.created_at.desc()).limit(10000).all()
+    except Exception:
+        items = []
 
     def esc(v: str) -> str:
         v = (v or "")
