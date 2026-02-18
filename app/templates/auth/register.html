@@ -23,7 +23,7 @@
               </div>
               <div class="field">
                 <label>{{ form.username.label }}</label>
-                {{ form.username(class_="input") }}
+                {{ form.username(class_="input", autocomplete="username") }}
                 {% for e in form.username.errors %}<div class="error">{{ e }}</div>{% endfor %}
               </div>
               <div class="field grid__span2">

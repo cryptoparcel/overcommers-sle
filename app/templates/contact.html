@@ -22,12 +22,12 @@
             <div class="grid grid--form">
               <div class="field">
                 <label>{{ form.name.label }}</label>
-                {{ form.name(class_="input") }}
+                {{ form.name(class_="input", autocomplete="name") }}
                 {% for e in form.name.errors %}<div class="error">{{ e }}</div>{% endfor %}
               </div>
               <div class="field">
                 <label>{{ form.email.label }}</label>
-                {{ form.email(class_="input") }}
+                {{ form.email(class_="input", autocomplete="email", inputmode="email") }}
                 {% for e in form.email.errors %}<div class="error">{{ e }}</div>{% endfor %}
               </div>
               <div class="field grid__span2">

@@ -11,19 +11,19 @@
     </div>
 
     <div class="grid">
-      <div class="card" style="grid-column: span 6;">
+      <div class="card" style="grid-column: span 7;">
         <div class="body">
           <form method="post" novalidate>
             {{ form.hidden_tag() }}
             <div class="field">
               <label>{{ form.identifier.label }}</label>
-              {{ form.identifier(class_="input", placeholder="Email or username") }}
+              {{ form.identifier(class_="input", placeholder="Email or username", autocomplete="email", inputmode="email") }}
               {% for e in form.identifier.errors %}<div class="error">{{ e }}</div>{% endfor %}
             </div>
             <div class="field">
               <label>{{ form.password.label }}</label>
               <div class="input-wrap">
-                {{ form.password(class_="input", type="password", id="loginPw") }}
+                {{ form.password(class_="input", type="password", id="loginPw", autocomplete="current-password") }}
                 <button type="button" class="pw-toggle" onclick="togglePw('loginPw', this)" aria-label="Show password">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 </button>
@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <div class="card" style="grid-column: span 6;">
+      <div class="card login-help-card" style="grid-column: span 5;">
         <div class="body">
           <h3>Need an account?</h3>
           <p class="muted">Create an account to submit stories, track your application status, and more.</p>

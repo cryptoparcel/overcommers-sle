@@ -222,8 +222,7 @@ def shop():
 
 @public_bp.get("/checkout")
 def checkout():
-    # No active checkout — redirect to shop
-    return redirect(url_for("public.shop"), code=302)
+    return redirect(url_for("public.deposit"), code=302)
 
 
 # ── Contact ──────────────────────────────────────────────────

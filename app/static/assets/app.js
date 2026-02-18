@@ -39,6 +39,12 @@ document.addEventListener("DOMContentLoaded", function () {
       navEl.classList.toggle("nav--open");
       mToggle.setAttribute("aria-expanded", navEl.classList.contains("nav--open"));
     });
+    navEl.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        navEl.classList.remove("nav--open");
+        mToggle.setAttribute("aria-expanded", "false");
+      });
+    });
   }
 
   /* ══ Account dropdown ══ */
@@ -219,6 +225,22 @@ document.addEventListener("DOMContentLoaded", function () {
     el.addEventListener("click", function () {
       var action = el.getAttribute("data-track");
       if (typeof gtag === "function") gtag("event", action, { event_category: "engagement" });
+    });
+  });
+
+  /* ══ Loading spinner on form submit ══ */
+  document.querySelectorAll("form").forEach(function (form) {
+    form.addEventListener("submit", function () {
+      var btn = form.querySelector('button[type="submit"]');
+      if (!btn || btn.disabled) return;
+      btn.disabled = true;
+      btn.dataset.origText = btn.textContent;
+      btn.innerHTML = '<span class="spinner"></span> Sending...';
+      /* Re-enable after 8s in case of slow response or error */
+      setTimeout(function () {
+        btn.disabled = false;
+        btn.textContent = btn.dataset.origText || "Submit";
+      }, 8000);
     });
   });
 
