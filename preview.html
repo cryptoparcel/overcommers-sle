@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overcomers — Grover Beach Home A | 10 beds available</title>
+<meta name="description" content="Structured sober living in Grover Beach, CA — 10 beds available. Tour our home, apply online, or pay your deposit to lock in your spot.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f7fb;--card:#ffffff;--ink:#071922;--muted:#5b6671;--brand:#0b5f57;--brand2:#0ea5a0;--danger:#b91c1c;--shadow:0 18px 50px rgba(0,0,0,.06);--radius:18px}
+*{box-sizing:border-box}html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg);font-size:15px;line-height:1.6}a{color:inherit}
+.container{max-width:1100px;margin:0 auto;padding:0 18px}.section{padding:34px 0}.muted{color:var(--muted)}.small{font-size:13px}.tiny{font-size:12px}
+h1{font-size:34px;letter-spacing:-.02em;margin:0 0 10px;line-height:1.2}h2{font-size:24px;margin:0 0 8px}h3,.h3{font-size:18px;margin:0 0 6px;line-height:1.3}p{margin:8px 0}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.95);backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid rgba(0,0,0,.06)}
+.topbar__inner{display:flex;align-items:center;gap:18px;padding:12px 0}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}.brand__logo{height:44px;width:44px;border-radius:50%}
+.brand__title{font-weight:700;letter-spacing:.02em}.brand__subtitle{font-size:12px;color:var(--muted)}
+.nav{display:flex;gap:14px;flex:1;justify-content:center}.nav a{text-decoration:none;color:rgba(7,25,34,.8);font-weight:600;font-size:14px;transition:color .15s}.nav a:hover{color:var(--brand)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;border-radius:999px;border:1px solid rgba(0,0,0,.12);background:#fff;text-decoration:none;font-weight:700;font-size:14px;cursor:pointer;min-height:42px;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.btn--primary{background:var(--brand);color:#fff;border-color:transparent}.btn--primary:hover{background:#0a5249}
+.card{background:var(--card);border:1px solid rgba(0,0,0,.06);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.card__body{padding:18px;display:flex;flex-direction:column;gap:10px}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:14px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}.link{text-decoration:none;font-weight:700}
+.prose{color:rgba(7,25,34,.92);line-height:1.65}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.grid.cards article.card{grid-column:span 4}
+@media(max-width:980px){.grid.cards article.card{grid-column:span 6}}
+@media(max-width:640px){.grid.cards article.card{grid-column:span 12}h1{font-size:26px}.section-head{flex-direction:column;align-items:flex-start}}
+.footer{margin-top:40px;background:#0b1120;color:#e5e7eb;padding:24px 0}
+.footer a{color:#e5e7eb;text-decoration:none}.footer a:hover{text-decoration:underline;color:#fff}
+
+/* Tab navigation between preview pages */
+.preview-tabs{background:var(--brand);padding:8px 0;text-align:center;position:sticky;top:0;z-index:30}
+.preview-tabs span{color:rgba(255,255,255,.7);font-size:12px;font-weight:600;padding:6px 14px;cursor:pointer;border-radius:999px;transition:all .15s}
+.preview-tabs span:hover,.preview-tabs span.active{background:rgba(255,255,255,.2);color:#fff}
+.preview-page{display:none}.preview-page.active{display:block}
+.preview-banner{background:linear-gradient(135deg,#0b5f57,#0ea5a0);color:#fff;text-align:center;padding:10px;font-size:13px;font-weight:600}
+
+/* Photo grid */
+.photos-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:4px;border-radius:var(--radius);overflow:hidden;max-height:420px;margin-bottom:20px}
+.photos-grid__main{grid-row:span 2;position:relative;cursor:pointer;overflow:hidden}
+.photos-grid__thumb{position:relative;cursor:pointer;overflow:hidden}
+.photos-grid__main img,.photos-grid__thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s}
+.photos-grid__main:hover img,.photos-grid__thumb:hover img{transform:scale(1.03)}
+.photos-grid__more{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.6);color:#fff;padding:5px 12px;border-radius:8px;font-size:12px;font-weight:600;pointer-events:none}
+@media(max-width:640px){.photos-grid{grid-template-columns:1fr;grid-template-rows:auto;max-height:none}.photos-grid__main{grid-row:span 1;height:240px}.photos-grid__thumb{height:160px}}
+
+/* Detail layout */
+.detail-grid{display:grid;grid-template-columns:1fr 340px;gap:20px}
+@media(max-width:820px){.detail-grid{grid-template-columns:1fr}}
+.detail-sidebar .card{position:sticky;top:80px}
+
+/* Facts row */
+.facts-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.fact-box{background:rgba(11,95,87,.04);border-radius:14px;padding:14px;text-align:center}
+.fact-box__icon{font-size:20px;margin-bottom:2px}
+.fact-box__label{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600}
+.fact-box__value{font-size:15px;font-weight:700;margin-top:1px}
+@media(max-width:480px){.facts-row{grid-template-columns:1fr 1fr}}
+
+/* Included list */
+.included-list{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.included-item{display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(11,95,87,.03);border-radius:10px;font-size:14px}
+.included-item__check{color:var(--brand);font-weight:800}
+@media(max-width:480px){.included-list{grid-template-columns:1fr}}
+
+.privacy-box{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:12px;background:rgba(11,95,87,.04);border:1px solid rgba(11,95,87,.1);font-size:13px;color:var(--muted);line-height:1.5;margin-top:14px}
+.steps-list{margin:0 0 8px;padding-left:20px}.steps-list li{margin:6px 0;font-size:14px;color:var(--muted)}
+
+/* Lightbox */
+.lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:100;flex-direction:column;align-items:center;justify-content:center}
+.lb.open{display:flex}
+.lb__close{position:absolute;top:14px;right:18px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer;opacity:.7;transition:opacity .15s;line-height:1}.lb__close:hover{opacity:1}
+.lb__counter{position:absolute;top:18px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.6);font-size:14px;font-weight:600}
+.lb__img{max-width:88vw;max-height:68vh;object-fit:contain;border-radius:10px}
+.lb__arrow{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:22px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.lb__arrow:hover{background:rgba(255,255,255,.2)}
+.lb__arrow--prev{left:16px}.lb__arrow--next{right:16px}
+.lb__strip{display:flex;gap:6px;margin-top:14px;overflow-x:auto;max-width:88vw;padding:2px 0}
+.lb__strip::-webkit-scrollbar{display:none}
+.lb__strip-item{flex:0 0 60px;height:42px;border-radius:6px;overflow:hidden;cursor:pointer;border:2px solid transparent;opacity:.45;transition:all .2s}
+.lb__strip-item.active{border-color:#fff;opacity:1}.lb__strip-item:hover{opacity:.8}
+.lb__strip-item img{width:100%;height:100%;object-fit:cover}
+
+/* Pulse dot */
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block;animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+</style>
+</head>
+<body>
+
+<!-- Preview Banner -->
+<div class="preview-banner">
+  🔍 PREVIEW — This is a standalone preview of the Overcomers website. Deploy to Render for the live version.
+</div>
+
+<!-- Tab Navigation -->
+<div class="preview-tabs" id="tabs">
+  <span class="active" data-page="detail">🏠 Home A Detail</span>
+  <span data-page="openings">📋 All Openings</span>
+  <span data-page="deposit">💳 Deposit</span>
+  <span data-page="seo">🔎 SEO Page</span>
+</div>
+
+<!-- Topbar -->
+<header class="topbar">
+  <div class="container">
+    <div class="topbar__inner">
+      <a class="brand" href="https://overcomersrc.com">
+        <img class="brand__logo" src="https://i.ibb.co/4gR7GnWq/overcomers-emblem.png" alt="Overcomers">
+        <div>
+          <div class="brand__title">OVERCOMERS</div>
+          <div class="brand__subtitle">Transformative Thinking & Restorative Community</div>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="https://overcomersrc.com/guide">Guide</a>
+        <a href="https://overcomersrc.com/what-we-do">What We Do</a>
+        <a href="https://overcomersrc.com/openings">Openings</a>
+        <a href="https://overcomersrc.com/deposit">Deposit</a>
+        <a href="https://overcomersrc.com/stories">Stories</a>
+        <a href="https://overcomersrc.com/contact">Contact</a>
+      </nav>
+      <div class="actions">
+        <a class="btn btn--primary" href="https://overcomersrc.com/apply">Apply now</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- PAGE 1: OPENING DETAIL (Grover Beach — Home A)            -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="preview-page active" id="page-detail">
+<section class="section">
+  <div class="container">
+
+    <div class="section-head">
+      <div>
+        <h1>Grover Beach — Home A</h1>
+        <p class="muted">Grover Beach, CA · Available Now · <span class="pulse-dot"></span> 10 beds available</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn--primary" href="https://overcomersrc.com/tour">Schedule a tour</a>
+        <a class="btn" href="https://overcomersrc.com/openings">← All openings</a>
+      </div>
+    </div>
+
+    <!-- Photo gallery -->
+    <div class="photos-grid">
+      <div class="photos-grid__main" data-lb-open="0" role="button" tabindex="0" aria-label="View photo 1 of 8">
+        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80" alt="Home exterior" loading="eager">
+      </div>
+      <div class="photos-grid__thumb" data-lb-open="1" role="button" tabindex="0" aria-label="View photo 2">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80" alt="Living room" loading="eager">
+      </div>
+      <div class="photos-grid__thumb" data-lb-open="2" role="button" tabindex="0" aria-label="View all 8 photos">
+        <img src="https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=400&q=80" alt="Kitchen" loading="eager">
+        <div class="photos-grid__more">+5 more</div>
+      </div>
+    </div>
+
+    <!-- Detail grid -->
+    <div class="detail-grid">
+      <div>
+        <div class="facts-row">
+          <div class="fact-box"><div class="fact-box__icon">🛏️</div><div class="fact-box__label">Beds</div><div class="fact-box__value">10</div></div>
+          <div class="fact-box"><div class="fact-box__icon">📅</div><div class="fact-box__label">Move-in</div><div class="fact-box__value">Flexible</div></div>
+          <div class="fact-box"><div class="fact-box__icon">🏠</div><div class="fact-box__label">Type</div><div class="fact-box__value">Shared</div></div>
+          <div class="fact-box"><div class="fact-box__icon">📍</div><div class="fact-box__label">Area</div><div class="fact-box__value">Grover Beach</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card__body">
+            <h3 class="h3">About this home</h3>
+            <div class="prose">Our Grover Beach residence is a clean, structured home in a quiet neighborhood just minutes from the beach. Residents share common areas and participate in weekly house meetings, chore rotations, and accountability check-ins. The home is designed for men in early recovery who want a stable, drug-free environment while they rebuild.</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px;">
+          <div class="card__body">
+            <h3 class="h3">What's included</h3>
+            <div class="included-list">
+              <div class="included-item"><span class="included-item__check">✓</span> Furnished bedroom</div>
+              <div class="included-item"><span class="included-item__check">✓</span> All utilities included</div>
+              <div class="included-item"><span class="included-item__check">✓</span> WiFi & laundry</div>
+              <div class="included-item"><span class="included-item__check">✓</span> Weekly house meetings</div>
+              <div class="included-item"><span class="included-item__check">✓</span> Recovery support</div>
+              <div class="included-item"><span class="included-item__check">✓</span> Near AA/NA meetings</div>
+              <div class="included-item"><span class="included-item__check">✓</span> Job search assistance</div>
+              <div class="included-item"><span class="included-item__check">✓</span> Safe neighborhood</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px;">
+          <div class="card__body">
+            <h3 class="h3">House expectations</h3>
+            <div class="prose">
+              Zero tolerance for drugs and alcohol on the property.<br>
+              Weekly drug testing is required.<br>
+              All residents participate in chores and house meetings.<br>
+              Quiet hours: 10 PM – 7 AM.<br>
+              Guests must be approved in advance.<br>
+              Respect for housemates and the property at all times.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDEBAR -->
+      <div class="detail-sidebar">
+        <div class="card">
+          <div class="card__body">
+            <h3 class="h3">Interested in this home?</h3>
+            <p class="muted" style="margin:0 0 14px;">Tour first, apply when ready. No pressure.</p>
+
+            <a class="btn btn--primary" href="https://overcomersrc.com/tour" style="width:100%;justify-content:center;">Schedule a Tour</a>
+            <a class="btn" href="https://overcomersrc.com/apply" style="width:100%;justify-content:center;margin-top:8px;">Apply Now</a>
+            <a class="btn" href="https://overcomersrc.com/deposit" style="width:100%;justify-content:center;margin-top:8px;background:rgba(11,95,87,.06);border-color:var(--brand);color:var(--brand);">💳 Pay Deposit — Lock In Your Bed</a>
+            <a class="btn" href="https://overcomersrc.com/contact" style="width:100%;justify-content:center;margin-top:4px;font-size:13px;color:var(--muted);background:transparent;">Ask a question</a>
+
+            <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06);">
+              <h3 class="h3">Next steps</h3>
+              <ol class="steps-list">
+                <li>Schedule a tour or apply (2-3 min)</li>
+                <li>We call/text to confirm fit</li>
+                <li>We share pricing &amp; move-in details</li>
+              </ol>
+            </div>
+
+            <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06);">
+              <h3 class="h3">Pricing</h3>
+              <p class="muted" style="margin:4px 0;">Pricing is shared after a quick application so we can confirm fit and keep things fair.</p>
+            </div>
+
+            <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06);">
+              <h3 class="h3">Contact</h3>
+              <p class="muted" style="margin:4px 0;">
+                <a class="link" href="mailto:support@overcomersrc.com" style="color:var(--brand);">support@overcomersrc.com</a><br>
+                <a class="link" href="tel:+18052028473" style="color:var(--brand);">(805) 202-8473</a>
+              </p>
+            </div>
+
+            <div class="privacy-box">
+              <span style="font-size:16px;flex-shrink:0;">🔒</span>
+              <div>For resident safety, the exact address is shared only after a tour or application.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- PAGE 2: ALL OPENINGS (with Coming Soon card)              -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="preview-page" id="page-openings">
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>Upcoming Openings</h1>
+        <p class="muted">Tour first, apply when ready — we'll confirm fit and share pricing.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn--primary" href="https://overcomersrc.com/apply">Apply now</a>
+        <a class="btn" href="https://overcomersrc.com/tour">Schedule a tour</a>
+      </div>
+    </div>
+
+    <div class="grid cards">
+      <!-- Home A -->
+      <article class="card">
+        <a href="#" onclick="showPage('detail');return false;" style="display:block;position:relative;overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80" alt="Grover Beach Home A" style="width:100%;height:190px;object-fit:cover;display:block;">
+          <span style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;">📷 8 photos</span>
+        </a>
+        <div class="card__body">
+          <h3 class="h3">Grover Beach — Home A</h3>
+          <p class="muted">Grover Beach, CA · Available Now · <span class="pulse-dot"></span> 10 beds open</p>
+          <p class="muted">Clean, structured home near the beach with weekly accountability, meetings, and job support.</p>
+          <div class="actions" style="margin-top:12px;">
+            <a class="btn btn--primary" href="#" onclick="showPage('detail');return false;">View details</a>
+            <a class="btn" href="https://overcomersrc.com/tour">Tour</a>
+          </div>
+          <p class="muted small" style="margin-top:10px;">Pricing shared after tour or application.</p>
+        </div>
+      </article>
+
+      <!-- Coming Soon card -->
+      <article class="card" style="position:relative;overflow:hidden;">
+        <div style="height:190px;background:linear-gradient(135deg,rgba(11,95,87,.08) 0%,rgba(11,95,87,.15) 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
+          <span style="font-size:42px;">🏡</span>
+          <span style="background:var(--brand);color:#fff;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.03em;">COMING SOON</span>
+        </div>
+        <div class="card__body">
+          <h3 class="h3">Grover Beach — Home B</h3>
+          <p class="muted">Grover Beach, CA · Opening 2026</p>
+          <p class="muted">A second structured home is being prepared. Same standards, same support. Get notified when it opens.</p>
+          <div class="actions" style="margin-top:12px;">
+            <a class="btn btn--primary" href="https://overcomersrc.com/contact?subject=Home+B+Interest">Get Notified</a>
+            <a class="btn" href="#" onclick="showPage('detail');return false;">Tour Home A</a>
+          </div>
+          <p class="muted small" style="margin-top:10px;">Pricing and details announced soon.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- PAGE 3: DEPOSIT                                            -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="preview-page" id="page-deposit">
+<section class="section">
+  <div class="container" style="max-width:680px;">
+    <div class="section-head" style="flex-direction:column;align-items:flex-start;">
+      <h1>Secure Your Spot</h1>
+      <p class="muted">Pay your deposit online to lock in your bed. We'll contact you within 24 hours to schedule your move-in.</p>
+    </div>
+
+    <div class="card">
+      <div class="card__body">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+          <div style="width:50px;height:50px;background:rgba(11,95,87,.08);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;">🔒</div>
+          <div>
+            <h3 class="h3" style="margin:0;">Refundable Deposit</h3>
+            <p class="muted" style="margin:2px 0;font-size:20px;font-weight:800;color:var(--ink);">$1,000</p>
+          </div>
+        </div>
+
+        <div style="background:rgba(11,95,87,.03);border-radius:12px;padding:14px 16px;margin-bottom:18px;">
+          <p class="muted" style="margin:0 0 8px;font-weight:600;color:var(--ink);">What happens next:</p>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="background:var(--brand);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">1</span>
+              <span class="muted" style="font-size:14px;">Fill out your info below and pay securely via Stripe</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="background:var(--brand);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">2</span>
+              <span class="muted" style="font-size:14px;">We call or text you within 24 hours to confirm details</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="background:var(--brand);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">3</span>
+              <span class="muted" style="font-size:14px;">We schedule your move-in and send a welcome packet</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Deposit form preview -->
+        <div style="opacity:.85;pointer-events:none;">
+          <div style="margin-bottom:12px;">
+            <label style="display:block;font-weight:600;font-size:13px;margin-bottom:4px;">Full name *</label>
+            <input style="width:100%;padding:12px 14px;border-radius:14px;border:1px solid rgba(0,0,0,.14);font-size:15px;min-height:44px;" type="text" placeholder="Your full name">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="display:block;font-weight:600;font-size:13px;margin-bottom:4px;">Email *</label>
+            <input style="width:100%;padding:12px 14px;border-radius:14px;border:1px solid rgba(0,0,0,.14);font-size:15px;min-height:44px;" type="email" placeholder="you@email.com">
+          </div>
+          <div style="margin-bottom:18px;">
+            <label style="display:block;font-weight:600;font-size:13px;margin-bottom:4px;">Phone (so we can reach you fast)</label>
+            <input style="width:100%;padding:12px 14px;border-radius:14px;border:1px solid rgba(0,0,0,.14);font-size:15px;min-height:44px;" type="tel" placeholder="(805) 555-1234">
+          </div>
+        </div>
+        <a class="btn btn--primary" href="https://overcomersrc.com/deposit" style="width:100%;justify-content:center;font-size:16px;padding:14px 20px;">
+          Pay $1,000 Deposit — Secure Checkout
+        </a>
+        <p class="muted tiny" style="margin-top:10px;text-align:center;">
+          Payments processed securely by <strong>Stripe</strong>. Your card info never touches our server.<br>
+          Questions? <a href="https://overcomersrc.com/contact" style="color:var(--brand);">Contact us</a> or call <a href="tel:+18052028473" style="color:var(--brand);">(805) 202-8473</a>.
+        </p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <h3 class="h3">Frequently asked</h3>
+        <details style="margin-bottom:10px;">
+          <summary style="cursor:pointer;font-weight:600;">Is the deposit refundable?</summary>
+          <p class="muted" style="margin-top:6px;">Yes. If we determine it's not a good fit during the confirmation call, or if you cancel before move-in, your deposit is fully refunded.</p>
+        </details>
+        <details style="margin-bottom:10px;">
+          <summary style="cursor:pointer;font-weight:600;">What does the deposit cover?</summary>
+          <p class="muted" style="margin-top:6px;">The deposit secures your bed and is applied toward your first month. It shows commitment and helps us hold the spot for you.</p>
+        </details>
+        <details style="margin-bottom:10px;">
+          <summary style="cursor:pointer;font-weight:600;">Do I need to apply first?</summary>
+          <p class="muted" style="margin-top:6px;">Not necessarily. If you already toured or spoke with us, you can go straight to deposit. If not, we'll do a quick phone screening after payment.</p>
+        </details>
+        <details>
+          <summary style="cursor:pointer;font-weight:600;">Can I pay in person instead?</summary>
+          <p class="muted" style="margin-top:6px;">Yes — call <a href="tel:+18052028473" style="color:var(--brand);">(805) 202-8473</a> and we'll arrange it.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- PAGE 4: SEO LANDING PAGE                                   -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="preview-page" id="page-seo">
+<section class="section">
+  <div class="container" style="max-width:780px;">
+    <div style="margin-bottom:24px;">
+      <p class="muted tiny" style="margin:0 0 4px;">📍 SEO LANDING PAGE — ranks for "sober living grover beach"</p>
+      <h1>Sober Living in Grover Beach, CA</h1>
+      <p class="muted" style="font-size:17px;">
+        Overcomers provides structured, peer-based sober living homes in Grover Beach on California's Central Coast. If you or someone you know needs stable, drug-free housing with built-in accountability and support — we have beds available now.
+      </p>
+      <div class="actions" style="margin-top:14px;">
+        <a class="btn btn--primary" href="https://overcomersrc.com/openings">View Available Beds</a>
+        <a class="btn" href="https://overcomersrc.com/tour">Schedule a Tour</a>
+        <a class="btn" href="https://overcomersrc.com/deposit" style="border-color:var(--brand);color:var(--brand);">💳 Pay Deposit</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__body">
+        <h2 style="font-size:20px;">Why Grover Beach?</h2>
+        <div class="prose">Grover Beach is a small, quiet coastal town between Pismo Beach and Arroyo Grande. It's close enough to services in San Luis Obispo County but far enough from big-city triggers. Residents benefit from walkable neighborhoods, ocean air, parks, and a tight-knit community that supports recovery.</div>
+        <div class="prose" style="margin-top:10px;">The cost of living is lower than nearby Pismo Beach or San Luis Obispo, and the pace of life helps residents focus on building routines, finding work, and staying accountable.</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <h2 style="font-size:20px;">What Overcomers Offers</h2>
+        <div class="included-list">
+          <div class="included-item"><span class="included-item__check">✓</span> Clean, structured housing</div>
+          <div class="included-item"><span class="included-item__check">✓</span> Weekly drug testing</div>
+          <div class="included-item"><span class="included-item__check">✓</span> House meetings & accountability</div>
+          <div class="included-item"><span class="included-item__check">✓</span> Job & life skills support</div>
+          <div class="included-item"><span class="included-item__check">✓</span> Near AA/NA meetings</div>
+          <div class="included-item"><span class="included-item__check">✓</span> Safe, drug-free environment</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card__body">
+        <h2 style="font-size:20px;">Ready to take the next step?</h2>
+        <div class="prose">
+          Recovery housing works best when it's the right fit. We invite you to tour the home, ask questions, and apply when you're ready. There's no pressure — we want this to work for you.
+        </div>
+        <div class="actions" style="margin-top:12px;">
+          <a class="btn btn--primary" href="https://overcomersrc.com/apply">Apply Now</a>
+          <a class="btn" href="https://overcomersrc.com/tour">Schedule a Tour</a>
+          <a class="btn" href="https://overcomersrc.com/contact">Ask a Question</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="muted tiny" style="margin-top:20px;text-align:center;">
+      Also available: <a href="https://overcomersrc.com/sober-living-central-coast" style="color:var(--brand);">Sober Living Central Coast</a> ·
+      <a href="https://overcomersrc.com/sober-living-san-luis-obispo" style="color:var(--brand);">Sober Living San Luis Obispo</a>
+    </p>
+  </div>
+</section>
+</div>
+
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container" style="padding:24px 18px;">
+    <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:18px;">
+      <div>
+        <div style="font-weight:700;letter-spacing:.02em;margin-bottom:6px;">OVERCOMERS</div>
+        <p style="color:#cbd5e1;font-size:14px;margin:0;">Transformative Thinking &amp; Restorative Community — Grover Beach, CA</p>
+        <p style="color:#94a3b8;font-size:12px;margin-top:8px;">
+          <a href="mailto:support@overcomersrc.com">support@overcomersrc.com</a><br>
+          <a href="tel:+18052028473">(805) 202-8473</a>
+        </p>
+      </div>
+      <div>
+        <div style="font-weight:700;font-size:13px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em;">Quick links</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:14px;color:#94a3b8;">
+          <a href="https://overcomersrc.com/guide">Recovery Guide</a>
+          <a href="https://overcomersrc.com/openings">Openings</a>
+          <a href="https://overcomersrc.com/apply">Apply</a>
+          <a href="https://overcomersrc.com/deposit">Pay Deposit</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:700;font-size:13px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em;">Resources</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:14px;color:#94a3b8;">
+          <a href="https://overcomersrc.com/faq">FAQ</a>
+          <a href="https://overcomersrc.com/stories">Stories</a>
+          <a href="https://overcomersrc.com/resources">Resources</a>
+          <a href="https://overcomersrc.com/veterans">Veterans</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:700;font-size:13px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em;">SEO Pages</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:14px;color:#94a3b8;">
+          <a href="https://overcomersrc.com/sober-living-grover-beach">Sober Living Grover Beach</a>
+          <a href="https://overcomersrc.com/sober-living-central-coast">Sober Living Central Coast</a>
+          <a href="https://overcomersrc.com/sober-living-san-luis-obispo">Sober Living SLO</a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:14px;margin-top:18px;display:flex;justify-content:space-between;font-size:12px;color:#94a3b8;flex-wrap:wrap;gap:8px;">
+      <span>© 2025 Overcomers Recovery Community. All rights reserved.</span>
+      <span><a href="https://overcomersrc.com/privacy">Privacy</a> · <a href="https://overcomersrc.com/terms">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- LIGHTBOX                                                    -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="lb" id="lb" role="dialog" aria-label="Photo gallery">
+  <button class="lb__close" id="lbClose" aria-label="Close gallery">✕</button>
+  <div class="lb__counter" id="lbCount"></div>
+  <button class="lb__arrow lb__arrow--prev" id="lbPrev" aria-label="Previous photo">‹</button>
+  <button class="lb__arrow lb__arrow--next" id="lbNext" aria-label="Next photo">›</button>
+  <div class="lb__imgWrap" id="lbImgWrap" style="display:flex;align-items:center;justify-content:center;min-height:40vh;">
+    <img class="lb__img" id="lbImg" src="" alt="">
+    <div class="lb__loader" id="lbLoader" style="display:none;color:rgba(255,255,255,.5);font-size:14px;">Loading…</div>
+  </div>
+  <div class="lb__strip" id="lbStrip"></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- JAVASCRIPT                                                  -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+/* ── Tab switching ── */
+function showPage(id) {
+  document.querySelectorAll('.preview-page').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.preview-tabs span').forEach(function(t) { t.classList.remove('active'); });
+  var page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+  var tab = document.querySelector('[data-page="' + id + '"]');
+  if (tab) tab.classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+document.querySelectorAll('.preview-tabs span').forEach(function(tab) {
+  tab.addEventListener('click', function() { showPage(this.getAttribute('data-page')); });
+});
+
+/* ── Lightbox ── */
+(function() {
+  'use strict';
+
+  var photos = [
+    'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=85',
+    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=85',
+    'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=1200&q=85',
+    'https://images.unsplash.com/photo-1600566753376-12c8ab7c5a26?w=1200&q=85',
+    'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&q=85',
+    'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=85',
+    'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=85',
+    'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=85'
+  ];
+
+  if (!photos || !photos.length) return;
+  photos = photos.filter(function(u) { return u && typeof u === 'string' && u.trim().length > 0; });
+  if (photos.length === 0) return;
+
+  var idx = 0;
+  var total = photos.length;
+  var lb = document.getElementById('lb');
+  var lbImg = document.getElementById('lbImg');
+  var lbCount = document.getElementById('lbCount');
+  var lbStrip = document.getElementById('lbStrip');
+  var lbLoader = document.getElementById('lbLoader');
+  var lbImgWrap = document.getElementById('lbImgWrap');
+  var isOpen = false;
+
+  if (!lb || !lbImg || !lbCount || !lbStrip) return;
+
+  // Preload first 3 images
+  photos.slice(0, 3).forEach(function(url) { var img = new Image(); img.src = url; });
+
+  function openLB(i) {
+    if (typeof i !== 'number' || isNaN(i)) i = 0;
+    idx = Math.max(0, Math.min(i, total - 1));
+    render();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    isOpen = true;
+  }
+
+  function closeLB() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+    isOpen = false;
+  }
+
+  function navLB(d) {
+    idx = (idx + d + total) % total;
+    render();
+  }
+
+  function goLB(i) {
+    if (typeof i !== 'number' || isNaN(i)) return;
+    idx = Math.max(0, Math.min(i, total - 1));
+    render();
+  }
+
+  function render() {
+    try {
+      if (lbLoader) { lbLoader.style.display = 'block'; lbLoader.textContent = 'Loading…'; }
+      lbImg.style.opacity = '0.3';
+
+      var img = new Image();
+      img.onload = function() {
+        lbImg.src = photos[idx];
+        lbImg.alt = 'Photo ' + (idx + 1) + ' of ' + total;
+        lbImg.style.opacity = '1';
+        if (lbLoader) lbLoader.style.display = 'none';
+        // Preload adjacent
+        if (total > 1) {
+          new Image().src = photos[(idx + 1) % total];
+          new Image().src = photos[(idx - 1 + total) % total];
+        }
+      };
+      img.onerror = function() {
+        lbImg.src = '';
+        lbImg.alt = 'Photo unavailable';
+        lbImg.style.opacity = '1';
+        if (lbLoader) { lbLoader.textContent = 'Photo unavailable'; lbLoader.style.display = 'block'; }
+      };
+      img.src = photos[idx];
+      lbCount.textContent = (idx + 1) + ' / ' + total;
+
+      // Thumbnail strip
+      var html = '';
+      for (var i = 0; i < total; i++) {
+        html += '<div class="lb__strip-item' + (i === idx ? ' active' : '') + '" data-lb-thumb="' + i + '">';
+        html += '<img src="' + photos[i] + '" alt="Photo ' + (i + 1) + '" loading="lazy">';
+        html += '</div>';
+      }
+      lbStrip.innerHTML = html;
+      var activeThumb = lbStrip.querySelector('.active');
+      if (activeThumb) activeThumb.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+    } catch(err) {
+      console.error('Lightbox error:', err);
+    }
+  }
+
+  // Grid photo clicks
+  document.querySelectorAll('[data-lb-open]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      openLB(parseInt(this.getAttribute('data-lb-open'), 10));
+    });
+    el.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openLB(parseInt(this.getAttribute('data-lb-open'), 10));
+      }
+    });
+  });
+
+  // Controls
+  document.getElementById('lbClose').addEventListener('click', function(e) { e.stopPropagation(); closeLB(); });
+  document.getElementById('lbPrev').addEventListener('click', function(e) { e.stopPropagation(); navLB(-1); });
+  document.getElementById('lbNext').addEventListener('click', function(e) { e.stopPropagation(); navLB(1); });
+
+  // Thumbnail clicks
+  lbStrip.addEventListener('click', function(e) {
+    var target = e.target.closest('[data-lb-thumb]');
+    if (target) { e.stopPropagation(); goLB(parseInt(target.getAttribute('data-lb-thumb'), 10)); }
+  });
+
+  // Backdrop close
+  lb.addEventListener('click', function(e) {
+    if (e.target === lb || e.target === lbImgWrap) closeLB();
+  });
+
+  // Keyboard
+  document.addEventListener('keydown', function(e) {
+    if (!isOpen) return;
+    if (e.key === 'ArrowLeft' || e.key === 'a') { e.preventDefault(); navLB(-1); }
+    else if (e.key === 'ArrowRight' || e.key === 'd') { e.preventDefault(); navLB(1); }
+    else if (e.key === 'Escape') closeLB();
+  });
+
+  // Touch swipe
+  var sx = 0, sy = 0;
+  lb.addEventListener('touchstart', function(e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive: true});
+  lb.addEventListener('touchend', function(e) {
+    var dx = sx - e.changedTouches[0].clientX;
+    var dy = Math.abs(sy - e.changedTouches[0].clientY);
+    if (Math.abs(dx) > 40 && dy < 80) navLB(dx > 0 ? 1 : -1);
+  }, {passive: true});
+
+  window.openLB = openLB;
+  window.closeLB = closeLB;
+  window.navLB = navLB;
+})();
+</script>
+
+</body>
+</html>

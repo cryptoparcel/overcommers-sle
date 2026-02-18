@@ -1,272 +1,201 @@
 
 {% extends "base.html" %}
 {% block content %}
-<main class="home">
-  {# ── Hero ─────────────────────────────────────────────── #}
-  <section class="home-hero">
-    <div class="container">
-      <div class="home-hero__card">
-        <div class="home-hero__copy">
-          <h1 class="home-hero__title">A safe, sober place to live while you get back on your feet.</h1>
-          <p class="home-hero__lead">Structured sober living for recovery &amp; reentry — with clear routines, accountability, and practical next steps.</p>
-          <p class="home-hero__body">
-            <strong>OVERCOMERS</strong> is peer-based supportive housing in the Grover Beach area.
-            We focus on safety, respect, and stability. If someone needs detox, therapy, or medical care, we help connect them to licensed providers.
-          </p>
-          <div class="home-actions">
-            <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply</a>
-            <a class="btn btn--ghost" href="{{ url_for('public.openings') }}">View openings</a>
-            <a class="btn btn--ghost" href="{{ url_for('public.tour') }}">Schedule a tour</a>
-            <a class="btn btn--ghost" href="{{ url_for('public.deposit') }}" style="border-color:var(--brand);color:var(--brand);">💳 Pay Deposit</a>
-          </div>
-          <p class="muted small" style="margin-top:10px;">Emergency? Call 911. This site is informational and not medical advice.</p>
-        </div>
 
-        <div class="card card--padded card--stretch" style="background:linear-gradient(135deg,#0b5f57 0%,#0ea5a0 100%);color:#fff;border:none;position:relative;overflow:hidden;">
-          <div style="position:absolute;top:-20px;right:-20px;font-size:120px;opacity:.08;pointer-events:none;">🏠</div>
-          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);backdrop-filter:blur(4px);padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px;">
-            <span class="pulse-dot"></span>
-            Now accepting deposits
-          </div>
-          <h2 style="font-size:22px;font-weight:800;margin:0 0 8px;color:#fff;line-height:1.2;">We have openings</h2>
-          <p style="opacity:.85;font-size:14px;margin:0 0 16px;line-height:1.5;">Spots are available starting early April in our Grover Beach housing. Secure yours with a deposit — apply today.</p>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <a class="btn" href="{{ url_for('public.deposit') }}" style="background:#fff;color:#0b5f57;font-weight:700;border:none;">💳 Pay Deposit</a>
-            <a class="btn" href="{{ url_for('public.apply') }}" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);">Apply now</a>
-            <a class="btn" href="{{ url_for('public.openings') }}" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);">Learn more</a>
-          </div>
+{# ── Hero ── #}
+<section class="hero">
+  <div class="container">
+    <div class="hero__grid">
+      <div class="hero__copy fade-up">
+        <h1 class="hero__title">A safe, sober place to live while you get back on your feet.</h1>
+        <p class="hero__lead">Structured sober living for recovery &amp; reentry &mdash; with clear routines, accountability, and practical next steps.</p>
+        <p class="hero__body">
+          <strong>OVERCOMERS</strong> is peer-based supportive housing in the Grover Beach area.
+          We focus on safety, respect, and stability. If someone needs detox, therapy, or medical care, we help connect them to licensed providers.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply Now</a>
+          <a class="btn btn--ghost" href="{{ url_for('public.openings') }}">View Openings</a>
+          <a class="btn btn--ghost" href="{{ url_for('public.tour') }}">Schedule a Tour</a>
+          <a class="btn btn--ghost" href="{{ url_for('public.deposit') }}" style="border-color:var(--brand);color:var(--brand);">Pay Deposit</a>
         </div>
-
-        <div class="card card--padded card--stretch">
-          <h2 class="section-title">Resources</h2>
-          <p class="muted">Family-friendly links for help, hotlines, and local support options.</p>
-          <div class="spacer"></div>
-          <a class="btn btn--primary" href="{{ url_for('public.resources') }}">Go to resources</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  {# ── How it works (process strip) ─────────────────────── #}
-  <section class="section" style="padding:24px 0;">
-    <div class="container">
-      <div class="grid cards">
-        <article class="card" style="grid-column: span 3;">
-          <div class="card__body" style="text-align:center;">
-            <div class="impact-icon" style="margin:0 auto 6px;">1</div>
-            <h3 class="h3">Apply</h3>
-            <p class="muted small">Quick form — takes 2 minutes.</p>
-          </div>
-        </article>
-        <article class="card" style="grid-column: span 3;">
-          <div class="card__body" style="text-align:center;">
-            <div class="impact-icon" style="margin:0 auto 6px;">2</div>
-            <h3 class="h3">Call / Screen</h3>
-            <p class="muted small">We confirm fit and answer questions.</p>
-          </div>
-        </article>
-        <article class="card" style="grid-column: span 3;">
-          <div class="card__body" style="text-align:center;">
-            <div class="impact-icon" style="margin:0 auto 6px;">3</div>
-            <h3 class="h3">Tour</h3>
-            <p class="muted small">See the space. Bring family or a case manager.</p>
-          </div>
-        </article>
-        <article class="card" style="grid-column: span 3;">
-          <div class="card__body" style="text-align:center;">
-            <div class="impact-icon" style="margin:0 auto 6px;">4</div>
-            <h3 class="h3">Move In</h3>
-            <p class="muted small">Orientation, agreements, stability plan.</p>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  {# ── What we offer ────────────────────────────────────── #}
-  <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>What we offer</h2>
-          <p class="muted">Meaningful support that helps people rebuild stability — one week at a time.</p>
-        </div>
-        <div class="actions">
-          <a class="btn" href="{{ url_for('public.what_we_do') }}">What we do</a>
-          <a class="btn btn--primary" href="{{ url_for('public.guide') }}">Start here</a>
-        </div>
+        <p class="hero__fine">Emergency? Call 911. This site is informational and not medical advice.</p>
       </div>
 
-      <div class="grid cards">
-        <article class="card">
-          <div class="card__body">
-            <h3 class="h3">Structured sober housing</h3>
-            <p class="muted">Clear rules, respectful living, accountability, and a calm environment designed for stability.</p>
-            <p class="muted small">$1,000/month + $1,000 deposit (Grover Beach area)</p>
-          </div>
-        </article>
-        <article class="card">
-          <div class="card__body">
-            <h3 class="h3">Life-skills workshops</h3>
-            <p class="muted">Budgeting, job search, email/phones, routines, time management, and basic adulting skills.</p>
-          </div>
-        </article>
-        <article class="card">
-          <div class="card__body">
-            <h3 class="h3">Reentry planning</h3>
-            <p class="muted">Step-by-step help with schedules, paperwork, appointments, and getting back into the flow of life.</p>
-          </div>
-        </article>
-        <article class="card">
-          <div class="card__body">
-            <h3 class="h3">Employment pathway</h3>
-            <p class="muted">Job readiness support and opportunities through local partnerships — including Lumpia Bros Cafe.</p>
-            <div class="actions" style="margin-top:10px;">
-              <a class="btn" href="{{ url_for('public.careers') }}">Jobs near Grover Beach</a>
+      <div class="hero__sidebar">
+        <div class="cta-card fade-up d1">
+          <div>
+            <div class="cta-card__badge">
+              <span class="pulse-dot"></span>
+              Now accepting deposits
             </div>
+            <h2 class="cta-card__title">We have openings</h2>
+            <p class="cta-card__desc">Spots are available in our Grover Beach housing. Secure yours with a deposit &mdash; apply today.</p>
           </div>
-        </article>
-        <article class="card">
-          <div class="card__body">
-            <h3 class="h3">Family &amp; youth support</h3>
-            <p class="muted">Guidance for kids and families looking for safe next steps and local resources.</p>
-            <div class="actions" style="margin-top:10px;">
-              <a class="btn" href="{{ url_for('public.families') }}">For families</a>
-            </div>
+          <div class="cta-card__actions">
+            <a class="btn" href="{{ url_for('public.deposit') }}" style="background:#fff;color:#0b5f57;font-weight:700;border:none;">Pay Deposit</a>
+            <a class="btn" href="{{ url_for('public.apply') }}" style="background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.25);">Apply</a>
           </div>
-        </article>
-        <article class="card">
-          <div class="card__body">
-            <h3 class="h3">Veterans support</h3>
-            <p class="muted">A stable, recovery-focused environment for veterans — plus help connecting to the right resources.</p>
-            <div class="actions" style="margin-top:10px;">
-              <a class="btn" href="{{ url_for('public.veterans') }}">Veterans info</a>
-            </div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
+        </div>
 
-  {# ── Openings banner ───────────────────────────────────── #}
-  <section class="section">
-    <div class="container">
-      <div class="card" style="padding:0;overflow:hidden;border:2px solid rgba(11,95,87,.15);">
-        <div style="display:flex;align-items:stretch;flex-wrap:wrap;">
-          <div style="flex:1;min-width:280px;padding:28px;">
-            <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(11,95,87,.08);padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--brand);margin-bottom:12px;">
-              <span class="pulse-dot" style="background:#0b5f57;"></span>
-              Openings available
-            </div>
-            <h2 style="font-size:24px;font-weight:800;margin:0 0 8px;">We're accepting deposits now</h2>
-            <p class="muted" style="margin:0 0 6px;line-height:1.6;">We have spots opening early April in our Grover Beach sober living houses. Each home offers a safe, structured environment with shared rooms, house meetings, and peer accountability.</p>
-            <p class="muted" style="margin:0 0 16px;line-height:1.6;">Apply first — we'll confirm fit, answer your questions, and walk you through the deposit and move-in process.</p>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;">
-              <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply today</a>
-              <a class="btn" href="{{ url_for('public.tour') }}">Schedule a tour</a>
-              <a class="btn btn--ghost" href="{{ url_for('public.openings') }}">View details</a>
-            </div>
-          </div>
-          <div style="flex:0 0 260px;min-width:220px;background:linear-gradient(135deg,rgba(11,95,87,.04),rgba(11,95,87,.08));padding:28px;display:flex;flex-direction:column;justify-content:center;gap:16px;border-left:1px solid rgba(0,0,0,.06);">
-            <div>
-              <p style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 4px;">Move-in</p>
-              <p style="font-weight:700;margin:0;">Early April 2026</p>
-            </div>
-            <div>
-              <p style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 4px;">Location</p>
-              <p style="font-weight:700;margin:0;">Grover Beach, CA</p>
-            </div>
-            <div>
-              <p style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 4px;">Housing type</p>
-              <p style="font-weight:700;margin:0;">Shared sober living</p>
-            </div>
-            <div>
-              <p style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 4px;">Includes</p>
-              <p style="font-weight:700;margin:0;">Furnished, utilities, support</p>
-            </div>
-            <div>
-              <p style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 4px;">Status</p>
-              <p style="font-weight:700;margin:0;color:var(--brand);">✓ Taking deposits</p>
-            </div>
+        <div class="card res-card fade-up d2">
+          <h3>Resources</h3>
+          <p>Family-friendly links for help, hotlines, and local support options.</p>
+          <div style="margin-top:auto;padding-top:8px;">
+            <a class="btn btn--primary btn--sm" href="{{ url_for('public.resources') }}">Go to resources</a>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  {# ── Who we serve ─────────────────────────────────────── #}
-  <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>Who we serve</h2>
-          <p class="muted">Whether you're looking for housing, referring a client, or helping a loved one.</p>
+{# ── How it works ── #}
+<section class="section" style="padding-top:10px">
+  <div class="container">
+    <div class="steps">
+      <div class="step fade-up d1"><div class="step__num">1</div><h3>Apply</h3><p>Quick form &mdash; takes 2 minutes.</p></div>
+      <div class="step fade-up d2"><div class="step__num">2</div><h3>Call / Screen</h3><p>We confirm fit and answer questions.</p></div>
+      <div class="step fade-up d3"><div class="step__num">3</div><h3>Tour</h3><p>See the space. Bring family or a case manager.</p></div>
+      <div class="step fade-up d4"><div class="step__num">4</div><h3>Move In</h3><p>Orientation, agreements, stability plan.</p></div>
+    </div>
+  </div>
+</section>
+
+{# ── What we offer ── #}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>What we offer</h2>
+        <p class="muted" style="margin-top:4px;">Meaningful support that helps people rebuild stability &mdash; one week at a time.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn--sm" href="{{ url_for('public.what_we_do') }}">What we do</a>
+        <a class="btn btn--primary btn--sm" href="{{ url_for('public.guide') }}">Start here</a>
+      </div>
+    </div>
+    <div class="grid cards">
+      <article class="card fade-up d1"><div class="card__body">
+        <h3 class="h3">Structured sober housing</h3>
+        <p class="muted">Clear rules, respectful living, accountability, and a calm environment designed for stability.</p>
+        <p class="muted small">$1,000/month + $1,000 deposit &middot; Grover Beach area</p>
+      </div></article>
+      <article class="card fade-up d2"><div class="card__body">
+        <h3 class="h3">Life-skills workshops</h3>
+        <p class="muted">Budgeting, job search, email/phones, routines, time management, and basic adulting skills.</p>
+      </div></article>
+      <article class="card fade-up d3"><div class="card__body">
+        <h3 class="h3">Reentry planning</h3>
+        <p class="muted">Step-by-step help with schedules, paperwork, appointments, and getting back into the flow of life.</p>
+      </div></article>
+      <article class="card fade-up d1"><div class="card__body">
+        <h3 class="h3">Employment pathway</h3>
+        <p class="muted">Job readiness support and opportunities through local partnerships &mdash; including Lumpia Bros Cafe.</p>
+        <div class="actions"><a class="btn btn--sm" href="{{ url_for('public.careers') }}">Jobs near Grover Beach</a></div>
+      </div></article>
+      <article class="card fade-up d2"><div class="card__body">
+        <h3 class="h3">Family &amp; youth support</h3>
+        <p class="muted">Guidance for kids and families looking for safe next steps and local resources.</p>
+        <div class="actions"><a class="btn btn--sm" href="{{ url_for('public.families') }}">For families</a></div>
+      </div></article>
+      <article class="card fade-up d3"><div class="card__body">
+        <h3 class="h3">Veterans support</h3>
+        <p class="muted">A stable, recovery-focused environment for veterans &mdash; plus help connecting to the right resources.</p>
+        <div class="actions"><a class="btn btn--sm" href="{{ url_for('public.veterans') }}">Veterans info</a></div>
+      </div></article>
+    </div>
+  </div>
+</section>
+
+{# ── Openings banner ── #}
+<section class="section">
+  <div class="container">
+    <div class="openings-banner fade-up">
+      <div class="openings-banner__inner">
+        <div class="openings-banner__main">
+          <div class="openings-banner__badge">
+            <span class="pulse-dot" style="background:var(--brand);"></span>
+            Openings available
+          </div>
+          <h2 style="margin-bottom:8px;">We're accepting deposits now</h2>
+          <p class="muted" style="line-height:1.65;margin-bottom:6px;">We have spots opening in our Grover Beach sober living houses. Each home offers a safe, structured environment with shared rooms, house meetings, and peer accountability.</p>
+          <p class="muted" style="line-height:1.65;margin-bottom:18px;">Apply first &mdash; we'll confirm fit, answer your questions, and walk you through the deposit and move-in process.</p>
+          <div class="actions">
+            <a class="btn btn--primary" href="{{ url_for('public.apply') }}">Apply today</a>
+            <a class="btn" href="{{ url_for('public.tour') }}">Schedule a tour</a>
+            <a class="btn btn--ghost" href="{{ url_for('public.openings') }}">View details</a>
+          </div>
+        </div>
+        <div class="openings-banner__sidebar">
+          <div><p class="fact-label">Move-in</p><p class="fact-value">April 2026</p></div>
+          <div><p class="fact-label">Location</p><p class="fact-value">Grover Beach, CA</p></div>
+          <div><p class="fact-label">Housing type</p><p class="fact-value">Shared sober living</p></div>
+          <div><p class="fact-label">Includes</p><p class="fact-value">Furnished, utilities, support</p></div>
+          <div><p class="fact-label">Status</p><p class="fact-value fact-value--green">Taking deposits</p></div>
         </div>
       </div>
-      <div class="grid cards">
-        <article class="card">
-          <div class="card__body">
-            <h3 class="h3">Individuals in recovery</h3>
-            <p class="muted">Structured housing, peer support, and practical next steps for adults in recovery or reentry.</p>
-            <div class="actions" style="margin-top:10px;">
-              <a class="btn" href="{{ url_for('public.guide') }}">Guide</a>
-            </div>
-          </div>
-        </article>
-        <article class="card">
-          <div class="card__body">
-            <h3 class="h3">Veterans</h3>
-            <p class="muted">Calm rebuilding, reentry help, and resource connections — tailored for service members.</p>
-            <div class="actions" style="margin-top:10px;">
-              <a class="btn" href="{{ url_for('public.veterans') }}">Veterans support</a>
-            </div>
-          </div>
-        </article>
-        <article class="card">
-          <div class="card__body">
-            <h3 class="h3">Families &amp; loved ones</h3>
-            <p class="muted">Guidance on what to expect, how the process works, and support resources for your family.</p>
-            <div class="actions" style="margin-top:10px;">
-              <a class="btn" href="{{ url_for('public.families') }}">For families</a>
-            </div>
-          </div>
-        </article>
-        <article class="card">
-          <div class="card__body">
-            <h3 class="h3">Referral partners</h3>
-            <p class="muted">Case managers, treatment centers, and community orgs — here's how to refer clients.</p>
-            <div class="actions" style="margin-top:10px;">
-              <a class="btn" href="{{ url_for('public.referrals') }}">For referrals</a>
-            </div>
-          </div>
-        </article>
-      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  {# ── Page builder blocks (admin-managed) ───────────────── #}
-  {% if page_blocks %}
-  <section class="section">
-    <div class="container">
-      <div class="grid cards">
-        {% for b in page_blocks %}
-          <article class="card">
-            <div class="card__body">
-              <h3 class="h3">{{ b.content.title if b.content and b.content.title else b.id }}</h3>
-              <p class="muted">{{ b.content.body if b.content and b.content.body else "" }}</p>
-              {% if b.content and b.content.buttons %}
-                <div class="actions" style="margin-top:12px;">
-                  {% for btn in b.content.buttons %}
-                    <a class="btn {% if loop.first %}btn--primary{% else %}btn--ghost{% endif %}" href="{{ btn.href }}">{{ btn.label }}</a>
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
-          </article>
-        {% endfor %}
+{# ── Who we serve ── #}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>Who we serve</h2>
+        <p class="muted" style="margin-top:4px;">Whether you're looking for housing, referring a client, or helping a loved one.</p>
       </div>
     </div>
-  </section>
-  {% endif %}
-</main>
+    <div class="grid cards">
+      <article class="card fade-up d1"><div class="card__body">
+        <h3 class="h3">Individuals in recovery</h3>
+        <p class="muted">Structured housing, peer support, and practical next steps for adults in recovery or reentry.</p>
+        <div class="actions"><a class="btn btn--sm" href="{{ url_for('public.guide') }}">Guide</a></div>
+      </div></article>
+      <article class="card fade-up d2"><div class="card__body">
+        <h3 class="h3">Veterans</h3>
+        <p class="muted">Calm rebuilding, reentry help, and resource connections &mdash; tailored for service members.</p>
+        <div class="actions"><a class="btn btn--sm" href="{{ url_for('public.veterans') }}">Veterans support</a></div>
+      </div></article>
+      <article class="card fade-up d3"><div class="card__body">
+        <h3 class="h3">Families &amp; loved ones</h3>
+        <p class="muted">Guidance on what to expect, how the process works, and support resources for your family.</p>
+        <div class="actions"><a class="btn btn--sm" href="{{ url_for('public.families') }}">For families</a></div>
+      </div></article>
+      <article class="card fade-up d4"><div class="card__body">
+        <h3 class="h3">Referral partners</h3>
+        <p class="muted">Case managers, treatment centers, and community orgs &mdash; here's how to refer clients.</p>
+        <div class="actions"><a class="btn btn--sm" href="{{ url_for('public.referrals') }}">For referrals</a></div>
+      </div></article>
+    </div>
+  </div>
+</section>
+
+{# ── Page builder blocks (admin-managed) ── #}
+{% if page_blocks %}
+<section class="section">
+  <div class="container">
+    <div class="grid cards">
+      {% for b in page_blocks %}
+        <article class="card fade-up">
+          <div class="card__body">
+            <h3 class="h3">{{ b.content.title if b.content and b.content.title else b.id }}</h3>
+            <p class="muted">{{ b.content.body if b.content and b.content.body else "" }}</p>
+            {% if b.content and b.content.buttons %}
+              <div class="actions">
+                {% for btn in b.content.buttons %}
+                  <a class="btn {% if loop.first %}btn--primary{% else %}btn--ghost{% endif %}" href="{{ btn.href }}">{{ btn.label }}</a>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
 {% endblock %}

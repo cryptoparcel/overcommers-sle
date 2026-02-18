@@ -186,3 +186,46 @@ class DepositPayment(db.Model):
 
     def __repr__(self) -> str:
         return f"<DepositPayment {self.id} {self.status} {self.email}>"
+
+
+class ActivityLog(db.Model):
+    """Immutable audit log for user activity, form submissions, and admin actions.
+
+    Designed for compliance, safety, and operational transparency.
+    Records are append-only — never updated or deleted in normal operation.
+    """
+
+    __tablename__ = "activity_logs"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=_utcnow, index=True)
+
+    # Who
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True, index=True)
+    ip_address = db.Column(db.String(45), nullable=True)  # IPv4 or IPv6
+    user_agent = db.Column(db.String(512), nullable=True)
+
+    # What
+    action = db.Column(db.String(80), nullable=False, index=True)
+    # Categories: page_view, form_submit, login, logout, login_failed,
+    #             admin_action, payment, status_change, error
+    category = db.Column(db.String(30), nullable=False, default="general", index=True)
+
+    # Where
+    path = db.Column(db.String(500), nullable=True)
+    method = db.Column(db.String(10), nullable=True)  # GET, POST, etc.
+
+    # Details (JSON-safe string for flexible metadata)
+    details = db.Column(db.Text, nullable=True)
+
+    # Optional reference to related record
+    resource_type = db.Column(db.String(60), nullable=True)  # e.g. "application", "deposit"
+    resource_id = db.Column(db.Integer, nullable=True)
+
+    # Severity for filtering
+    level = db.Column(db.String(10), nullable=False, default="info")  # info, warning, error
+
+    user = db.relationship("User", backref=db.backref("activity_logs", lazy="dynamic"), foreign_keys=[user_id])
+
+    def __repr__(self) -> str:
+        return f"<ActivityLog {self.id} {self.action} {self.created_at}>"

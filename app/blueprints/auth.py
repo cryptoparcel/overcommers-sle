@@ -69,6 +69,12 @@ def login_post():
     ident = form.identifier.data.strip().lower()
     user = User.query.filter_by(email=ident).first() or User.query.filter_by(username=ident).first()
     if not user or not user.check_password(form.password.data):
+        # Log failed login attempt
+        try:
+            from ..utils import log_activity
+            log_activity(action="login_failed", category="auth", details=f"Attempted: {ident}", level="warning")
+        except Exception:
+            pass
         flash("Invalid email/username or password.", "error")
         return render_template("auth/login.html", form=form, title="Login"), 401
 
@@ -80,6 +86,13 @@ def login_post():
         pass
 
     login_user(user, remember=True)
+
+    # Log successful login
+    try:
+        from ..utils import log_activity
+        log_activity(action="login_success", category="auth", details=f"User: {user.email}", user_id=user.id)
+    except Exception:
+        pass
 
     if not user.email_confirmed:
         flash("Welcome back — please check your inbox and confirm your email when you get a chance.", "info")
@@ -143,6 +156,14 @@ def register_post():
 
     login_user(user, remember=True)
     flash("Account created — we sent a confirmation link to your email.", "success")
+
+    # Log registration
+    try:
+        from ..utils import log_activity
+        log_activity(action="register", category="auth", details=f"New user: {email}", user_id=user.id, resource_type="user", resource_id=user.id)
+    except Exception:
+        pass
+
     return redirect(url_for("public.index"))
 
 
@@ -196,7 +217,13 @@ def resend_confirmation():
 @auth_bp.post("/logout")
 @login_required
 def logout():
+    uid = current_user.id
     logout_user()
+    try:
+        from ..utils import log_activity
+        log_activity(action="logout", category="auth", user_id=uid)
+    except Exception:
+        pass
     flash("Logged out.", "success")
     return redirect(url_for("public.index"))
 

@@ -2,43 +2,161 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="section">
-  <div class="container page">
-    <h1>Apply</h1>
-    <p class="muted">This form is intentionally short. We'll review it and reach out within 24 hours to discuss next steps.</p>
+  <div class="container apply-page">
 
-    <form method="post" class="form" novalidate>
-      {{ form.hidden_tag() }}
-      <div class="grid grid--form">
-        <div class="field">
-          <label>{{ form.full_name.label }}</label>
-          {{ form.full_name(class_="input") }}
-          {% for e in form.full_name.errors %}<div class="error">{{ e }}</div>{% endfor %}
+    {# ── Hero banner ── #}
+    <div class="apply-hero fade-up">
+      <p class="apply-hero__eyebrow">Step 1 of getting housed</p>
+      <h1 class="apply-hero__title">Apply for Sober Living</h1>
+      <p class="apply-hero__lead">This form takes about 2 minutes. We review every application personally and get back to you within 24 hours.</p>
+      <div class="apply-hero__badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Takes about 2 minutes
+      </div>
+    </div>
+
+    {# ── Main content grid ── #}
+    <div class="apply-grid">
+
+      {# ── Form column ── #}
+      <div>
+        <div class="card card--no-hover fade-up d1">
+          <div class="card__body" style="padding:28px;">
+
+            {# Privacy reassurance #}
+            <div class="reassurance">
+              <div class="reassurance__icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="reassurance__text">
+                <strong>Your information is private.</strong> We only use it to review your application and contact you. Nothing is shared.
+              </div>
+            </div>
+
+            <form method="post" class="form" novalidate>
+              {{ form.hidden_tag() }}
+
+              {# Section: Contact info #}
+              <div class="form-section">
+                <div class="form-section__title">Your information</div>
+                <div class="form-row">
+                  <div class="field">
+                    <label class="label">Full name <span style="color:var(--brand);">*</span></label>
+                    {{ form.full_name(class_="input", placeholder="First and last name", autocomplete="name") }}
+                    {% for e in form.full_name.errors %}<div class="error">{{ e }}</div>{% endfor %}
+                  </div>
+                  <div class="field">
+                    <label class="label">Email <span style="color:var(--brand);">*</span></label>
+                    {{ form.email(class_="input", placeholder="you@email.com", autocomplete="email") }}
+                    {% for e in form.email.errors %}<div class="error">{{ e }}</div>{% endfor %}
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Phone <span class="label-hint">(optional &mdash; helps us reach you faster)</span></label>
+                  {{ form.phone(class_="input", placeholder="(805) 555-1234", autocomplete="tel") }}
+                  {% for e in form.phone.errors %}<div class="error">{{ e }}</div>{% endfor %}
+                </div>
+              </div>
+
+              {# Section: Situation #}
+              <div class="form-section">
+                <div class="form-section__title">Tell us about your situation</div>
+                <div class="field">
+                  <label class="label">Anything we should know? <span class="label-hint">(optional)</span></label>
+                  {{ form.message(class_="textarea", rows="5", placeholder="Where you're coming from, your timeline, any questions — share as much or as little as you'd like.") }}
+                  {% for e in form.message.errors %}<div class="error">{{ e }}</div>{% endfor %}
+                  <p class="muted small" style="margin-top:2px;">You can always tell us more when we call.</p>
+                </div>
+              </div>
+
+              {{ form.recaptcha_token(id="recaptcha_token") }}
+              {% for e in form.recaptcha_token.errors %}<div class="error">{{ e }}</div>{% endfor %}
+
+              {# Submit #}
+              <button class="btn btn--primary btn--lg btn--block" type="submit" data-track="submit_apply" style="margin-top:4px;">
+                Submit Application
+              </button>
+              <div class="form-links">
+                <a href="{{ url_for('public.contact') }}">Have questions first?</a>
+                <a href="{{ url_for('public.guide') }}">Read the guide</a>
+              </div>
+            </form>
+
+          </div>
         </div>
-        <div class="field">
-          <label>{{ form.email.label }}</label>
-          {{ form.email(class_="input") }}
-          {% for e in form.email.errors %}<div class="error">{{ e }}</div>{% endfor %}
-        </div>
-        <div class="field grid__span2">
-          <label>{{ form.phone.label }}</label>
-          {{ form.phone(class_="input") }}
-          {% for e in form.phone.errors %}<div class="error">{{ e }}</div>{% endfor %}
-        </div>
-        <div class="field grid__span2">
-          <label>{{ form.message.label }}</label>
-          {{ form.message(class_="textarea", rows="7") }}
-          {% for e in form.message.errors %}<div class="error">{{ e }}</div>{% endfor %}
+
+        {# Contact alternative #}
+        <div class="contact-alt fade-up d2">
+          <p class="contact-alt__title">Prefer to talk to someone?</p>
+          <p class="contact-alt__desc">No problem. Reach out directly and we'll walk you through it.</p>
+          <div class="contact-alt__links">
+            <a class="btn btn--sm" href="tel:+18052028473">Call (805) 202-8473</a>
+            <a class="btn btn--sm" href="mailto:support@overcomersrc.com">Email us</a>
+          </div>
         </div>
       </div>
 
-      {{ form.recaptcha_token(id="recaptcha_token") }}
-      {% for e in form.recaptcha_token.errors %}<div class="error">{{ e }}</div>{% endfor %}
+      {# ── Sidebar ── #}
+      <div class="apply-sidebar fade-up d3">
+        <div class="card card--no-hover">
+          <div class="card__body" style="padding:20px;">
+            <h3 class="h3" style="margin-bottom:6px;">How it works</h3>
+            <p class="muted small" style="margin-bottom:4px;">From application to move-in</p>
 
-      <div class="form__actions">
-        <button class="btn btn--primary" type="submit" data-track="submit_apply">Submit application</button>
-        <a class="btn btn--ghost" href="{{ url_for('public.contact') }}">Questions?</a>
+            <div class="sidebar-step sidebar-step--active">
+              <div class="sidebar-step__num">1</div>
+              <div class="sidebar-step__text">
+                <div class="sidebar-step__title">You apply</div>
+                <div class="sidebar-step__desc">Fill out this short form. Takes 2 minutes.</div>
+              </div>
+            </div>
+            <div class="sidebar-step">
+              <div class="sidebar-step__num">2</div>
+              <div class="sidebar-step__text">
+                <div class="sidebar-step__title">We review &amp; call</div>
+                <div class="sidebar-step__desc">We read your application and reach out within 24 hours.</div>
+              </div>
+            </div>
+            <div class="sidebar-step">
+              <div class="sidebar-step__num">3</div>
+              <div class="sidebar-step__text">
+                <div class="sidebar-step__title">Tour the house</div>
+                <div class="sidebar-step__desc">Come see the space. Bring family or your case manager.</div>
+              </div>
+            </div>
+            <div class="sidebar-step">
+              <div class="sidebar-step__num">4</div>
+              <div class="sidebar-step__text">
+                <div class="sidebar-step__title">Pay deposit &amp; move in</div>
+                <div class="sidebar-step__desc">$1,000 deposit secures your bed. We handle the rest.</div>
+              </div>
+            </div>
+
+            <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06);">
+              <p class="muted" style="font-size:12px;line-height:1.6;"><strong style="color:var(--ink);">$1,000/month</strong> includes furnished bed, utilities, Wi-Fi, weekly house meetings, and peer support.</p>
+              <a class="btn btn--sm" href="{{ url_for('public.openings') }}" style="margin-top:10px;width:100%;justify-content:center;">View current openings</a>
+            </div>
+
+            {# Trust signals #}
+            <div class="sidebar-trust">
+              <div class="sidebar-trust__item">
+                <div class="sidebar-trust__check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                No commitment to apply
+              </div>
+              <div class="sidebar-trust__item">
+                <div class="sidebar-trust__check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                24-hour response time
+              </div>
+              <div class="sidebar-trust__item">
+                <div class="sidebar-trust__check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                Info stays private &amp; secure
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </form>
+
+    </div>
   </div>
 </section>
 

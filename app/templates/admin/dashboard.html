@@ -1,6 +1,8 @@
 
 {% extends "admin/_base.html" %}
 {% block admin_content %}
+
+{# ── Data cards ── #}
 <div class="grid cards">
   <article class="card">
     <div class="card__body">
@@ -23,19 +25,28 @@
   </article>
   <article class="card">
     <div class="card__body">
-      <h3 class="h3">Stories</h3>
-      <p class="muted"><strong>{{ counts.pending_stories }}</strong> pending review</p>
+      <h3 class="h3">Tour Requests</h3>
+      <p class="muted"><strong>{{ counts.tours }}</strong> total</p>
       <div class="actions" style="margin-top:8px;">
-        <a class="btn" href="{{ url_for('admin.stories') }}">Review</a>
+        <a class="btn" href="{{ url_for('admin.tour_requests') }}">View</a>
       </div>
     </div>
   </article>
   <article class="card">
     <div class="card__body">
-      <h3 class="h3">Tour Requests</h3>
-      <p class="muted"><strong>{{ counts.tours }}</strong> total</p>
+      <h3 class="h3">Deposits</h3>
+      <p class="muted"><strong>{{ counts.deposits_paid }}</strong> paid{% if counts.deposits_pending %} &nbsp;/&nbsp; <strong>{{ counts.deposits_pending }}</strong> pending{% endif %}</p>
       <div class="actions" style="margin-top:8px;">
-        <a class="btn" href="{{ url_for('admin.tour_requests') }}">View</a>
+        <a class="btn" href="{{ url_for('admin.deposits') }}">View</a>
+      </div>
+    </div>
+  </article>
+  <article class="card">
+    <div class="card__body">
+      <h3 class="h3">Stories</h3>
+      <p class="muted"><strong>{{ counts.pending_stories }}</strong> pending review</p>
+      <div class="actions" style="margin-top:8px;">
+        <a class="btn" href="{{ url_for('admin.stories') }}">Review</a>
       </div>
     </div>
   </article>
@@ -48,24 +59,79 @@
       </div>
     </div>
   </article>
+</div>
+
+{# ── Analytics overview ── #}
+<h2 style="font-size:18px;font-weight:800;margin:28px 0 12px;">Site Activity</h2>
+<div class="grid cards">
   <article class="card">
     <div class="card__body">
-      <h3 class="h3">💰 Deposits</h3>
-      <p class="muted"><strong>{{ counts.deposits_paid }}</strong> paid{% if counts.deposits_pending %} &nbsp;/&nbsp; <strong>{{ counts.deposits_pending }}</strong> pending{% endif %}</p>
-      <div class="actions" style="margin-top:8px;">
-        <a class="btn" href="{{ url_for('admin.deposits') }}">View</a>
-      </div>
+      <p class="muted small">Page views today</p>
+      <p style="font-size:26px;font-weight:800;">{{ activity.today_views | default(0) }}</p>
     </div>
   </article>
   <article class="card">
     <div class="card__body">
-      <h3 class="h3">Quick links</h3>
-      <div class="actions" style="margin-top:8px;">
+      <p class="muted small">Form submissions today</p>
+      <p style="font-size:26px;font-weight:800;">{{ activity.today_submissions | default(0) }}</p>
+    </div>
+  </article>
+  <article class="card">
+    <div class="card__body">
+      <p class="muted small">Page views (7 days)</p>
+      <p style="font-size:26px;font-weight:800;">{{ activity.week_views | default(0) }}</p>
+    </div>
+  </article>
+  <article class="card">
+    <div class="card__body">
+      <p class="muted small">Failed logins (7 days)</p>
+      <p style="font-size:26px;font-weight:800;{% if activity.failed_logins and activity.failed_logins > 5 %}color:#dc2626;{% endif %}">{{ activity.failed_logins | default(0) }}</p>
+    </div>
+  </article>
+</div>
+
+{# ── Recent activity feed ── #}
+<h2 style="font-size:18px;font-weight:800;margin:28px 0 12px;">Recent Activity</h2>
+<div class="card">
+  <div class="card__body" style="padding:0;">
+    {% if recent_activity %}
+    {% for log in recent_activity %}
+    <div style="padding:12px 16px;border-bottom:1px solid rgba(0,0,0,.04);display:flex;gap:10px;align-items:center;{% if log.level == 'warning' %}background:rgba(245,158,11,.03);{% elif log.level == 'error' %}background:rgba(220,38,38,.03);{% endif %}">
+      <div style="width:8px;height:8px;border-radius:50%;flex-shrink:0;{% if log.category == 'payment' %}background:#16a34a;{% elif log.category == 'auth' %}background:#2563eb;{% elif log.category == 'admin_action' %}background:#7c3aed;{% elif log.level == 'warning' %}background:#d97706;{% elif log.level == 'error' %}background:#dc2626;{% else %}background:var(--muted);{% endif %}"></div>
+      <div style="flex:1;min-width:0;">
+        <p style="font-size:13px;font-weight:600;margin:0;">{{ log.action }}</p>
+        {% if log.details %}<p class="muted small" style="margin:2px 0 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ log.details }}</p>{% endif %}
+      </div>
+      <div style="flex-shrink:0;">
+        <span class="muted small">{{ log.created_at.strftime('%b %d, %H:%M') if log.created_at else '' }}</span>
+      </div>
+    </div>
+    {% endfor %}
+    <div style="padding:10px 16px;text-align:center;">
+      <a class="btn btn--sm" href="{{ url_for('admin.activity_log') }}">View all activity</a>
+    </div>
+    {% else %}
+    <div style="padding:24px;text-align:center;">
+      <p class="muted">No activity recorded yet. Activity will appear here as users interact with the site.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{# ── Quick links ── #}
+<h2 style="font-size:18px;font-weight:800;margin:28px 0 12px;">Quick Links</h2>
+<div class="grid cards">
+  <article class="card">
+    <div class="card__body">
+      <div class="actions">
         <a class="btn" href="{{ url_for('admin.openings') }}">Openings</a>
         <a class="btn" href="{{ url_for('admin.users') }}">Users</a>
-        <a class="btn" href="{{ url_for('admin.page_builder') }}">Page builder</a>
+        <a class="btn" href="{{ url_for('admin.activity_log') }}">Activity Log</a>
+        <a class="btn" href="{{ url_for('admin.export_activity_log') }}">Export Logs CSV</a>
+        <a class="btn" href="{{ url_for('admin.page_builder') }}">Page Builder</a>
       </div>
     </div>
   </article>
 </div>
+
 {% endblock %}

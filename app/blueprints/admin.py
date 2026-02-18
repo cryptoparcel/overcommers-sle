@@ -11,8 +11,8 @@ from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 
 from ..extensions import db
-from ..models import Application, ContactMessage, Story, User, PageLayout, Opening, TourRequest, InterestSignup, DepositPayment
-from ..utils import admin_required
+from ..models import Application, ContactMessage, Story, User, PageLayout, Opening, TourRequest, InterestSignup, DepositPayment, ActivityLog
+from ..utils import admin_required, log_activity
 from ..seed import _default_home_layout_json  # uses same defaults
 from ..forms import OpeningForm
 from ..utils import slugify
@@ -42,6 +42,38 @@ def dashboard():
     except Exception:
         deposit_count = 0
         deposit_pending = 0
+
+    # Activity stats
+    try:
+        from datetime import timedelta
+        now = datetime.now(timezone.utc)
+        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        week_start = today_start - timedelta(days=7)
+
+        total_logs = ActivityLog.query.count()
+        today_views = ActivityLog.query.filter(
+            ActivityLog.created_at >= today_start,
+            ActivityLog.category == "page_view"
+        ).count()
+        today_submissions = ActivityLog.query.filter(
+            ActivityLog.created_at >= today_start,
+            ActivityLog.category == "form_submit"
+        ).count()
+        week_views = ActivityLog.query.filter(
+            ActivityLog.created_at >= week_start,
+            ActivityLog.category == "page_view"
+        ).count()
+        failed_logins = ActivityLog.query.filter(
+            ActivityLog.action == "login_failed",
+            ActivityLog.created_at >= week_start
+        ).count()
+        recent_activity = ActivityLog.query.filter(
+            ActivityLog.category.in_(["form_submit", "payment", "auth", "admin_action"])
+        ).order_by(ActivityLog.created_at.desc()).limit(8).all()
+    except Exception:
+        total_logs = today_views = today_submissions = week_views = failed_logins = 0
+        recent_activity = []
+
     return render_template(
         "admin/dashboard.html",
         title="Admin dashboard",
@@ -55,6 +87,14 @@ def dashboard():
             "deposits_paid": deposit_count,
             "deposits_pending": deposit_pending,
         },
+        activity={
+            "total_logs": total_logs,
+            "today_views": today_views,
+            "today_submissions": today_submissions,
+            "week_views": week_views,
+            "failed_logins": failed_logins,
+        },
+        recent_activity=recent_activity,
         active="dashboard",
     )
 
@@ -76,6 +116,16 @@ def update_application(app_id: int):
         return redirect(url_for("admin.applications"))
     row.status = status
     db.session.commit()
+
+    # Activity log
+    try:
+        from ..utils import log_activity
+        log_activity(action=f"application_status_changed:{status}", category="admin_action",
+                     details=f"Application #{row.id} ({row.full_name}) -> {status}",
+                     resource_type="application", resource_id=row.id)
+    except Exception:
+        pass
+
     flash("Application status updated.", "success")
     return redirect(url_for("admin.applications"))
 
@@ -426,3 +476,110 @@ def deposits():
     except Exception:
         items = []
     return render_template("admin/deposits.html", deposits=items, active="deposits", title="Deposit Payments")
+
+
+# ── Activity Logs (Admin) ────────────────────────────────────
+
+@admin_bp.get("/activity-log")
+@login_required
+@admin_required
+def activity_log():
+    """View activity logs with filtering."""
+    page = request.args.get("page", 1, type=int)
+    per_page = 50
+    category = request.args.get("category", "")
+    level = request.args.get("level", "")
+    search = request.args.get("q", "").strip()
+
+    q = ActivityLog.query
+
+    if category:
+        q = q.filter_by(category=category)
+    if level:
+        q = q.filter_by(level=level)
+    if search:
+        q = q.filter(
+            db.or_(
+                ActivityLog.action.ilike(f"%{search}%"),
+                ActivityLog.details.ilike(f"%{search}%"),
+                ActivityLog.ip_address.ilike(f"%{search}%"),
+                ActivityLog.path.ilike(f"%{search}%"),
+            )
+        )
+
+    pagination = q.order_by(ActivityLog.created_at.desc()).paginate(
+        page=page, per_page=per_page, error_out=False
+    )
+    items = pagination.items
+
+    # Get distinct categories for filter dropdown
+    try:
+        categories = [r[0] for r in db.session.query(ActivityLog.category).distinct().all() if r[0]]
+    except Exception:
+        categories = []
+
+    # Log counts for quick stats
+    try:
+        total_logs = ActivityLog.query.count()
+        today_logs = ActivityLog.query.filter(
+            ActivityLog.created_at >= datetime.now(timezone.utc).replace(hour=0, minute=0, second=0)
+        ).count()
+        warning_count = ActivityLog.query.filter_by(level="warning").count()
+        error_count = ActivityLog.query.filter_by(level="error").count()
+    except Exception:
+        total_logs = today_logs = warning_count = error_count = 0
+
+    return render_template(
+        "admin/activity_log.html",
+        logs=items,
+        pagination=pagination,
+        categories=categories,
+        current_category=category,
+        current_level=level,
+        current_search=search,
+        total_logs=total_logs,
+        today_logs=today_logs,
+        warning_count=warning_count,
+        error_count=error_count,
+        active="activity",
+        title="Activity Log",
+    )
+
+
+@admin_bp.get("/activity-log/export.csv")
+@login_required
+@admin_required
+def export_activity_log():
+    """Export activity logs as CSV."""
+    items = ActivityLog.query.order_by(ActivityLog.created_at.desc()).limit(10000).all()
+
+    def esc(v: str) -> str:
+        v = (v or "")
+        if v and v[0] in ("=", "+", "-", "@", "\t", "\r"):
+            v = "'" + v
+        v = v.replace('"', '""')
+        return f'"{v}"'
+
+    lines = ["timestamp,action,category,level,user_id,ip_address,path,method,details,user_agent"]
+    for log in items:
+        lines.append(",".join([
+            esc(log.created_at.isoformat() if log.created_at else ""),
+            esc(log.action or ""),
+            esc(log.category or ""),
+            esc(log.level or ""),
+            esc(str(log.user_id) if log.user_id else ""),
+            esc(log.ip_address or ""),
+            esc(log.path or ""),
+            esc(log.method or ""),
+            esc(log.details or ""),
+            esc(log.user_agent or ""),
+        ]))
+
+    log_activity(action="activity_log_exported", category="admin_action",
+                 details=f"Exported {len(items)} log entries")
+
+    return Response(
+        "\n".join(lines),
+        mimetype="text/csv",
+        headers={"Content-Disposition": f"attachment; filename=activity_log_{datetime.now(timezone.utc).strftime('%Y%m%d')}.csv"},
+    )

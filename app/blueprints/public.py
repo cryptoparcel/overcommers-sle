@@ -251,6 +251,15 @@ def contact_post():
     db.session.add(msg)
     db.session.commit()
 
+    # Activity log
+    try:
+        from ..utils import log_activity
+        log_activity(action="contact_submitted", category="form_submit",
+                     details=f"From: {msg.name} ({msg.email}), Subject: {msg.subject}",
+                     resource_type="contact_message", resource_id=msg.id)
+    except Exception:
+        pass
+
     body = (
         "New contact message\n\n"
         f"Name: {msg.name}\n"
@@ -302,6 +311,15 @@ def tour_post():
     )
     db.session.add(req)
     db.session.commit()
+
+    # Activity log
+    try:
+        from ..utils import log_activity
+        log_activity(action="tour_requested", category="form_submit",
+                     details=f"From: {req.name} ({req.email})",
+                     resource_type="tour_request", resource_id=req.id)
+    except Exception:
+        pass
 
     body = (
         "New tour request\n\n"
@@ -357,6 +375,15 @@ def apply_post():
     )
     db.session.add(app_row)
     db.session.commit()
+
+    # Activity log
+    try:
+        from ..utils import log_activity
+        log_activity(action="application_submitted", category="form_submit",
+                     details=f"Name: {app_row.full_name}, Email: {app_row.email}",
+                     resource_type="application", resource_id=app_row.id)
+    except Exception:
+        pass
 
     body = (
         "New application\n\n"
@@ -606,6 +633,15 @@ def deposit_create_checkout():
     db.session.add(payment)
     db.session.commit()
 
+    # Activity log
+    try:
+        from ..utils import log_activity
+        log_activity(action="deposit_initiated", category="payment",
+                     details=f"Name: {name}, Email: {email}, Amount: ${amount/100:.2f}",
+                     resource_type="deposit", resource_id=payment.id)
+    except Exception:
+        pass
+
     return redirect(session.url, code=303)
 
 
@@ -619,11 +655,20 @@ def deposit_success():
             payment.status = "paid"
             db.session.commit()
 
+            # Activity log
+            try:
+                from ..utils import log_activity
+                log_activity(action="deposit_paid", category="payment",
+                             details=f"Name: {payment.full_name}, Email: {payment.email}, Amount: ${payment.amount_cents/100:.2f}",
+                             resource_type="deposit", resource_id=payment.id, level="info")
+            except Exception:
+                pass
+
             # Notify admin
             try:
                 send_email(
                     to_email=current_app.config.get("NOTIFY_EMAIL"),
-                    subject="[Overcomers] 💰 New deposit payment!",
+                    subject="[Overcomers] New deposit payment!",
                     body=(
                         f"Deposit received!\n\n"
                         f"Name: {payment.full_name}\n"
