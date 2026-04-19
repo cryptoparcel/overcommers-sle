@@ -4,13 +4,13 @@ from __future__ import annotations
 import json
 from sqlalchemy import text
 from flask import Blueprint, flash, redirect, render_template, url_for, send_from_directory, current_app, request, Response, jsonify
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 from ..extensions import db, limiter, csrf
 from ..utils import slugify
 from ..utils.mailer import send_email
-from ..forms import ApplyForm, ContactForm, StorySubmitForm, TourRequestForm, InterestForm
-from ..models import Application, ContactMessage, Story, PageLayout, Opening, TourRequest, InterestSignup, DepositPayment, Event
+from ..forms import ApplyForm, ContactForm, StorySubmitForm, TourRequestForm, InterestForm, EventPostForm
+from ..models import Application, ContactMessage, Story, PageLayout, Opening, TourRequest, InterestSignup, DepositPayment, Event, EventRSVP, EventPost
 
 public_bp = Blueprint("public", __name__)
 
@@ -504,9 +504,16 @@ def events():
     )
 
 
+def _can_moderate() -> bool:
+    return (
+        getattr(current_user, "is_authenticated", False)
+        and (getattr(current_user, "is_admin", False) or getattr(current_user, "is_moderator", False))
+    )
+
+
 @public_bp.get("/events/<slug>")
 def event_detail(slug: str):
-    """Single event detail page."""
+    """Single event detail page with attendee list and discussion thread."""
     try:
         ev = Event.query.filter_by(slug=slug, status="published").first()
     except Exception:
@@ -514,7 +521,102 @@ def event_detail(slug: str):
     if not ev:
         from flask import abort
         abort(404)
-    return render_template("event_detail.html", event=ev, title=ev.title)
+
+    attendee_count = ev.rsvps.count()
+    joined = False
+    if current_user.is_authenticated:
+        joined = ev.rsvps.filter_by(user_id=current_user.id).first() is not None
+
+    posts = (
+        ev.posts.filter_by(is_hidden=False)
+        .order_by(EventPost.created_at.asc())
+        .limit(500)
+        .all()
+    )
+    post_form = EventPostForm()
+
+    return render_template(
+        "event_detail.html",
+        event=ev,
+        title=ev.title,
+        attendee_count=attendee_count,
+        joined=joined,
+        posts=posts,
+        post_form=post_form,
+        can_moderate=_can_moderate(),
+    )
+
+
+@public_bp.post("/events/<slug>/join")
+@login_required
+@limiter.limit("20 per hour")
+def event_join(slug: str):
+    ev = Event.query.filter_by(slug=slug, status="published").first_or_404()
+    existing = EventRSVP.query.filter_by(event_id=ev.id, user_id=current_user.id).first()
+    if existing:
+        flash("You're already on the list for this event.", "info")
+    else:
+        rsvp = EventRSVP(event_id=ev.id, user_id=current_user.id)
+        db.session.add(rsvp)
+        ev.rsvp_count = (ev.rsvp_count or 0) + 1
+        db.session.commit()
+        flash("You're in — welcome to the thread.", "success")
+    return redirect(url_for("public.event_detail", slug=ev.slug))
+
+
+@public_bp.post("/events/<slug>/leave")
+@login_required
+@limiter.limit("20 per hour")
+def event_leave(slug: str):
+    ev = Event.query.filter_by(slug=slug, status="published").first_or_404()
+    rsvp = EventRSVP.query.filter_by(event_id=ev.id, user_id=current_user.id).first()
+    if rsvp:
+        db.session.delete(rsvp)
+        ev.rsvp_count = max(0, (ev.rsvp_count or 1) - 1)
+        db.session.commit()
+        flash("You've left this event.", "info")
+    return redirect(url_for("public.event_detail", slug=ev.slug))
+
+
+@public_bp.post("/events/<slug>/posts")
+@login_required
+@limiter.limit("10 per minute")
+@limiter.limit("60 per hour")
+def event_post_create(slug: str):
+    ev = Event.query.filter_by(slug=slug, status="published").first_or_404()
+    joined = EventRSVP.query.filter_by(event_id=ev.id, user_id=current_user.id).first() is not None
+    if not (joined or _can_moderate()):
+        flash("Join the event first to post in the discussion.", "error")
+        return redirect(url_for("public.event_detail", slug=ev.slug))
+
+    form = EventPostForm()
+    if not form.validate_on_submit():
+        flash("Your message can't be empty and must be under 2000 characters.", "error")
+        return redirect(url_for("public.event_detail", slug=ev.slug))
+
+    post = EventPost(
+        event_id=ev.id,
+        user_id=current_user.id,
+        body=form.body.data.strip(),
+    )
+    db.session.add(post)
+    db.session.commit()
+    return redirect(url_for("public.event_detail", slug=ev.slug) + f"#post-{post.id}")
+
+
+@public_bp.post("/events/<slug>/posts/<int:post_id>/delete")
+@login_required
+def event_post_delete(slug: str, post_id: int):
+    ev = Event.query.filter_by(slug=slug).first_or_404()
+    post = EventPost.query.filter_by(id=post_id, event_id=ev.id).first_or_404()
+    is_author = post.user_id == current_user.id
+    if not (is_author or _can_moderate()):
+        from flask import abort
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    flash("Post deleted.", "info")
+    return redirect(url_for("public.event_detail", slug=ev.slug))
 
 
 # ── Stories ──────────────────────────────────────────────────

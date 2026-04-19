@@ -272,3 +272,37 @@ class Event(db.Model):
     def __repr__(self) -> str:
         return f"<Event {self.id} {self.title!r} on {self.start_date}>"
 
+
+class EventRSVP(db.Model):
+    """A logged-in user joining (RSVPing to) an event."""
+
+    __tablename__ = "event_rsvps"
+    __table_args__ = (db.UniqueConstraint("event_id", "user_id", name="uq_event_rsvp_user"),)
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=_utcnow)
+
+    event_id = db.Column(db.Integer, db.ForeignKey("events.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+
+    event = db.relationship("Event", backref=db.backref("rsvps", lazy="dynamic", cascade="all, delete-orphan"))
+    user = db.relationship("User", backref=db.backref("event_rsvps", lazy="dynamic"))
+
+
+class EventPost(db.Model):
+    """A message in an event's discussion thread."""
+
+    __tablename__ = "event_posts"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=_utcnow, index=True)
+
+    event_id = db.Column(db.Integer, db.ForeignKey("events.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
+
+    body = db.Column(db.Text, nullable=False)
+    is_hidden = db.Column(db.Boolean, nullable=False, default=False)
+
+    event = db.relationship("Event", backref=db.backref("posts", lazy="dynamic", cascade="all, delete-orphan"))
+    user = db.relationship("User", backref=db.backref("event_posts", lazy="dynamic"))
+

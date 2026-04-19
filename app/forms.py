@@ -159,6 +159,11 @@ class OpeningForm(FlaskForm):
     submit = SubmitField("Save opening")
 
 
+class EventPostForm(FlaskForm):
+    body = TextAreaField("Add to the discussion", validators=[DataRequired(), Length(min=1, max=2000)])
+    submit = SubmitField("Post")
+
+
 class EventForm(FlaskForm):
     title = StringField("Event title", validators=[DataRequired(), Length(max=180)])
     slug = StringField("Slug (URL)", validators=[DataRequired(), Length(max=220)])

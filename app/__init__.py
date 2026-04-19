@@ -137,6 +137,17 @@ def create_app() -> Flask:
         if _schema_bootstrapped["done"]:
             return
         _schema_bootstrapped["done"] = True
+        # First, try a proper alembic upgrade — handles both new tables and
+        # column additions on existing tables (e.g. users.is_moderator).
+        try:
+            from flask_migrate import upgrade
+            upgrade()
+            app.logger.info("Alembic upgrade applied on first request.")
+            return
+        except Exception as e:
+            app.logger.warning(f"Alembic upgrade on first request failed: {e}")
+        # Fallback: if the DB is empty, create_all brings up all tables and
+        # stamps alembic so future migrations apply cleanly.
         try:
             from sqlalchemy import inspect
             inspector = inspect(db.engine)
@@ -150,7 +161,7 @@ def create_app() -> Flask:
                 except Exception as e:
                     app.logger.warning(f"Alembic stamp skipped: {e}")
         except Exception as e:
-            app.logger.error(f"Schema bootstrap failed: {e}")
+            app.logger.error(f"Schema bootstrap fallback failed: {e}")
 
     # ── Auto-bootstrap admin from env vars on first request ──
     _admin_bootstrapped = {"done": False}
