@@ -127,6 +127,31 @@ def create_app() -> Flask:
             .replace("\n", "<br>")
         )
 
+    # ── Schema bootstrap: create tables on first request if missing ──
+    # Covers the case where build-time `flask db upgrade` failed (e.g. stale
+    # DATABASE_URL during a Blueprint sync) but the live connection works.
+    _schema_bootstrapped = {"done": False}
+
+    @app.before_request
+    def _auto_bootstrap_schema():
+        if _schema_bootstrapped["done"]:
+            return
+        _schema_bootstrapped["done"] = True
+        try:
+            from sqlalchemy import inspect
+            inspector = inspect(db.engine)
+            if not inspector.has_table("users"):
+                app.logger.warning("Schema missing — running db.create_all() fallback.")
+                db.create_all()
+                try:
+                    from flask_migrate import stamp
+                    stamp(revision="head")
+                    app.logger.info("Stamped alembic to head after create_all.")
+                except Exception as e:
+                    app.logger.warning(f"Alembic stamp skipped: {e}")
+        except Exception as e:
+            app.logger.error(f"Schema bootstrap failed: {e}")
+
     # ── Auto-bootstrap admin from env vars on first request ──
     _admin_bootstrapped = {"done": False}
 
