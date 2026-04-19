@@ -1,0 +1,90 @@
+
+from __future__ import annotations
+import os
+
+def _normalize_database_url(url: str | None) -> str:
+    if not url:
+        return "sqlite:///local.db"
+    url = url.strip()
+    if url.startswith("postgres://"):
+        url = "postgresql://" + url[len("postgres://"):]
+    if url.startswith("postgresql://") and "+psycopg" not in url:
+        url = url.replace("postgresql://", "postgresql+psycopg://", 1)
+    return url
+
+class Config:
+    def __init__(self) -> None:
+        # Core
+        self.SECRET_KEY = os.environ.get("SECRET_KEY", "dev-not-secure-change-me")
+        self.SQLALCHEMY_DATABASE_URI = _normalize_database_url(os.environ.get("DATABASE_URL"))
+        self.SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+        # Connection pooling for PostgreSQL (high-traffic resilience)
+        if self.SQLALCHEMY_DATABASE_URI.startswith("postgresql"):
+            self.SQLALCHEMY_ENGINE_OPTIONS = {
+                "pool_size": 5,
+                "max_overflow": 10,
+                "pool_timeout": 30,
+                "pool_recycle": 1800,
+                "pool_pre_ping": True,
+            }
+
+        # Safety: crash loudly if deployed with default secret
+        if os.environ.get("RENDER") and self.SECRET_KEY == "dev-not-secure-change-me":
+            raise RuntimeError(
+                "SECRET_KEY is not set! Add it as an environment variable in Render."
+            )
+
+        # HTTPS
+        self.PREFERRED_URL_SCHEME = "https" if os.environ.get("RENDER") else "http"
+
+        # Cookies
+        self.SESSION_COOKIE_SECURE = os.environ.get("SESSION_COOKIE_SECURE", "0") == "1"
+        self.SESSION_COOKIE_HTTPONLY = True
+        self.SESSION_COOKIE_SAMESITE = os.environ.get("SESSION_COOKIE_SAMESITE", "Lax")
+        self.PERMANENT_SESSION_LIFETIME = 86400 * 7  # 7 days
+
+        # Email notifications
+        self.SMTP_HOST = os.environ.get("SMTP_HOST", "")
+        self.SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
+        self.SMTP_USERNAME = os.environ.get("SMTP_USERNAME", "")
+        self.SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD", "")
+        self.SMTP_FROM = os.environ.get("SMTP_FROM", "") or self.SMTP_USERNAME or "no-reply@overcomersrc.com"
+        self.NOTIFY_EMAIL = os.environ.get("NOTIFY_EMAIL", "support@overcomersrc.com")
+
+        # Optional reCAPTCHA (v2 checkbox)
+        self.RECAPTCHA_SITE_KEY = os.environ.get("RECAPTCHA_SITE_KEY", "")
+        self.RECAPTCHA_SECRET_KEY = os.environ.get("RECAPTCHA_SECRET_KEY", "")
+
+        # Analytics (set to your domain, e.g. "overcomersrc.com")
+        self.PLAUSIBLE_DOMAIN = os.environ.get("PLAUSIBLE_DOMAIN", "")
+
+        # Google Analytics 4
+        self.GA_MEASUREMENT_ID = os.environ.get("GA_MEASUREMENT_ID", "")  # e.g. G-XXXXXXXXXX
+
+        # Stripe (for deposit payments)
+        self.STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
+        self.STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+        self.STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
+        self.DEPOSIT_AMOUNT_CENTS = int(os.environ.get("DEPOSIT_AMOUNT_CENTS", "100000"))  # $1000 default
+
+        # Auto-bootstrap admin from env (optional)
+        self.ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "")
+        self.ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
+
+        # File uploads
+        self.MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB max upload
+        self.UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.dirname(__file__)), "app", "static", "uploads")
+
+        # Contact / business info (override via env if location changes)
+        self.SITE_PHONE_DISPLAY = os.environ.get("SITE_PHONE_DISPLAY", "(805) 202-8473")
+        self.SITE_PHONE_TEL = os.environ.get("SITE_PHONE_TEL", "+18052028473")
+        self.SITE_EMAIL_SUPPORT = os.environ.get("SITE_EMAIL_SUPPORT", "support@overcomersrc.com")
+        self.SITE_EMAIL_CAREERS = os.environ.get("SITE_EMAIL_CAREERS", "careers@overcomersrc.com")
+        self.SITE_EMAIL_BILLING = os.environ.get("SITE_EMAIL_BILLING", "billing@overcomersrc.com")
+        self.SITE_EMAIL_LEGAL = os.environ.get("SITE_EMAIL_LEGAL", "legal@overcomersrc.com")
+        self.SITE_EMAIL_MARKETING = os.environ.get("SITE_EMAIL_MARKETING", "marketing@overcomersrc.com")
+        self.SITE_ADDRESS_STREET = os.environ.get("SITE_ADDRESS_STREET", "1187 W Grand Ave")
+        self.SITE_ADDRESS_CITY = os.environ.get("SITE_ADDRESS_CITY", "Grover Beach")
+        self.SITE_ADDRESS_STATE = os.environ.get("SITE_ADDRESS_STATE", "CA")
+        self.SITE_ADDRESS_ZIP = os.environ.get("SITE_ADDRESS_ZIP", "93433")

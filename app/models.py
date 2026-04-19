@@ -1,0 +1,273 @@
+
+from __future__ import annotations
+
+from datetime import datetime, timezone
+from werkzeug.security import generate_password_hash, check_password_hash
+
+def _utcnow():
+    return datetime.now(timezone.utc)
+from flask_login import UserMixin
+
+from .extensions import db
+
+
+class User(UserMixin, db.Model):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=_utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=_utcnow, onupdate=_utcnow, nullable=False)
+
+    name = db.Column(db.String(120), nullable=False)
+    username = db.Column(db.String(80), unique=True, nullable=False, index=True)
+    email = db.Column(db.String(255), unique=True, nullable=False, index=True)
+    phone = db.Column(db.String(40), nullable=True)
+
+    password_hash = db.Column(db.String(255), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False, nullable=False)
+    last_login = db.Column(db.DateTime, nullable=True)
+
+    # Email confirmation
+    email_confirmed = db.Column(db.Boolean, default=False, nullable=False)
+    confirm_token = db.Column(db.String(64), unique=True, nullable=True)
+
+    def set_password(self, password: str) -> None:
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password: str) -> bool:
+        return check_password_hash(self.password_hash, password)
+
+
+class Application(db.Model):
+    __tablename__ = "applications"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=_utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=_utcnow, onupdate=_utcnow, nullable=False)
+
+    full_name = db.Column(db.String(120), nullable=False)
+    email = db.Column(db.String(255), nullable=False, index=True)
+    phone = db.Column(db.String(40), nullable=True)
+
+    message = db.Column(db.Text, nullable=True)
+    status = db.Column(db.String(32), default="new", nullable=False, index=True)
+
+
+class ContactMessage(db.Model):
+    __tablename__ = "contact_messages"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=_utcnow, nullable=False)
+
+    name = db.Column(db.String(120), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    subject = db.Column(db.String(200), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+
+
+class TourRequest(db.Model):
+    """Tour request submissions from /tour."""
+    __tablename__ = "tour_requests"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=_utcnow, nullable=False)
+
+    name = db.Column(db.String(120), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    phone = db.Column(db.String(40), nullable=True)
+    preferred_time = db.Column(db.String(200), nullable=True)
+    notes = db.Column(db.Text, nullable=True)
+
+
+class InterestSignup(db.Model):
+    """Email interest list when no openings are posted."""
+    __tablename__ = "interest_signups"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=_utcnow, nullable=False)
+    email = db.Column(db.String(255), nullable=False, unique=True, index=True)
+
+
+class Story(db.Model):
+    __tablename__ = "stories"
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(180), nullable=False)
+    slug = db.Column(db.String(220), unique=True, index=True, nullable=False)
+    summary = db.Column(db.String(320), nullable=True)
+    body = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(500), nullable=True)
+    author_name = db.Column(db.String(120), nullable=True)
+
+    status = db.Column(db.String(20), nullable=False, default="pending", index=True)  # pending | approved | rejected
+    created_at = db.Column(db.DateTime, nullable=False, default=_utcnow)
+    reviewed_at = db.Column(db.DateTime, nullable=True)
+    reviewed_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
+
+
+class PageLayout(db.Model):
+    __tablename__ = "page_layouts"
+
+    id = db.Column(db.Integer, primary_key=True)
+    page = db.Column(db.String(64), unique=True, nullable=False, index=True)
+    layout_json = db.Column(db.Text, nullable=False, default="{}")
+    updated_at = db.Column(db.DateTime, default=_utcnow, onupdate=_utcnow)
+
+
+class Opening(db.Model):
+    """A published listing for available beds/rooms."""
+
+    __tablename__ = "openings"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=_utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=_utcnow, onupdate=_utcnow)
+
+    title = db.Column(db.String(180), nullable=False)
+    slug = db.Column(db.String(220), unique=True, index=True, nullable=False)
+
+    city = db.Column(db.String(120), nullable=True, default="Grover Beach")
+    state = db.Column(db.String(64), nullable=True, default="CA")
+
+    beds_available = db.Column(db.Integer, nullable=False, default=1)
+    available_on = db.Column(db.Date, nullable=True)
+
+    price_monthly = db.Column(db.String(60), nullable=True, default="$1,000 / month")
+    deposit = db.Column(db.String(60), nullable=True, default="$1,000 deposit")
+    hide_price = db.Column(db.Boolean, nullable=False, default=True)
+
+    summary = db.Column(db.String(320), nullable=True)
+    details = db.Column(db.Text, nullable=True)
+    house_rules = db.Column(db.Text, nullable=True)
+    included = db.Column(db.Text, nullable=True)
+
+    contact_name = db.Column(db.String(120), nullable=True)
+    contact_email = db.Column(db.String(255), nullable=True)
+    contact_phone = db.Column(db.String(60), nullable=True)
+
+    photos_json = db.Column(db.Text, nullable=True)  # JSON array of image URLs
+
+    status = db.Column(db.String(20), nullable=False, default="draft", index=True)
+
+    @property
+    def photos(self) -> list:
+        """Return list of photo URLs from JSON field."""
+        if not self.photos_json:
+            return []
+        try:
+            import json
+            data = json.loads(self.photos_json)
+            return [url.strip() for url in data if url and url.strip()]
+        except Exception:
+            return []
+
+    def __repr__(self) -> str:
+        return f"<Opening {self.id} {self.status} {self.slug}>"
+
+
+class DepositPayment(db.Model):
+    """Tracks deposit payments via Stripe."""
+
+    __tablename__ = "deposit_payments"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=_utcnow)
+
+    full_name = db.Column(db.String(180), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    phone = db.Column(db.String(60), nullable=True)
+
+    stripe_session_id = db.Column(db.String(255), nullable=True, unique=True)
+    stripe_payment_intent = db.Column(db.String(255), nullable=True)
+    amount_cents = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String(30), nullable=False, default="pending")  # pending, paid, failed
+
+    notes = db.Column(db.Text, nullable=True)
+
+    def __repr__(self) -> str:
+        return f"<DepositPayment {self.id} {self.status} {self.email}>"
+
+
+class ActivityLog(db.Model):
+    """Immutable audit log for user activity, form submissions, and admin actions.
+
+    Designed for compliance, safety, and operational transparency.
+    Records are append-only — never updated or deleted in normal operation.
+    """
+
+    __tablename__ = "activity_logs"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=_utcnow, index=True)
+
+    # Who
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True, index=True)
+    ip_address = db.Column(db.String(45), nullable=True)  # IPv4 or IPv6
+    user_agent = db.Column(db.String(512), nullable=True)
+
+    # What
+    action = db.Column(db.String(80), nullable=False, index=True)
+    # Categories: page_view, form_submit, login, logout, login_failed,
+    #             admin_action, payment, status_change, error
+    category = db.Column(db.String(30), nullable=False, default="general", index=True)
+
+    # Where
+    path = db.Column(db.String(500), nullable=True)
+    method = db.Column(db.String(10), nullable=True)  # GET, POST, etc.
+
+    # Details (JSON-safe string for flexible metadata)
+    details = db.Column(db.Text, nullable=True)
+
+    # Optional reference to related record
+    resource_type = db.Column(db.String(60), nullable=True)  # e.g. "application", "deposit"
+    resource_id = db.Column(db.Integer, nullable=True)
+
+    # Severity for filtering
+    level = db.Column(db.String(10), nullable=False, default="info")  # info, warning, error
+
+    user = db.relationship("User", backref=db.backref("activity_logs", lazy="dynamic"), foreign_keys=[user_id])
+
+    def __repr__(self) -> str:
+        return f"<ActivityLog {self.id} {self.action} {self.created_at}>"
+
+
+class Event(db.Model):
+    """Community events — meetings, BBQs, graduations, volunteer days, etc."""
+
+    __tablename__ = "events"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=_utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=_utcnow, onupdate=_utcnow)
+
+    title = db.Column(db.String(180), nullable=False)
+    slug = db.Column(db.String(220), unique=True, index=True, nullable=False)
+
+    # When
+    start_date = db.Column(db.Date, nullable=False, index=True)
+    start_time = db.Column(db.String(30), nullable=True)  # e.g. "7:00 PM" — keep flexible
+    end_time = db.Column(db.String(30), nullable=True)
+
+    # Where
+    location_name = db.Column(db.String(180), nullable=True)  # e.g. "Overcomers House A"
+    location_address = db.Column(db.String(255), nullable=True)
+
+    # What
+    summary = db.Column(db.String(320), nullable=True)
+    description = db.Column(db.Text, nullable=True)
+    category = db.Column(db.String(40), nullable=True, default="general")  # meeting, social, volunteer, milestone, general
+
+    # Media
+    image_url = db.Column(db.String(500), nullable=True)
+
+    # Visibility
+    status = db.Column(db.String(20), nullable=False, default="draft")  # draft, published, cancelled
+    is_public = db.Column(db.Boolean, nullable=False, default=True)  # False = residents-only
+
+    # RSVP (optional light version — just captures interest, not strict capacity)
+    allow_rsvp = db.Column(db.Boolean, nullable=False, default=False)
+    rsvp_count = db.Column(db.Integer, nullable=False, default=0)
+
+    def __repr__(self) -> str:
+        return f"<Event {self.id} {self.title!r} on {self.start_date}>"
+

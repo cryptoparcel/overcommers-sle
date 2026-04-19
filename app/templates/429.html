@@ -1,0 +1,15 @@
+
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container page">
+    <div class="error-card">
+      <h1>Slow down</h1>
+      <p class="muted">You're making too many requests. Please wait a moment and try again.</p>
+      <div class="form__actions">
+        <a class="btn btn--primary" href="{{ url_for('public.index') }}">Back home</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

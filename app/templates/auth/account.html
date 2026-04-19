@@ -1,0 +1,95 @@
+
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>Account settings</h2>
+        <p>Update your info and password.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      {% if not current_user.email_confirmed %}
+      <div class="card" style="grid-column: span 12; background:rgba(11,95,87,.04); border:1px solid rgba(11,95,87,.15);">
+        <div class="body" style="padding:16px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <div>
+            <strong style="color:var(--brand);">Email not confirmed</strong>
+            <p class="muted" style="margin:2px 0 0; font-size:14px;">Check your inbox for a confirmation link. Didn't get it?</p>
+          </div>
+          <form method="post" action="{{ url_for('auth.resend_confirmation') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn" type="submit" style="font-size:13px;">Resend confirmation email</button>
+          </form>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="card" style="grid-column: span 6;">
+        <div class="body">
+          <h3>Profile</h3>
+          <form method="post" novalidate>
+            {{ profile_form.hidden_tag() }}
+            <div class="field">
+              <label>{{ profile_form.name.label }}</label>
+              {{ profile_form.name(class_="input") }}
+              {% for e in profile_form.name.errors %}<div class="error">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="field">
+              <label>{{ profile_form.phone.label }}</label>
+              {{ profile_form.phone(class_="input") }}
+              {% for e in profile_form.phone.errors %}<div class="error">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="actions">
+              <button class="btn btn--primary" type="submit" name="{{ profile_form.submit_profile.name }}" value="1">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column: span 6;">
+        <div class="body">
+          <h3>Password</h3>
+          <form method="post" novalidate>
+            {{ password_form.hidden_tag() }}
+            <div class="field">
+              <label>{{ password_form.current_password.label }}</label>
+              <div class="input-wrap">
+                {{ password_form.current_password(class_="input", type="password", id="curPw") }}
+                <button type="button" class="pw-toggle" onclick="togglePw('curPw', this)" aria-label="Show password">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+              {% for e in password_form.current_password.errors %}<div class="error">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="field">
+              <label>{{ password_form.new_password.label }}</label>
+              <div class="input-wrap">
+                {{ password_form.new_password(class_="input", type="password", id="newPw") }}
+                <button type="button" class="pw-toggle" onclick="togglePw('newPw', this)" aria-label="Show password">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+              {% for e in password_form.new_password.errors %}<div class="error">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="field">
+              <label>{{ password_form.confirm_new_password.label }}</label>
+              <div class="input-wrap">
+                {{ password_form.confirm_new_password(class_="input", type="password", id="confirmPw") }}
+                <button type="button" class="pw-toggle" onclick="togglePw('confirmPw', this)" aria-label="Show password">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+              {% for e in password_form.confirm_new_password.errors %}<div class="error">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="actions">
+              <button class="btn btn--primary" type="submit" name="{{ password_form.submit_password.name }}" value="1">Update password</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,110 @@
+
+{% extends "admin/_base.html" %}
+{% set title = title or "Event" %}
+{% set active = "events" %}
+{% block admin_content %}
+<div class="card">
+  <div class="card__body">
+    <h3 class="h3">{{ title }}</h3>
+    <p class="muted">Add community events, house meetings, alumni gatherings, or volunteer days. Set status to "Published" when ready to show publicly.</p>
+
+    <form method="POST">
+      {{ form.hidden_tag() }}
+
+      <div class="grid" style="gap:12px;">
+        <div class="card" style="grid-column: span 12; background: transparent; border:0; box-shadow:none;">
+          <div class="grid" style="gap:12px;">
+
+            <div style="grid-column: span 8;">
+              <label class="label">{{ form.title.label }}</label>
+              {{ form.title(class_="input") }}
+              {% for e in form.title.errors %}<div class="error">{{ e }}</div>{% endfor %}
+            </div>
+            <div style="grid-column: span 4;">
+              <label class="label">{{ form.status.label }}</label>
+              {{ form.status(class_="input") }}
+              {% for e in form.status.errors %}<div class="error">{{ e }}</div>{% endfor %}
+            </div>
+
+            <div style="grid-column: span 6;">
+              <label class="label">{{ form.slug.label }}</label>
+              {{ form.slug(class_="input") }}
+              <div class="muted tiny">Public URL: /events/&lt;slug&gt;</div>
+              {% for e in form.slug.errors %}<div class="error">{{ e }}</div>{% endfor %}
+            </div>
+            <div style="grid-column: span 6;">
+              <label class="label">{{ form.category.label }}</label>
+              {{ form.category(class_="input") }}
+            </div>
+
+            <div style="grid-column: span 4;">
+              <label class="label">{{ form.start_date.label }}</label>
+              {{ form.start_date(class_="input") }}
+              {% for e in form.start_date.errors %}<div class="error">{{ e }}</div>{% endfor %}
+            </div>
+            <div style="grid-column: span 4;">
+              <label class="label">{{ form.start_time.label }}</label>
+              {{ form.start_time(class_="input", placeholder="e.g. 7:00 PM") }}
+            </div>
+            <div style="grid-column: span 4;">
+              <label class="label">{{ form.end_time.label }}</label>
+              {{ form.end_time(class_="input", placeholder="optional") }}
+            </div>
+
+            <div style="grid-column: span 6;">
+              <label class="label">{{ form.location_name.label }}</label>
+              {{ form.location_name(class_="input", placeholder="Overcomers House A") }}
+            </div>
+            <div style="grid-column: span 6;">
+              <label class="label">{{ form.location_address.label }}</label>
+              {{ form.location_address(class_="input", placeholder="1187 W Grand Ave, Grover Beach, CA") }}
+            </div>
+
+            <div style="grid-column: span 12;">
+              <label class="label">{{ form.summary.label }}</label>
+              {{ form.summary(class_="textarea", rows="2") }}
+              <div class="muted tiny">Shows on the events list page — keep it punchy (max 320 chars).</div>
+            </div>
+
+            <div style="grid-column: span 12;">
+              <label class="label">{{ form.description.label }}</label>
+              {{ form.description(class_="textarea", rows="8") }}
+              <div class="muted tiny">Full event details — what, why, who should come. Shows on the event's own page.</div>
+            </div>
+
+            <div style="grid-column: span 12;">
+              <label class="label">Event photo (optional)</label>
+              {{ form.image_url(id="eventImageInput", style="display:none;") }}
+              <script src="{{ url_for('static', filename='assets/photo_uploader.js') }}?v=20260418"></script>
+              <script>
+                PhotoUploader.init({
+                  targetSelector: '#eventImageInput',
+                  mode: 'single',
+                  uploadUrl: '{{ url_for("admin.upload_photo") }}',
+                });
+              </script>
+              <div class="muted tiny" style="margin-top:6px;">One photo shown on the events list and detail page. Landscape works best.</div>
+            </div>
+
+            <div style="grid-column: span 6;">
+              <label style="display:flex;align-items:center;gap:8px;">
+                {{ form.is_public() }} {{ form.is_public.label.text }}
+              </label>
+            </div>
+            <div style="grid-column: span 6;">
+              <label style="display:flex;align-items:center;gap:8px;">
+                {{ form.allow_rsvp() }} {{ form.allow_rsvp.label.text }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions" style="margin-top:18px;">
+        <button class="btn btn--primary" type="submit">{{ form.submit.label.text }}</button>
+        <a class="btn" href="{{ url_for('admin.events') }}">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+
+{% extends "admin/_base.html" %}
+{% set title = "Events" %}
+{% set active = "events" %}
+{% block admin_content %}
+<div class="actions" style="margin-bottom:12px;">
+  <a class="btn btn--primary" href="{{ url_for('admin.events_new') }}">+ New event</a>
+</div>
+
+<div class="card">
+  <div class="card__body">
+    <h3 class="h3">Events</h3>
+    {% if events|length == 0 %}
+      <p class="muted">No events yet. Click "New event" to create one.</p>
+    {% else %}
+      <div class="table">
+        <div class="row head" style="grid-template-columns: 110px 130px 2fr 1fr 110px 220px;">
+          <div>Status</div><div>Date</div><div>Title</div><div>Category</div><div>Visibility</div><div>Actions</div>
+        </div>
+        {% for ev in events %}
+        <div class="row" style="grid-template-columns: 110px 130px 2fr 1fr 110px 220px;">
+          <div><span class="pill">{{ ev.status }}</span></div>
+          <div class="muted">{{ ev.start_date.strftime('%b %d, %Y') }}{% if ev.start_time %}<br><span class="tiny">{{ ev.start_time }}</span>{% endif %}</div>
+          <div>
+            <div><strong>{{ ev.title }}</strong></div>
+            <div class="muted tiny">/events/{{ ev.slug }}{% if ev.location_name %} • {{ ev.location_name }}{% endif %}</div>
+          </div>
+          <div class="muted">{{ ev.category|capitalize if ev.category else '-' }}</div>
+          <div class="muted tiny">{{ 'Public' if ev.is_public else 'Residents' }}</div>
+          <div class="actions-inline">
+            <a class="btn" href="{{ url_for('admin.events_edit', event_id=ev.id) }}">Edit</a>
+            {% if ev.status == 'published' %}
+              <a class="btn" href="{{ url_for('public.event_detail', slug=ev.slug) }}" target="_blank" rel="noopener">View</a>
+            {% endif %}
+            <form method="POST" action="{{ url_for('admin.events_delete', event_id=ev.id) }}" onsubmit="return confirm('Delete this event?');">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

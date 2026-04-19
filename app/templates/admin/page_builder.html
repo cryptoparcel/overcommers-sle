@@ -1,0 +1,34 @@
+
+{% extends "admin/_base.html" %}
+{% set title = "Page Builder" %}
+{% set active = "builder" %}
+{% block admin_content %}
+<div class="pb-admin">
+  <div class="pb-admin__canvas">
+    <div class="pb-admin__toolbar">
+      <form id="pbSaveForm" method="post" style="display:flex; gap:10px; align-items:center;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="layout_json" id="layout_json" value="">
+        <button class="btn btn--primary" type="submit">Save layout</button>
+        <button class="btn" type="submit" name="action" value="reset" onclick="return confirm('Reset layout to default?');">Reset</button>
+        <span class="muted tiny">Tip: drag blocks; use handles to resize.</span>
+      </form>
+    </div>
+    <div id="pbSurface" class="pb-admin__surface" aria-label="Homepage layout canvas"></div>
+  </div>
+
+  <div class="pb-admin__panel">
+    <div class="card">
+      <div class="card__body">
+        <h3 class="h3">Blocks</h3>
+        <p class="muted">Select a block to edit title/body/buttons.</p>
+        <div id="pbPanel"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script id="pbInitialJson" type="application/json">{{ layout_data|tojson }}</script>
+<script src="{{ url_for('static', filename='assets/page_builder.js') }}" defer></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='assets/page_builder.css') }}" />
+{% endblock %}

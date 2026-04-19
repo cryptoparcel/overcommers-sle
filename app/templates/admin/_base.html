@@ -1,0 +1,27 @@
+
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="admin-head">
+      <h1 class="h1">{{ title }}</h1>
+      <nav class="admin-nav">
+        <a class="btn {% if active=='dashboard' %}primary{% endif %}" href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+        <a class="btn {% if active=='applications' %}primary{% endif %}" href="{{ url_for('admin.applications') }}">Applications</a>
+        <a class="btn {% if active=='openings' %}primary{% endif %}" href="{{ url_for('admin.openings') }}">Openings</a>
+        <a class="btn {% if active=='events' %}primary{% endif %}" href="{{ url_for('admin.events') }}">Events</a>
+        <a class="btn {% if active=='messages' %}primary{% endif %}" href="{{ url_for('admin.messages') }}">Messages</a>
+        <a class="btn {% if active=='tours' %}primary{% endif %}" href="{{ url_for('admin.tour_requests') }}">Tours</a>
+        <a class="btn {% if active=='interest' %}primary{% endif %}" href="{{ url_for('admin.interest_list') }}">Interest</a>
+        <a class="btn {% if active=='deposits' %}primary{% endif %}" href="{{ url_for('admin.deposits') }}">Deposits</a>
+        <a class="btn {% if active=='stories' %}primary{% endif %}" href="{{ url_for('admin.stories') }}">Stories</a>
+        <a class="btn {% if active=='users' %}primary{% endif %}" href="{{ url_for('admin.users') }}">Users</a>
+        <a class="btn {% if active=='activity' %}primary{% endif %}" href="{{ url_for('admin.activity_log') }}">Activity Log</a>
+        <a class="btn {% if active=='builder' %}primary{% endif %}" href="{{ url_for('admin.page_builder') }}">Page Builder</a>
+      </nav>
+    </div>
+
+    {% block admin_content %}{% endblock %}
+  </div>
+</section>
+{% endblock %}

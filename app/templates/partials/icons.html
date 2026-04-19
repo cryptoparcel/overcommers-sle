@@ -1,0 +1,106 @@
+{# ── Clean line icons (Stripe/Linear style) ──
+   1.5px stroke, rounded caps, currentColor for easy theming.
+   Usage:  {% from "partials/icons.html" import icon_for_category, icon_location, icon_calendar %}
+           {{ icon_for_category(ev.category) }}
+#}
+
+{% macro icon_meeting(size=22) %}
+<svg width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <circle cx="8.5" cy="9" r="3"/>
+  <circle cx="15.5" cy="9" r="3"/>
+  <path d="M3 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/>
+  <path d="M13 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_social(size=22) %}
+<svg width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M12 21s-7-4.5-7-10a4.5 4.5 0 0 1 8-3 4.5 4.5 0 0 1 8 3c0 5.5-7 10-7 10z" opacity=".25"/>
+  <path d="M12 21s-7-4.5-7-10a4.5 4.5 0 0 1 7.5-3.4A4.5 4.5 0 0 1 19 11c0 5.5-7 10-7 10z"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_volunteer(size=22) %}
+<svg width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+  <path d="M5 11h14l-1.2 8.3a2 2 0 0 1-2 1.7H8.2a2 2 0 0 1-2-1.7L5 11z"/>
+  <path d="M10 15.5h4"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_milestone(size=22) %}
+<svg width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M7 21V4"/>
+  <path d="M7 4h10l-2.5 3.5L17 11H7"/>
+  <circle cx="7" cy="21" r="1" fill="currentColor"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_support(size=22) %}
+<svg width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M4 12a8 8 0 1 1 16 0v5a3 3 0 0 1-3 3h-1v-7h4"/>
+  <path d="M4 12v5a3 3 0 0 0 3 3h1v-7H4"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_general(size=22) %}
+<svg width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <rect x="3.5" y="5" width="17" height="15" rx="2"/>
+  <path d="M3.5 9.5h17"/>
+  <path d="M8 3.5v3"/>
+  <path d="M16 3.5v3"/>
+  <circle cx="12" cy="14.5" r="1.5" fill="currentColor"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_location(size=16) %}
+<svg width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z"/>
+  <circle cx="12" cy="10" r="2.5"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_calendar(size=16) %}
+<svg width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <rect x="3.5" y="5" width="17" height="15" rx="2"/>
+  <path d="M3.5 9.5h17"/>
+  <path d="M8 3.5v3"/>
+  <path d="M16 3.5v3"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_clock(size=16) %}
+<svg width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <circle cx="12" cy="12" r="9"/>
+  <path d="M12 7.5V12l3 2"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_arrow_right(size=14) %}
+<svg width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M5 12h14"/>
+  <path d="M13 6l6 6-6 6"/>
+</svg>
+{% endmacro %}
+
+{# Category dispatcher — call this to get the right icon for a category string #}
+{% macro icon_for_category(cat, size=22) %}
+  {% if cat == 'meeting' %}{{ icon_meeting(size) }}
+  {% elif cat == 'social' %}{{ icon_social(size) }}
+  {% elif cat == 'volunteer' %}{{ icon_volunteer(size) }}
+  {% elif cat == 'milestone' %}{{ icon_milestone(size) }}
+  {% elif cat == 'support' %}{{ icon_support(size) }}
+  {% else %}{{ icon_general(size) }}
+  {% endif %}
+{% endmacro %}
+
+{# Category label #}
+{% macro category_label(cat) %}
+  {% if cat == 'meeting' %}House Meeting
+  {% elif cat == 'social' %}Social
+  {% elif cat == 'volunteer' %}Volunteer
+  {% elif cat == 'milestone' %}Milestone
+  {% elif cat == 'support' %}Support Group
+  {% else %}Event
+  {% endif %}
+{% endmacro %}

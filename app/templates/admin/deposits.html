@@ -1,0 +1,47 @@
+
+{% extends "admin/_base.html" %}
+{% block admin_content %}
+<h2>Deposit Payments</h2>
+<p class="muted">Online deposits received via Stripe.</p>
+
+{% if deposits %}
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Amount</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for d in deposits %}
+    <tr>
+      <td>{{ d.created_at.strftime('%b %d, %Y %I:%M %p') }}</td>
+      <td><strong>{{ d.full_name }}</strong></td>
+      <td><a href="mailto:{{ d.email }}">{{ d.email }}</a></td>
+      <td>{{ d.phone or '—' }}</td>
+      <td style="font-weight:700;">${{ "%.0f"|format(d.amount_cents / 100) }}</td>
+      <td>
+        {% if d.status == 'paid' %}
+          <span style="background:rgba(22,163,74,.1);color:#16a34a;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:700;">Paid</span>
+        {% elif d.status == 'pending' %}
+          <span style="background:rgba(234,179,8,.1);color:#ca8a04;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:700;">Pending</span>
+        {% else %}
+          <span style="background:rgba(220,38,38,.1);color:#dc2626;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:700;">{{ d.status }}</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="card">
+  <div class="card__body">
+    <p class="muted">No deposits yet. Once someone pays via the /deposit page, their payment will appear here.</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

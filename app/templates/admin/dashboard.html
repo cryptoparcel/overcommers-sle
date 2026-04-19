@@ -1,0 +1,226 @@
+
+{% extends "admin/_base.html" %}
+{% block admin_content %}
+
+{# ─── HERO STATS: 4 metrics that matter most ─── #}
+<div class="dash-hero">
+  <div class="dash-metric">
+    <div class="dash-metric__label">New applications</div>
+    <div class="dash-metric__value">
+      {{ counts.new }}
+      {% if counts.new_today %}<span class="dash-metric__delta">+{{ counts.new_today }} today</span>{% endif %}
+    </div>
+    <div class="dash-metric__sub">{{ counts.total }} total all-time</div>
+  </div>
+
+  <div class="dash-metric">
+    <div class="dash-metric__label">Deposits paid</div>
+    <div class="dash-metric__value">
+      {{ counts.deposits_paid }}
+      {% if counts.deposits_pending %}<span class="dash-metric__delta dash-metric__delta--warn">{{ counts.deposits_pending }} pending</span>{% endif %}
+    </div>
+    <div class="dash-metric__sub"><a href="{{ url_for('admin.deposits') }}" class="link-quiet">View all &rarr;</a></div>
+  </div>
+
+  <div class="dash-metric">
+    <div class="dash-metric__label">Tour requests</div>
+    <div class="dash-metric__value">{{ counts.tours }}</div>
+    <div class="dash-metric__sub"><a href="{{ url_for('admin.tour_requests') }}" class="link-quiet">View all &rarr;</a></div>
+  </div>
+
+  <div class="dash-metric">
+    <div class="dash-metric__label">Stories pending</div>
+    <div class="dash-metric__value">{{ counts.pending_stories }}</div>
+    <div class="dash-metric__sub"><a href="{{ url_for('admin.stories') }}" class="link-quiet">Review &rarr;</a></div>
+  </div>
+</div>
+
+<div class="dash-grid">
+
+  <div class="dash-col">
+
+    <div class="dash-panel">
+      <div class="dash-panel__head">
+        <h3 class="dash-panel__title">Needs your attention</h3>
+      </div>
+      <div class="dash-panel__body">
+
+        {% set attn_items = [] %}
+        {% if counts.new %}{% set _ = attn_items.append(('applications', counts.new ~ ' new application' ~ ('s' if counts.new != 1 else ''), url_for('admin.applications'), 'Review')) %}{% endif %}
+        {% if counts.deposits_pending %}{% set _ = attn_items.append(('deposit', counts.deposits_pending ~ ' deposit' ~ ('s' if counts.deposits_pending != 1 else '') ~ ' pending', url_for('admin.deposits'), 'Check')) %}{% endif %}
+        {% if counts.pending_stories %}{% set _ = attn_items.append(('story', counts.pending_stories ~ ' story submission' ~ ('s' if counts.pending_stories != 1 else '') ~ ' to review', url_for('admin.stories'), 'Moderate')) %}{% endif %}
+        {% if counts.messages %}{% set _ = attn_items.append(('message', counts.messages ~ ' message' ~ ('s' if counts.messages != 1 else '') ~ ' in inbox', url_for('admin.messages'), 'Read')) %}{% endif %}
+        {% if activity.failed_logins and activity.failed_logins > 5 %}{% set _ = attn_items.append(('alert', activity.failed_logins ~ ' failed login attempts (7d)', url_for('admin.activity_log'), 'Investigate')) %}{% endif %}
+
+        {% if attn_items %}
+          {% for kind, label, link, cta in attn_items %}
+          <div class="dash-attn-row">
+            <span class="dash-attn-dot dash-attn-dot--{{ kind }}"></span>
+            <span class="dash-attn-label">{{ label }}</span>
+            <a class="btn btn--sm" href="{{ link }}">{{ cta }}</a>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="dash-empty">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brand);opacity:.6;"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+            <p>All caught up. Nothing needs your attention right now.</p>
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+
+    {% if apps_per_day %}
+    <div class="dash-panel">
+      <div class="dash-panel__head">
+        <h3 class="dash-panel__title">Applications &mdash; last 14 days</h3>
+        <a class="btn btn--sm" href="{{ url_for('admin.applications') }}">View all</a>
+      </div>
+      <div class="dash-panel__body">
+        {% set counts_list = apps_per_day|map(attribute='count')|list %}
+        {% set max_count = counts_list|max %}
+        {% set max_height = max_count if max_count and max_count > 0 else 1 %}
+        <div class="dash-chart">
+          {% for day in apps_per_day %}
+          <div class="dash-chart__bar-wrap" title="{{ day.date }}: {{ day.count }} application{{ 's' if day.count != 1 else '' }}">
+            <div class="dash-chart__count">{{ day.count if day.count > 0 else '' }}</div>
+            <div class="dash-chart__bar" style="height: {{ (day.count / max_height * 100)|round(1) }}%; {% if day.count == 0 %}opacity:.15;{% endif %}"></div>
+            <div class="dash-chart__day">{{ day.date.split(' ')[1] }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="dash-panel">
+      <div class="dash-panel__head">
+        <h3 class="dash-panel__title">Recent activity</h3>
+        <a class="btn btn--sm" href="{{ url_for('admin.activity_log') }}">View all</a>
+      </div>
+      <div class="dash-panel__body dash-panel__body--flush">
+        {% if recent_activity %}
+          {% for log in recent_activity %}
+          <div class="dash-feed-row{% if log.level == 'warning' %} dash-feed-row--warn{% elif log.level == 'error' %} dash-feed-row--err{% endif %}">
+            <span class="dash-feed-dot dash-feed-dot--{{ log.category or 'misc' }}"></span>
+            <div class="dash-feed-content">
+              <p class="dash-feed-action">{{ log.action }}</p>
+              {% if log.details %}<p class="dash-feed-details">{{ log.details }}</p>{% endif %}
+            </div>
+            <span class="dash-feed-time">{{ log.created_at.strftime('%b %d, %H:%M') if log.created_at else '' }}</span>
+          </div>
+          {% endfor %}
+        {% else %}
+        <div class="dash-empty">
+          <p>No activity recorded yet.</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+
+  <aside class="dash-col dash-col--narrow">
+
+    <div class="dash-panel">
+      <div class="dash-panel__head">
+        <h3 class="dash-panel__title">Quick actions</h3>
+      </div>
+      <div class="dash-panel__body dash-panel__body--compact">
+        <a class="dash-quick" href="{{ url_for('admin.openings_new') }}">
+          <span class="dash-quick__icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1v-9.5z"/></svg>
+          </span>
+          <span>New opening</span>
+          <span class="dash-quick__arrow">&rarr;</span>
+        </a>
+        <a class="dash-quick" href="{{ url_for('admin.events_new') }}">
+          <span class="dash-quick__icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17"/><path d="M8 3.5v3"/><path d="M16 3.5v3"/></svg>
+          </span>
+          <span>New event</span>
+          <span class="dash-quick__arrow">&rarr;</span>
+        </a>
+        <a class="dash-quick" href="{{ url_for('admin.stories') }}">
+          <span class="dash-quick__icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v14l-4-3-4 3-4-3-4 3V4z"/></svg>
+          </span>
+          <span>Review stories</span>
+          <span class="dash-quick__arrow">&rarr;</span>
+        </a>
+        <a class="dash-quick" href="{{ url_for('admin.page_builder') }}">
+          <span class="dash-quick__icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </span>
+          <span>Page builder</span>
+          <span class="dash-quick__arrow">&rarr;</span>
+        </a>
+        <a class="dash-quick" href="{{ url_for('admin.export_applications') }}">
+          <span class="dash-quick__icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+          </span>
+          <span>Export applications</span>
+          <span class="dash-quick__arrow">&rarr;</span>
+        </a>
+      </div>
+    </div>
+
+    {% if upcoming_events %}
+    <div class="dash-panel">
+      <div class="dash-panel__head">
+        <h3 class="dash-panel__title">Upcoming events</h3>
+        <a class="btn btn--sm" href="{{ url_for('admin.events') }}">Manage</a>
+      </div>
+      <div class="dash-panel__body dash-panel__body--compact">
+        {% for ev in upcoming_events %}
+        <a class="dash-upcoming-row" href="{{ url_for('admin.events_edit', event_id=ev.id) }}">
+          <div class="dash-upcoming-date">
+            <span class="dash-upcoming-month">{{ ev.start_date.strftime('%b') }}</span>
+            <span class="dash-upcoming-day">{{ ev.start_date.strftime('%d')|int }}</span>
+          </div>
+          <div class="dash-upcoming-info">
+            <p class="dash-upcoming-title">{{ ev.title }}</p>
+            <p class="dash-upcoming-sub">
+              {% if ev.start_time %}{{ ev.start_time }}{% if ev.location_name %} &middot; {{ ev.location_name }}{% endif %}
+              {% elif ev.location_name %}{{ ev.location_name }}{% endif %}
+            </p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="dash-panel">
+      <div class="dash-panel__head">
+        <h3 class="dash-panel__title">Site activity</h3>
+      </div>
+      <div class="dash-panel__body dash-panel__body--compact">
+        <div class="dash-stat-row">
+          <span class="dash-stat-label">Page views today</span>
+          <span class="dash-stat-value">{{ activity.today_views | default(0) }}</span>
+        </div>
+        <div class="dash-stat-row">
+          <span class="dash-stat-label">Form submissions today</span>
+          <span class="dash-stat-value">{{ activity.today_submissions | default(0) }}</span>
+        </div>
+        <div class="dash-stat-row">
+          <span class="dash-stat-label">Page views (7 days)</span>
+          <span class="dash-stat-value">{{ activity.week_views | default(0) }}</span>
+        </div>
+        <div class="dash-stat-row">
+          <span class="dash-stat-label">Failed logins (7d)</span>
+          <span class="dash-stat-value {% if activity.failed_logins and activity.failed_logins > 5 %}dash-stat-value--warn{% endif %}">{{ activity.failed_logins | default(0) }}</span>
+        </div>
+        <div class="dash-stat-row">
+          <span class="dash-stat-label">Interest list signups</span>
+          <span class="dash-stat-value">{{ counts.interest }}</span>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+</div>
+
+{% endblock %}

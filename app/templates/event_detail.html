@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% from "partials/icons.html" import icon_for_category, icon_location, icon_clock, icon_calendar, icon_arrow_right, category_label %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="event-detail">
+
+      <a class="event-detail__back" href="{{ url_for('public.events') }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
+        All events
+      </a>
+
+      {% if event.image_url %}
+      <div class="event-detail__hero event-detail__hero--with-img">
+        <img src="{{ event.image_url }}" alt="{{ event.title|e }}">
+      </div>
+      {% else %}
+      <div class="event-detail__hero event-detail__hero--placeholder">
+        {{ icon_for_category(event.category, 32) }}
+      </div>
+      {% endif %}
+
+      <div class="event-detail__header">
+        <div class="event-detail__datestamp" aria-hidden="true">
+          <span class="event-detail__datestamp-month">{{ event.start_date.strftime('%b') }}</span>
+          <span class="event-detail__datestamp-day">{{ event.start_date.strftime('%d')|int }}</span>
+          <span class="event-detail__datestamp-year">{{ event.start_date.strftime('%Y') }}</span>
+        </div>
+        <div class="event-detail__head-text">
+          <div class="event-detail__badge">
+            {{ icon_for_category(event.category, 14) }}
+            {{ category_label(event.category) }}
+          </div>
+          <h1 class="event-detail__title">{{ event.title }}</h1>
+          {% if event.summary %}
+          <p class="event-detail__summary">{{ event.summary }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="event-detail__facts">
+        <div class="event-detail__fact">
+          <div class="event-detail__fact-icon">{{ icon_calendar(18) }}</div>
+          <div>
+            <p class="event-detail__fact-label">Date</p>
+            <p class="event-detail__fact-value">{{ event.start_date.strftime('%A') }}</p>
+            <p class="event-detail__fact-sub">{{ event.start_date.strftime('%B %d, %Y') }}</p>
+          </div>
+        </div>
+
+        {% if event.start_time %}
+        <div class="event-detail__fact">
+          <div class="event-detail__fact-icon">{{ icon_clock(18) }}</div>
+          <div>
+            <p class="event-detail__fact-label">Time</p>
+            <p class="event-detail__fact-value">{{ event.start_time }}{% if event.end_time %} &ndash; {{ event.end_time }}{% endif %}</p>
+          </div>
+        </div>
+        {% endif %}
+
+        {% if event.location_name or event.location_address %}
+        <div class="event-detail__fact" style="grid-column: 1 / -1;">
+          <div class="event-detail__fact-icon">{{ icon_location(18) }}</div>
+          <div>
+            <p class="event-detail__fact-label">Location</p>
+            {% if event.location_name %}<p class="event-detail__fact-value">{{ event.location_name }}</p>{% endif %}
+            {% if event.location_address %}<p class="event-detail__fact-sub">{{ event.location_address }}</p>{% endif %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      {% if event.description %}
+      <div class="event-detail__body">{{ event.description }}</div>
+      {% endif %}
+
+      <div class="event-detail__actions">
+        <a class="btn btn--primary" href="{{ url_for('public.contact') }}?subject=Event: {{ event.title|urlencode }}">Ask about this event</a>
+        <a class="btn" href="{{ url_for('public.events') }}">Back to all events</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}

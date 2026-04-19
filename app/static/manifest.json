@@ -1,0 +1,16 @@
+
+{
+  "name": "Overcomers — Transformative Thinking & Restorative Community",
+  "short_name": "Overcomers",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7fbff",
+  "theme_color": "#0b5f57",
+  "icons": [
+    {
+      "src": "/static/assets/overcomers-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
