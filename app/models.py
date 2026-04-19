@@ -25,6 +25,7 @@ class User(UserMixin, db.Model):
 
     password_hash = db.Column(db.String(255), nullable=False)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
+    is_moderator = db.Column(db.Boolean, default=False, nullable=False)
     last_login = db.Column(db.DateTime, nullable=True)
 
     # Email confirmation

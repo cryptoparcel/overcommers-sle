@@ -12,7 +12,7 @@ from werkzeug.utils import secure_filename
 
 from ..extensions import db
 from ..models import Application, ContactMessage, Story, User, PageLayout, Opening, TourRequest, InterestSignup, DepositPayment, ActivityLog, Event
-from ..utils import admin_required, log_activity
+from ..utils import admin_required, mod_or_admin_required, log_activity
 from ..seed import _default_home_layout_json  # uses same defaults
 from ..forms import OpeningForm, EventForm
 from ..utils import slugify
@@ -21,7 +21,7 @@ admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 @admin_bp.route("/")
 @login_required
-@admin_required
+@mod_or_admin_required
 def dashboard():
     # real counts (no placeholders)
     new_count = Application.query.filter_by(status="new").count()
@@ -220,6 +220,45 @@ def users():
     items = User.query.order_by(User.created_at.desc()).limit(300).all()
     return render_template("admin/users.html", users=items, active="users", title="Users")
 
+
+@admin_bp.post("/users/<int:user_id>/toggle-admin")
+@login_required
+@admin_required
+def users_toggle_admin(user_id: int):
+    target = User.query.get_or_404(user_id)
+    if target.id == current_user.id and target.is_admin:
+        remaining_admins = User.query.filter(User.is_admin == True, User.id != target.id).count()
+        if remaining_admins == 0:
+            flash("You can't remove your own admin — you're the only admin left.", "error")
+            return redirect(url_for("admin.users"))
+    target.is_admin = not target.is_admin
+    if target.is_admin:
+        target.email_confirmed = True
+    db.session.commit()
+    log_activity(
+        action="toggle_admin", category="admin_action",
+        details=f"{'Granted' if target.is_admin else 'Revoked'} admin on {target.email}",
+        resource_type="user", resource_id=target.id, level="warning",
+    )
+    flash(f"{target.email} → admin: {target.is_admin}", "success")
+    return redirect(url_for("admin.users"))
+
+
+@admin_bp.post("/users/<int:user_id>/toggle-mod")
+@login_required
+@admin_required
+def users_toggle_mod(user_id: int):
+    target = User.query.get_or_404(user_id)
+    target.is_moderator = not target.is_moderator
+    db.session.commit()
+    log_activity(
+        action="toggle_mod", category="admin_action",
+        details=f"{'Granted' if target.is_moderator else 'Revoked'} moderator on {target.email}",
+        resource_type="user", resource_id=target.id, level="info",
+    )
+    flash(f"{target.email} → moderator: {target.is_moderator}", "success")
+    return redirect(url_for("admin.users"))
+
 @admin_bp.route("/stories")
 @login_required
 @admin_required
@@ -331,7 +370,7 @@ def _photos_to_textarea(json_val: str | None) -> str:
 
 @admin_bp.get("/openings")
 @login_required
-@admin_required
+@mod_or_admin_required
 def openings():
     items = Opening.query.order_by(Opening.created_at.desc()).limit(300).all()
     return render_template("admin/openings_list.html", openings=items, active="openings", title="Openings")
@@ -339,7 +378,7 @@ def openings():
 
 @admin_bp.route("/openings/new", methods=["GET", "POST"])
 @login_required
-@admin_required
+@mod_or_admin_required
 def openings_new():
     form = OpeningForm()
     if request.method == "GET":
@@ -390,7 +429,7 @@ def openings_new():
 
 @admin_bp.route("/openings/<int:opening_id>/edit", methods=["GET", "POST"])
 @login_required
-@admin_required
+@mod_or_admin_required
 def openings_edit(opening_id: int):
     row = Opening.query.get_or_404(opening_id)
     form = OpeningForm(obj=row)
@@ -438,7 +477,7 @@ def openings_edit(opening_id: int):
 
 @admin_bp.post("/openings/<int:opening_id>/delete")
 @login_required
-@admin_required
+@mod_or_admin_required
 def openings_delete(opening_id: int):
     row = Opening.query.get_or_404(opening_id)
     db.session.delete(row)
@@ -451,7 +490,7 @@ def openings_delete(opening_id: int):
 
 @admin_bp.get("/events")
 @login_required
-@admin_required
+@mod_or_admin_required
 def events():
     items = Event.query.order_by(Event.start_date.desc()).limit(300).all()
     return render_template("admin/events_list.html", events=items, active="events", title="Events")
@@ -459,7 +498,7 @@ def events():
 
 @admin_bp.route("/events/new", methods=["GET", "POST"])
 @login_required
-@admin_required
+@mod_or_admin_required
 def events_new():
     form = EventForm()
     if request.method == "GET":
@@ -506,7 +545,7 @@ def events_new():
 
 @admin_bp.route("/events/<int:event_id>/edit", methods=["GET", "POST"])
 @login_required
-@admin_required
+@mod_or_admin_required
 def events_edit(event_id: int):
     ev = Event.query.get_or_404(event_id)
     form = EventForm(obj=ev)
@@ -548,7 +587,7 @@ def events_edit(event_id: int):
 
 @admin_bp.post("/events/<int:event_id>/delete")
 @login_required
-@admin_required
+@mod_or_admin_required
 def events_delete(event_id: int):
     ev = Event.query.get_or_404(event_id)
     db.session.delete(ev)
@@ -566,7 +605,7 @@ def _allowed_file(filename: str) -> bool:
 
 @admin_bp.post("/upload-photo")
 @login_required
-@admin_required
+@mod_or_admin_required
 def upload_photo():
     """Handle photo file upload — saves to static/uploads/ and returns URL."""
     if "file" not in request.files:

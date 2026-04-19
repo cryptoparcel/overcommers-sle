@@ -6,21 +6,37 @@
 <div class="card">
   <div class="card__body">
     <h3 class="h3">Registered users</h3>
+    <p class="muted">Admins can manage content and users. Moderators can edit and delete openings and events, but can't manage users or roles.</p>
     {% if users|length == 0 %}
       <p class="muted">No users yet.</p>
     {% else %}
       <div class="table">
-        <div class="row head" style="grid-template-columns: 100px 1fr 1fr 1fr 70px 70px;">
-          <div>Created</div><div>Name</div><div>Username</div><div>Email</div><div>Verified</div><div>Admin</div>
+        <div class="row head" style="grid-template-columns: 100px 1fr 1fr 1.4fr 70px 80px 80px 180px;">
+          <div>Created</div><div>Name</div><div>Username</div><div>Email</div><div>Verified</div><div>Admin</div><div>Mod</div><div>Actions</div>
         </div>
         {% for u in users %}
-        <div class="row" style="grid-template-columns: 100px 1fr 1fr 1fr 70px 70px;">
+        <div class="row" style="grid-template-columns: 100px 1fr 1fr 1.4fr 70px 80px 80px 180px;">
           <div class="muted">{{ u.created_at.strftime('%Y-%m-%d') }}</div>
           <div>{{ u.name }}</div>
           <div>{{ u.username }}</div>
           <div>{{ u.email }}</div>
           <div>{% if u.email_confirmed %}<span style="color:var(--brand);">✓</span>{% else %}<span class="muted">—</span>{% endif %}</div>
           <div>{% if u.is_admin %}<span class="pill">Yes</span>{% else %}<span class="muted">No</span>{% endif %}</div>
+          <div>{% if u.is_moderator %}<span class="pill">Yes</span>{% else %}<span class="muted">No</span>{% endif %}</div>
+          <div style="display:flex; gap:6px;">
+            <form method="post" action="{{ url_for('admin.users_toggle_admin', user_id=u.id) }}" style="display:inline;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn--xs">
+                {% if u.is_admin %}Revoke admin{% else %}Make admin{% endif %}
+              </button>
+            </form>
+            <form method="post" action="{{ url_for('admin.users_toggle_mod', user_id=u.id) }}" style="display:inline;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn--xs">
+                {% if u.is_moderator %}Revoke mod{% else %}Make mod{% endif %}
+              </button>
+            </form>
+          </div>
         </div>
         {% endfor %}
       </div>

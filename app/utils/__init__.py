@@ -30,6 +30,20 @@ def admin_required(fn):
     return wrapper
 
 
+def mod_or_admin_required(fn):
+    """Allow the route for admins or moderators (mods can manage content but not users)."""
+
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        if not getattr(current_user, "is_authenticated", False):
+            abort(401)
+        if not (getattr(current_user, "is_admin", False) or getattr(current_user, "is_moderator", False)):
+            abort(403)
+        return fn(*args, **kwargs)
+
+    return wrapper
+
+
 def slugify(value: str) -> str:
     """Simple ASCII slug for URLs."""
 
