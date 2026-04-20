@@ -469,12 +469,26 @@ def openings():
 @public_bp.get("/openings/<slug>")
 def opening_detail(slug: str):
     row = Opening.query.filter_by(slug=slug, status="published").first_or_404()
-    posts = (
-        row.posts.filter_by(is_hidden=False)
-        .order_by(OpeningPost.created_at.asc())
-        .limit(500)
-        .all()
-    )
+    show_all = request.args.get("all") == "1"
+    post_limit = 50
+    total_posts = row.posts.filter_by(is_hidden=False).count()
+    if show_all or total_posts <= post_limit:
+        posts = (
+            row.posts.filter_by(is_hidden=False)
+            .order_by(OpeningPost.created_at.asc())
+            .limit(500)
+            .all()
+        )
+        older_hidden = 0
+    else:
+        recent_desc = (
+            row.posts.filter_by(is_hidden=False)
+            .order_by(OpeningPost.created_at.desc())
+            .limit(post_limit)
+            .all()
+        )
+        posts = list(reversed(recent_desc))
+        older_hidden = total_posts - len(posts)
     post_form = OpeningPostForm()
     return render_template(
         "opening_detail.html",
@@ -483,6 +497,9 @@ def opening_detail(slug: str):
         posts=posts,
         post_form=post_form,
         can_moderate=_can_moderate(),
+        older_hidden=older_hidden,
+        total_posts=total_posts,
+        show_all=show_all,
     )
 
 
@@ -552,6 +569,7 @@ def events():
 
     joined_ids = set()
     rsvp_counts = {}
+    post_counts = {}
     if upcoming or past:
         from sqlalchemy import func
         all_ids = [e.id for e in upcoming] + [e.id for e in past]
@@ -565,6 +583,18 @@ def events():
             rsvp_counts = {event_id: n for event_id, n in rows}
         except Exception:
             rsvp_counts = {}
+
+        try:
+            prows = (
+                db.session.query(EventPost.event_id, func.count(EventPost.id))
+                .filter(EventPost.event_id.in_(all_ids))
+                .filter(EventPost.is_hidden == False)
+                .group_by(EventPost.event_id)
+                .all()
+            )
+            post_counts = {event_id: n for event_id, n in prows}
+        except Exception:
+            post_counts = {}
 
         if current_user.is_authenticated:
             joined_ids = {
@@ -581,6 +611,7 @@ def events():
         past=past,
         joined_ids=joined_ids,
         rsvp_counts=rsvp_counts,
+        post_counts=post_counts,
         title="Community Events",
         meta_description="Upcoming community events at Overcomers sober living — house meetings, volunteer days, alumni gatherings, and more in Grover Beach.",
     )
@@ -604,12 +635,23 @@ def event_detail(slug: str):
     if current_user.is_authenticated:
         joined = ev.rsvps.filter_by(user_id=current_user.id).first() is not None
 
-    posts = (
-        ev.posts.filter_by(is_hidden=False)
-        .order_by(EventPost.created_at.asc())
-        .limit(500)
-        .all()
-    )
+    show_all = request.args.get("all") == "1"
+    post_limit = 50
+    total_posts = ev.posts.filter_by(is_hidden=False).count()
+    posts_q = ev.posts.filter_by(is_hidden=False).order_by(EventPost.created_at.asc())
+    if show_all or total_posts <= post_limit:
+        posts = posts_q.limit(500).all()
+        older_hidden = 0
+    else:
+        # Show only the most recent N posts; keep ASC order for display
+        recent_desc = (
+            ev.posts.filter_by(is_hidden=False)
+            .order_by(EventPost.created_at.desc())
+            .limit(post_limit)
+            .all()
+        )
+        posts = list(reversed(recent_desc))
+        older_hidden = total_posts - len(posts)
     post_form = EventPostForm()
 
     return render_template(
@@ -621,6 +663,9 @@ def event_detail(slug: str):
         posts=posts,
         post_form=post_form,
         can_moderate=_can_moderate(),
+        older_hidden=older_hidden,
+        total_posts=total_posts,
+        show_all=show_all,
     )
 
 

@@ -256,23 +256,36 @@
         {% if posts|length == 0 %}
           <p class="muted" style="font-style:italic;">No posts yet.</p>
         {% else %}
+          {% if older_hidden and older_hidden > 0 %}
+          <p class="muted" style="margin:0 0 12px; font-size:13px;">
+            Showing the most recent {{ posts|length }} of {{ total_posts }} posts.
+            <a href="{{ url_for('public.opening_detail', slug=opening.slug, all=1) }}" style="color:var(--brand); font-weight:600;">Show all posts</a>
+          </p>
+          {% endif %}
           <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:12px;">
             {% for post in posts %}
-            <li id="opening-post-{{ post.id }}" style="background:rgba(11,95,87,.04); border:1px solid rgba(11,95,87,.1); border-radius:10px; padding:12px 14px;">
-              <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:6px;">
-                <strong>
-                  {% if post.user %}{{ post.user.name }}{% else %}[deleted]{% endif %}
-                  {% if post.user and post.user.is_admin %}<span class="pill" style="margin-left:6px;">admin</span>{% elif post.user and post.user.is_moderator %}<span class="pill" style="margin-left:6px;">mod</span>{% endif %}
-                </strong>
-                <span class="muted" style="font-size:0.85em;">{{ post.created_at.strftime('%b %d, %Y · %I:%M %p') }}</span>
+            {% set author_name = post.user.name if post.user else '[deleted]' %}
+            {% set initial = (author_name|trim|first|upper) if author_name and author_name|trim else '?' %}
+            {% set avatar_bg = 'var(--brand)' if post.user and post.user.is_admin else ('var(--brand-glow)' if post.user and post.user.is_moderator else 'rgba(0,0,0,.06)') %}
+            {% set avatar_fg = '#fff' if post.user and post.user.is_admin else ('var(--brand)' if post.user and post.user.is_moderator else 'var(--muted)') %}
+            <li id="opening-post-{{ post.id }}" style="background:rgba(11,95,87,.04); border:1px solid rgba(11,95,87,.1); border-radius:12px; padding:12px 14px; display:flex; gap:12px;">
+              <div aria-hidden="true" style="flex:0 0 36px; width:36px; height:36px; border-radius:50%; background:{{ avatar_bg }}; color:{{ avatar_fg }}; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px;">{{ initial }}</div>
+              <div style="flex:1; min-width:0;">
+                <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:4px; flex-wrap:wrap;">
+                  <strong>
+                    {{ author_name }}
+                    {% if post.user and post.user.is_admin %}<span class="pill" style="margin-left:6px;">admin</span>{% elif post.user and post.user.is_moderator %}<span class="pill" style="margin-left:6px;">mod</span>{% endif %}
+                  </strong>
+                  <span class="muted" style="font-size:0.85em;">{{ post.created_at.strftime('%b %d, %Y · %I:%M %p') }}</span>
+                </div>
+                <div style="white-space:pre-wrap; word-wrap:break-word;">{{ post.body|e }}</div>
+                {% if current_user.is_authenticated and (can_moderate or post.user_id == current_user.id) %}
+                <form method="post" action="{{ url_for('public.opening_post_delete', slug=opening.slug, post_id=post.id) }}" style="margin-top:8px;" onsubmit="return confirm('Delete this post?');">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit" class="btn btn--sm">Delete</button>
+                </form>
+                {% endif %}
               </div>
-              <div style="white-space:pre-wrap; word-wrap:break-word;">{{ post.body|e }}</div>
-              {% if current_user.is_authenticated and (can_moderate or post.user_id == current_user.id) %}
-              <form method="post" action="{{ url_for('public.opening_post_delete', slug=opening.slug, post_id=post.id) }}" style="margin-top:8px;" onsubmit="return confirm('Delete this post?');">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button type="submit" class="btn btn--sm">Delete</button>
-              </form>
-              {% endif %}
             </li>
             {% endfor %}
           </ul>
