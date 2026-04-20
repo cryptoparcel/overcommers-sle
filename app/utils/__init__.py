@@ -44,6 +44,40 @@ def mod_or_admin_required(fn):
     return wrapper
 
 
+_POST_LINK_RE = re.compile(r'\[([^\]\n]{1,200})\]\((https?://[^\s)]{1,500}|mailto:[^\s)]{1,500})\)')
+_POST_BARE_URL_RE = re.compile(r'(?<![">])\b(https?://[^\s<>"\')]{1,500})', re.IGNORECASE)
+_POST_BOLD_RE = re.compile(r'\*\*([^*\n]{1,500}?)\*\*')
+
+
+def format_post_body(text):
+    """Render a plain-text post with very limited markdown-style formatting.
+
+    We escape the whole body first so no raw HTML leaks through, then apply a
+    small set of controlled regex substitutions that only ever insert <a>,
+    <strong>, or the bleach-safe URL inside an href. Auto-linking only matches
+    http/https; explicit links also allow mailto.
+    """
+    from markupsafe import Markup, escape as _escape
+
+    if not text:
+        return Markup("")
+    s = str(_escape(text))
+    # Explicit [label](url) links go first so the bare-URL pass below won't
+    # double-wrap URLs that are already inside an href="…" attribute.
+    s = _POST_LINK_RE.sub(
+        r'<a href="\2" target="_blank" rel="noopener nofollow">\1</a>',
+        s,
+    )
+    # Bare URLs get auto-linked; the lookbehind prevents matching URLs that
+    # are already inside a substituted <a href="…"> attribute.
+    s = _POST_BARE_URL_RE.sub(
+        r'<a href="\1" target="_blank" rel="noopener nofollow">\1</a>',
+        s,
+    )
+    s = _POST_BOLD_RE.sub(r'<strong>\1</strong>', s)
+    return Markup(s)
+
+
 def slugify(value: str) -> str:
     """Simple ASCII slug for URLs."""
 

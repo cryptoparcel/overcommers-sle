@@ -153,7 +153,7 @@
                   </div>
                 </form>
                 {% else %}
-                <div style="white-space:pre-wrap; word-wrap:break-word;">{{ post.body|e }}</div>
+                <div style="white-space:pre-wrap; word-wrap:break-word;">{{ post.body|post_format }}</div>
                 {% if current_user.is_authenticated and (can_moderate or is_author) %}
                 <div style="display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;">
                   {% if is_author and post.id in editable_post_ids %}

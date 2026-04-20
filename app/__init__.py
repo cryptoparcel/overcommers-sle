@@ -133,6 +133,11 @@ def create_app() -> Flask:
             }
         }
 
+    @app.template_filter("post_format")
+    def post_format(value):
+        from .utils import format_post_body
+        return format_post_body(value)
+
     @app.template_filter("nl2br")
     def nl2br(s: str) -> str:
         if not s:
