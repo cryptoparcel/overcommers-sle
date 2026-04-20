@@ -25,8 +25,26 @@ def create_app() -> Flask:
 
     @login_manager.user_loader
     def _load_user(user_id: str):  # pragma: no cover
+        """Load a user from a versioned ID like "42:3".
+
+        The version after the colon is User.session_version — if the user
+        has bumped it (e.g. "sign out of other sessions" or admin-locked),
+        the cookie's version no longer matches and we return None, which
+        logs the session out.
+        """
         try:
-            return db.session.get(User, int(user_id))
+            raw = str(user_id)
+            uid_part, _, ver_part = raw.partition(":")
+            uid = int(uid_part)
+            expected_version = int(ver_part) if ver_part else 0
+            user = db.session.get(User, uid)
+            if not user:
+                return None
+            if user.is_locked:
+                return None
+            if (user.session_version or 0) != expected_version:
+                return None
+            return user
         except Exception:
             return None
 

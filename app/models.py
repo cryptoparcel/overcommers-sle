@@ -26,7 +26,12 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
     is_moderator = db.Column(db.Boolean, default=False, nullable=False)
+    is_locked = db.Column(db.Boolean, default=False, nullable=False)
     last_login = db.Column(db.DateTime, nullable=True)
+
+    # Incremented to invalidate all existing sessions for this user
+    # (see get_id() and the user_loader in app/__init__.py).
+    session_version = db.Column(db.Integer, default=0, nullable=False)
 
     # Email confirmation
     email_confirmed = db.Column(db.Boolean, default=False, nullable=False)
@@ -41,6 +46,12 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password: str) -> bool:
         return check_password_hash(self.password_hash, password)
+
+    def get_id(self) -> str:
+        # Versioned ID: bumping session_version invalidates every existing
+        # login cookie so "sign out of other sessions" takes effect
+        # immediately on every device.
+        return f"{self.id}:{self.session_version or 0}"
 
 
 class Application(db.Model):

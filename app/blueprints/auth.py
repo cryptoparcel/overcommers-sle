@@ -80,6 +80,16 @@ def login_post():
         flash("Invalid email/username or password.", "error")
         return render_template("auth/login.html", form=form, title="Login"), 401
 
+    if user.is_locked:
+        try:
+            from ..utils import log_activity
+            log_activity(action="login_blocked_locked", category="auth",
+                         details=f"user_id={user.id}", user_id=user.id, level="warning")
+        except Exception:
+            pass
+        flash("This account has been locked. Contact support to restore access.", "error")
+        return render_template("auth/login.html", form=form, title="Login"), 403
+
     # Track last login
     try:
         user.last_login = datetime.now(timezone.utc)
@@ -314,6 +324,30 @@ def reset_password_post(token: str):
 
     flash("Your password has been updated. Log in with your new password.", "success")
     return redirect(url_for("auth.login"))
+
+
+# ── Revoke other sessions ─────────────────────────────────────
+
+@auth_bp.post("/account/sessions/revoke-all")
+@login_required
+@limiter.limit("6 per hour")
+def revoke_other_sessions():
+    """Bump the user's session_version so every existing cookie is invalidated,
+    then re-log in this session so the caller stays signed in on this device."""
+    uid = current_user.id
+    user = db.session.get(User, uid)
+    user.session_version = (user.session_version or 0) + 1
+    db.session.commit()
+    # Refresh this device's cookie so it matches the new version.
+    login_user(user, remember=True)
+    try:
+        from ..utils import log_activity
+        log_activity(action="sessions_revoked_all", category="auth",
+                     user_id=uid, level="warning")
+    except Exception:
+        pass
+    flash("Signed out of all other devices.", "success")
+    return redirect(url_for("auth.account"))
 
 
 # ── Logout ────────────────────────────────────────────────────

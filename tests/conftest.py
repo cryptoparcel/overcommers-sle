@@ -39,9 +39,11 @@ def db(app):
 
 
 def make_user(db, *, email="alice@test.com", username="alice", password="password123",
-               name="Alice", is_admin=False, is_moderator=False, email_confirmed=True):
+               name="Alice", is_admin=False, is_moderator=False, is_locked=False,
+               email_confirmed=True):
     user = User(name=name, username=username, email=email,
-                email_confirmed=email_confirmed, is_admin=is_admin, is_moderator=is_moderator)
+                email_confirmed=email_confirmed, is_admin=is_admin, is_moderator=is_moderator,
+                is_locked=is_locked)
     user.set_password(password)
     db.session.add(user)
     db.session.commit()

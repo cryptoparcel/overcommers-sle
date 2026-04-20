@@ -259,6 +259,28 @@ def users_toggle_mod(user_id: int):
     flash(f"{target.email} → moderator: {target.is_moderator}", "success")
     return redirect(url_for("admin.users"))
 
+
+@admin_bp.post("/users/<int:user_id>/toggle-lock")
+@login_required
+@admin_required
+def users_toggle_lock(user_id: int):
+    target = User.query.get_or_404(user_id)
+    if target.id == current_user.id:
+        flash("You can't lock your own account.", "error")
+        return redirect(url_for("admin.users"))
+    target.is_locked = not target.is_locked
+    if target.is_locked:
+        # Kick them out of every device by bumping the session version.
+        target.session_version = (target.session_version or 0) + 1
+    db.session.commit()
+    log_activity(
+        action="toggle_lock", category="admin_action",
+        details=f"{'Locked' if target.is_locked else 'Unlocked'} {target.email}",
+        resource_type="user", resource_id=target.id, level="warning",
+    )
+    flash(f"{target.email} → locked: {target.is_locked}", "success")
+    return redirect(url_for("admin.users"))
+
 @admin_bp.route("/stories")
 @login_required
 @admin_required

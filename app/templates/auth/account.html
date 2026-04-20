@@ -71,6 +71,13 @@
             </div>
           </div>
 
+          <div style="margin:4px 0 14px;">
+            <form method="post" action="{{ url_for('auth.revoke_other_sessions') }}" style="display:inline;" onsubmit="return confirm('Sign out of every other device? You will stay signed in here.');">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn btn--sm" type="submit">Sign out of all other devices</button>
+            </form>
+          </div>
+
           {% if recent_auth and recent_auth|length > 0 %}
           <details>
             <summary style="cursor:pointer; font-weight:600; color:var(--muted);">Recent account activity</summary>

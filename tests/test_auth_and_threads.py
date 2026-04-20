@@ -246,6 +246,78 @@ def test_mod_can_delete_any_post(client, db):
     assert db.session.get(EventPost, post.id) is None
 
 
+# ── Account lock + session revocation ─────────────────────────
+
+def test_locked_user_cannot_log_in(client, db):
+    make_user(db, is_locked=True)
+    r = login(client, "alice")
+    assert r.status_code == 403
+
+
+def test_admin_can_lock_user(client, db):
+    admin = make_user(db, email="admin@test.com", username="admin", is_admin=True)
+    target = make_user(db)
+    login(client, "admin")
+    r = client.post(f"/admin/users/{target.id}/toggle-lock", follow_redirects=False)
+    assert r.status_code in (302, 303)
+    db.session.refresh(target)
+    assert target.is_locked is True
+    # Locking a user must also bump their session_version so existing cookies die.
+    assert (target.session_version or 0) >= 1
+
+
+def test_admin_cannot_lock_self(client, db):
+    admin = make_user(db, email="admin@test.com", username="admin", is_admin=True)
+    login(client, "admin")
+    client.post(f"/admin/users/{admin.id}/toggle-lock", follow_redirects=False)
+    db.session.refresh(admin)
+    assert admin.is_locked is False
+
+
+def test_non_admin_cannot_toggle_lock(client, db):
+    make_user(db)  # alice, not admin
+    target = make_user(db, email="target@test.com", username="target")
+    login(client, "alice")
+    r = client.post(f"/admin/users/{target.id}/toggle-lock")
+    assert r.status_code == 403
+
+
+def test_revoke_other_sessions_bumps_version(client, db):
+    alice = make_user(db)
+    login(client, "alice")
+    before = (alice.session_version or 0)
+    r = client.post("/auth/account/sessions/revoke-all", follow_redirects=False)
+    assert r.status_code in (302, 303)
+    db.session.refresh(alice)
+    assert (alice.session_version or 0) == before + 1
+
+
+def test_revoke_keeps_current_session_valid(client, db):
+    """The caller of revoke-all should stay signed in on THIS device."""
+    make_user(db)
+    login(client, "alice")
+    client.post("/auth/account/sessions/revoke-all")
+    # Still authenticated on this client
+    r = client.get("/auth/account", follow_redirects=False)
+    assert r.status_code == 200
+
+
+def test_load_user_rejects_stale_session_version(app, db):
+    """A cookie carrying an old session_version should refuse to authenticate."""
+    alice = make_user(db)
+    loader = app.login_manager._user_callback
+    # current version is 0; a cookie that encoded version 99 is stale
+    assert loader(f"{alice.id}:99") is None
+    assert loader(f"{alice.id}:0") is not None  # current version works
+
+
+def test_load_user_rejects_locked_account(app, db):
+    """Locked users should not authenticate from any existing cookie."""
+    alice = make_user(db, is_locked=True)
+    loader = app.login_manager._user_callback
+    assert loader(f"{alice.id}:0") is None
+
+
 # ── Opening posts (no RSVP required) ──────────────────────────
 
 def test_logged_in_user_can_post_on_opening(client, db):

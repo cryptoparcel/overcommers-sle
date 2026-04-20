@@ -11,11 +11,11 @@
       <p class="muted">No users yet.</p>
     {% else %}
       <div class="table">
-        <div class="row head" style="grid-template-columns: 100px 1fr 1fr 1.4fr 70px 80px 80px 180px;">
-          <div>Created</div><div>Name</div><div>Username</div><div>Email</div><div>Verified</div><div>Admin</div><div>Mod</div><div>Actions</div>
+        <div class="row head" style="grid-template-columns: 100px 1fr 1fr 1.4fr 70px 70px 70px 70px 260px;">
+          <div>Created</div><div>Name</div><div>Username</div><div>Email</div><div>Verified</div><div>Admin</div><div>Mod</div><div>Locked</div><div>Actions</div>
         </div>
         {% for u in users %}
-        <div class="row" style="grid-template-columns: 100px 1fr 1fr 1.4fr 70px 80px 80px 180px;">
+        <div class="row" style="grid-template-columns: 100px 1fr 1fr 1.4fr 70px 70px 70px 70px 260px;">
           <div class="muted">{{ u.created_at.strftime('%Y-%m-%d') }}</div>
           <div>{{ u.name }}</div>
           <div>{{ u.username }}</div>
@@ -23,7 +23,8 @@
           <div>{% if u.email_confirmed %}<span style="color:var(--brand);">✓</span>{% else %}<span class="muted">—</span>{% endif %}</div>
           <div>{% if u.is_admin %}<span class="pill">Yes</span>{% else %}<span class="muted">No</span>{% endif %}</div>
           <div>{% if u.is_moderator %}<span class="pill">Yes</span>{% else %}<span class="muted">No</span>{% endif %}</div>
-          <div style="display:flex; gap:6px;">
+          <div>{% if u.is_locked %}<span class="pill" style="background:rgba(239,68,68,.08); border-color:rgba(239,68,68,.35); color:var(--danger);">Yes</span>{% else %}<span class="muted">No</span>{% endif %}</div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
             <form method="post" action="{{ url_for('admin.users_toggle_admin', user_id=u.id) }}" style="display:inline;">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <button type="submit" class="btn btn--sm">
@@ -36,6 +37,14 @@
                 {% if u.is_moderator %}Revoke mod{% else %}Make mod{% endif %}
               </button>
             </form>
+            {% if u.id != current_user.id %}
+            <form method="post" action="{{ url_for('admin.users_toggle_lock', user_id=u.id) }}" style="display:inline;" onsubmit="return confirm({% if u.is_locked %}'Unlock {{ u.email|e }}?'{% else %}'Lock {{ u.email|e }}? They will be signed out of every device.'{% endif %});">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn--sm">
+                {% if u.is_locked %}Unlock{% else %}Lock{% endif %}
+              </button>
+            </form>
+            {% endif %}
           </div>
         </div>
         {% endfor %}
