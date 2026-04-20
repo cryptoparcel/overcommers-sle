@@ -273,6 +273,24 @@ class Event(db.Model):
         return f"<Event {self.id} {self.title!r} on {self.start_date}>"
 
 
+class OpeningPost(db.Model):
+    """A question or comment on an opening's discussion thread."""
+
+    __tablename__ = "opening_posts"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=_utcnow, index=True)
+
+    opening_id = db.Column(db.Integer, db.ForeignKey("openings.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
+
+    body = db.Column(db.Text, nullable=False)
+    is_hidden = db.Column(db.Boolean, nullable=False, default=False)
+
+    opening = db.relationship("Opening", backref=db.backref("posts", lazy="dynamic", cascade="all, delete-orphan"))
+    user = db.relationship("User", backref=db.backref("opening_posts", lazy="dynamic"))
+
+
 class EventRSVP(db.Model):
     """A logged-in user joining (RSVPing to) an event."""
 

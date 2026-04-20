@@ -242,6 +242,57 @@
       </div>
     </div>
 
+    <div class="card" style="margin-top:24px;">
+      <div class="card__body">
+        <h3 class="h3">Questions &amp; discussion</h3>
+        <p class="muted" style="margin:4px 0 16px;">
+          {% if current_user.is_authenticated %}
+            Ask about move-in, amenities, or anything else. Staff and moderators can reply here.
+          {% else %}
+            <a href="{{ url_for('auth.login', next=url_for('public.opening_detail', slug=opening.slug)) }}" style="color:var(--brand);">Log in</a> to post a question.
+          {% endif %}
+        </p>
+
+        {% if posts|length == 0 %}
+          <p class="muted" style="font-style:italic;">No posts yet.</p>
+        {% else %}
+          <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:12px;">
+            {% for post in posts %}
+            <li id="opening-post-{{ post.id }}" style="background:rgba(11,95,87,.04); border:1px solid rgba(11,95,87,.1); border-radius:10px; padding:12px 14px;">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:6px;">
+                <strong>
+                  {% if post.user %}{{ post.user.name }}{% else %}[deleted]{% endif %}
+                  {% if post.user and post.user.is_admin %}<span class="pill" style="margin-left:6px;">admin</span>{% elif post.user and post.user.is_moderator %}<span class="pill" style="margin-left:6px;">mod</span>{% endif %}
+                </strong>
+                <span class="muted" style="font-size:0.85em;">{{ post.created_at.strftime('%b %d, %Y · %I:%M %p') }}</span>
+              </div>
+              <div style="white-space:pre-wrap; word-wrap:break-word;">{{ post.body|e }}</div>
+              {% if current_user.is_authenticated and (can_moderate or post.user_id == current_user.id) %}
+              <form method="post" action="{{ url_for('public.opening_post_delete', slug=opening.slug, post_id=post.id) }}" style="margin-top:8px;" onsubmit="return confirm('Delete this post?');">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn--sm">Delete</button>
+              </form>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        {% if current_user.is_authenticated %}
+        <form method="post" action="{{ url_for('public.opening_post_create', slug=opening.slug) }}" style="margin-top:20px;">
+          {{ post_form.hidden_tag() }}
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            {{ post_form.body(rows=3, placeholder="Ask a question about this home…", style="width:100%; padding:10px; background:#fff; border:1px solid rgba(11,95,87,.2); border-radius:8px; color:inherit; font-family:inherit; font-size:1em; resize:vertical;") }}
+            {% if post_form.body.errors %}
+              {% for err in post_form.body.errors %}<p class="muted" style="color:#c55;">{{ err }}</p>{% endfor %}
+            {% endif %}
+            <div>{{ post_form.submit(class="btn btn--primary") }}</div>
+          </div>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+
   </div>
 </section>
 

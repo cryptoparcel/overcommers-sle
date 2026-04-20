@@ -9,10 +9,17 @@ from flask_login import current_user, login_required
 from ..extensions import db, limiter, csrf
 from ..utils import slugify
 from ..utils.mailer import send_email
-from ..forms import ApplyForm, ContactForm, StorySubmitForm, TourRequestForm, InterestForm, EventPostForm
-from ..models import Application, ContactMessage, Story, PageLayout, Opening, TourRequest, InterestSignup, DepositPayment, Event, EventRSVP, EventPost
+from ..forms import ApplyForm, ContactForm, StorySubmitForm, TourRequestForm, InterestForm, EventPostForm, OpeningPostForm
+from ..models import Application, ContactMessage, Story, PageLayout, Opening, TourRequest, InterestSignup, DepositPayment, Event, EventRSVP, EventPost, OpeningPost
 
 public_bp = Blueprint("public", __name__)
+
+
+def _can_moderate() -> bool:
+    return (
+        getattr(current_user, "is_authenticated", False)
+        and (getattr(current_user, "is_admin", False) or getattr(current_user, "is_moderator", False))
+    )
 
 
 # ── Static / SEO ─────────────────────────────────────────────
@@ -462,7 +469,56 @@ def openings():
 @public_bp.get("/openings/<slug>")
 def opening_detail(slug: str):
     row = Opening.query.filter_by(slug=slug, status="published").first_or_404()
-    return render_template("opening_detail.html", opening=row, title=row.title)
+    posts = (
+        row.posts.filter_by(is_hidden=False)
+        .order_by(OpeningPost.created_at.asc())
+        .limit(500)
+        .all()
+    )
+    post_form = OpeningPostForm()
+    return render_template(
+        "opening_detail.html",
+        opening=row,
+        title=row.title,
+        posts=posts,
+        post_form=post_form,
+        can_moderate=_can_moderate(),
+    )
+
+
+@public_bp.post("/openings/<slug>/posts")
+@login_required
+@limiter.limit("10 per minute")
+@limiter.limit("60 per hour")
+def opening_post_create(slug: str):
+    row = Opening.query.filter_by(slug=slug, status="published").first_or_404()
+    form = OpeningPostForm()
+    if not form.validate_on_submit():
+        flash("Your message can't be empty and must be under 2000 characters.", "error")
+        return redirect(url_for("public.opening_detail", slug=row.slug))
+    post = OpeningPost(
+        opening_id=row.id,
+        user_id=current_user.id,
+        body=form.body.data.strip(),
+    )
+    db.session.add(post)
+    db.session.commit()
+    return redirect(url_for("public.opening_detail", slug=row.slug) + f"#opening-post-{post.id}")
+
+
+@public_bp.post("/openings/<slug>/posts/<int:post_id>/delete")
+@login_required
+def opening_post_delete(slug: str, post_id: int):
+    row = Opening.query.filter_by(slug=slug).first_or_404()
+    post = OpeningPost.query.filter_by(id=post_id, opening_id=row.id).first_or_404()
+    is_author = post.user_id == current_user.id
+    if not (is_author or _can_moderate()):
+        from flask import abort
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    flash("Post deleted.", "info")
+    return redirect(url_for("public.opening_detail", slug=row.slug))
 
 
 # ── Events ───────────────────────────────────────────────────
@@ -501,13 +557,6 @@ def events():
         past=past,
         title="Community Events",
         meta_description="Upcoming community events at Overcomers sober living — house meetings, volunteer days, alumni gatherings, and more in Grover Beach.",
-    )
-
-
-def _can_moderate() -> bool:
-    return (
-        getattr(current_user, "is_authenticated", False)
-        and (getattr(current_user, "is_admin", False) or getattr(current_user, "is_moderator", False))
     )
 
 

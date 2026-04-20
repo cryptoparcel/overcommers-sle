@@ -26,13 +26,13 @@
           <div style="display:flex; gap:6px;">
             <form method="post" action="{{ url_for('admin.users_toggle_admin', user_id=u.id) }}" style="display:inline;">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-              <button type="submit" class="btn btn--xs">
+              <button type="submit" class="btn btn--sm">
                 {% if u.is_admin %}Revoke admin{% else %}Make admin{% endif %}
               </button>
             </form>
             <form method="post" action="{{ url_for('admin.users_toggle_mod', user_id=u.id) }}" style="display:inline;">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-              <button type="submit" class="btn btn--xs">
+              <button type="submit" class="btn btn--sm">
                 {% if u.is_moderator %}Revoke mod{% else %}Make mod{% endif %}
               </button>
             </form>

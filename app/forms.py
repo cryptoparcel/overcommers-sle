@@ -164,6 +164,11 @@ class EventPostForm(FlaskForm):
     submit = SubmitField("Post")
 
 
+class OpeningPostForm(FlaskForm):
+    body = TextAreaField("Ask a question or share a comment", validators=[DataRequired(), Length(min=1, max=2000)])
+    submit = SubmitField("Post")
+
+
 class EventForm(FlaskForm):
     title = StringField("Event title", validators=[DataRequired(), Length(max=180)])
     slug = StringField("Slug (URL)", validators=[DataRequired(), Length(max=220)])
