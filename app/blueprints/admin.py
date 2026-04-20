@@ -707,10 +707,13 @@ def activity_log():
     category = request.args.get("category", "")
     level = request.args.get("level", "")
     search = request.args.get("q", "").strip()
+    user_filter = request.args.get("user", "").strip()
+    action_filter = request.args.get("action", "").strip()
 
     items = []
     pagination = None
     categories = []
+    actions = []
     total_logs = today_logs = warning_count = error_count = 0
 
     try:
@@ -720,6 +723,25 @@ def activity_log():
             q = q.filter_by(category=category)
         if level:
             q = q.filter_by(level=level)
+        if action_filter:
+            q = q.filter_by(action=action_filter)
+        if user_filter:
+            # Match by email, username, or exact user_id
+            matched_user_ids = [
+                u.id for u in User.query.filter(
+                    db.or_(
+                        User.email.ilike(f"%{user_filter}%"),
+                        User.username.ilike(f"%{user_filter}%"),
+                    )
+                ).limit(50).all()
+            ]
+            if user_filter.isdigit():
+                matched_user_ids.append(int(user_filter))
+            if matched_user_ids:
+                q = q.filter(ActivityLog.user_id.in_(matched_user_ids))
+            else:
+                # No user matched — return an empty result rather than everything
+                q = q.filter(ActivityLog.id == -1)
         if search:
             q = q.filter(
                 db.or_(
@@ -735,8 +757,9 @@ def activity_log():
         )
         items = pagination.items
 
-        # Get distinct categories for filter dropdown
+        # Get distinct categories and actions for filter dropdowns
         categories = [r[0] for r in db.session.query(ActivityLog.category).distinct().all() if r[0]]
+        actions = sorted([r[0] for r in db.session.query(ActivityLog.action).distinct().limit(200).all() if r[0]])
 
         # Log counts for quick stats
         total_logs = ActivityLog.query.count()
@@ -753,9 +776,12 @@ def activity_log():
         logs=items,
         pagination=pagination,
         categories=categories,
+        actions=actions,
         current_category=category,
         current_level=level,
         current_search=search,
+        current_user_filter=user_filter,
+        current_action=action_filter,
         total_logs=total_logs,
         today_logs=today_logs,
         warning_count=warning_count,

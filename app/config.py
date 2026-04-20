@@ -38,8 +38,13 @@ class Config:
         # HTTPS
         self.PREFERRED_URL_SCHEME = "https" if os.environ.get("RENDER") else "http"
 
-        # Cookies
-        self.SESSION_COOKIE_SECURE = os.environ.get("SESSION_COOKIE_SECURE", "0") == "1"
+        # Cookies. On Render we're always behind HTTPS, so force Secure cookies
+        # on regardless of env var. The explicit env still works as an override
+        # for other hosted environments.
+        self.SESSION_COOKIE_SECURE = (
+            bool(os.environ.get("RENDER"))
+            or os.environ.get("SESSION_COOKIE_SECURE", "0") == "1"
+        )
         self.SESSION_COOKIE_HTTPONLY = True
         self.SESSION_COOKIE_SAMESITE = os.environ.get("SESSION_COOKIE_SAMESITE", "Lax")
         self.PERMANENT_SESSION_LIFETIME = 86400 * 7  # 7 days

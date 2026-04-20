@@ -56,6 +56,19 @@
           <option value="error" {{ 'selected' if current_level == 'error' else '' }}>Error</option>
         </select>
       </div>
+      <div class="field" style="min-width:160px;">
+        <label class="label">User</label>
+        <input type="text" name="user" class="input" placeholder="email, username, id" value="{{ current_user_filter or '' }}">
+      </div>
+      <div class="field" style="min-width:170px;">
+        <label class="label">Action</label>
+        <select name="action" class="input">
+          <option value="">All actions</option>
+          {% for a in actions %}
+            <option value="{{ a }}" {{ 'selected' if a == current_action else '' }}>{{ a }}</option>
+          {% endfor %}
+        </select>
+      </div>
       <button class="btn btn--primary" type="submit">Filter</button>
       <a class="btn" href="{{ url_for('admin.activity_log') }}">Clear</a>
       <a class="btn" href="{{ url_for('admin.export_activity_log') }}">Export CSV</a>
