@@ -35,6 +35,7 @@ def create_app() -> Flask:
 
     login_manager.login_view = "auth.login"
     login_manager.login_message_category = "info"
+    login_manager.session_protection = "strong"
 
     app.register_blueprint(public_bp)
     app.register_blueprint(auth_bp, url_prefix="/auth")

@@ -2,14 +2,16 @@
 from __future__ import annotations
 
 import secrets
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_user, logout_user, login_required, current_user
 
 from ..extensions import db, limiter
-from ..forms import SignupForm, LoginForm, ProfileForm, PasswordChangeForm
+from ..forms import SignupForm, LoginForm, ProfileForm, PasswordChangeForm, PasswordResetRequestForm, PasswordResetForm
 from ..models import User, Event, EventRSVP
 from ..utils.mailer import send_email
+
+RESET_TOKEN_TTL_HOURS = 1
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -210,6 +212,108 @@ def resend_confirmation():
         flash("Couldn't send email right now. Try again later.", "error")
 
     return redirect(url_for("auth.account"))
+
+
+# ── Password reset ────────────────────────────────────────────
+
+def _send_reset_email(user: User) -> None:
+    reset_url = url_for("auth.reset_password", token=user.reset_token, _external=True)
+    body = (
+        f"Hi {user.name or user.username},\n\n"
+        f"Someone asked to reset the password on your Overcomers account.\n\n"
+        f"If it was you, click this link within the next {RESET_TOKEN_TTL_HOURS} hour(s) to pick a new password:\n"
+        f"{reset_url}\n\n"
+        f"If you didn't request this, you can safely ignore this email — your password won't change.\n\n"
+        f"— The Overcomers Team\n"
+        f"Grover Beach, CA\n"
+    )
+    send_email(
+        to_email=user.email,
+        subject="Reset your password — Overcomers",
+        body=body,
+    )
+
+
+@auth_bp.get("/forgot-password")
+def forgot_password():
+    if current_user.is_authenticated:
+        return redirect(url_for("auth.account"))
+    form = PasswordResetRequestForm()
+    return render_template("auth/forgot_password.html", form=form, title="Reset password")
+
+
+@auth_bp.post("/forgot-password")
+@limiter.limit("5 per hour")
+def forgot_password_post():
+    if current_user.is_authenticated:
+        return redirect(url_for("auth.account"))
+    form = PasswordResetRequestForm()
+    if not form.validate_on_submit():
+        flash("Please enter a valid email.", "error")
+        return render_template("auth/forgot_password.html", form=form, title="Reset password"), 400
+
+    email = form.email.data.strip().lower()
+    user = User.query.filter_by(email=email).first()
+
+    if user:
+        user.reset_token = _generate_token()
+        user.reset_token_expires = (
+            datetime.now(timezone.utc).replace(tzinfo=None) + timedelta(hours=RESET_TOKEN_TTL_HOURS)
+        )
+        db.session.commit()
+        try:
+            _send_reset_email(user)
+        except Exception:
+            pass  # Don't leak mailer failures through the UI
+        try:
+            from ..utils import log_activity
+            log_activity(action="password_reset_requested", category="auth",
+                         details=f"user_id={user.id}", user_id=user.id, level="info")
+        except Exception:
+            pass
+
+    # Same response whether or not the email exists — prevents enumeration
+    flash("If an account with that email exists, we've sent a reset link. Check your inbox.", "info")
+    return redirect(url_for("auth.login"))
+
+
+@auth_bp.get("/reset-password/<token>")
+def reset_password(token: str):
+    user = User.query.filter_by(reset_token=token).first()
+    if not user or not user.reset_token_expires or user.reset_token_expires < datetime.now(timezone.utc).replace(tzinfo=None):
+        flash("That reset link is invalid or has expired. Request a new one.", "error")
+        return redirect(url_for("auth.forgot_password"))
+    form = PasswordResetForm()
+    return render_template("auth/reset_password.html", form=form, token=token, title="Choose a new password")
+
+
+@auth_bp.post("/reset-password/<token>")
+@limiter.limit("10 per hour")
+def reset_password_post(token: str):
+    user = User.query.filter_by(reset_token=token).first()
+    if not user or not user.reset_token_expires or user.reset_token_expires < datetime.now(timezone.utc).replace(tzinfo=None):
+        flash("That reset link is invalid or has expired. Request a new one.", "error")
+        return redirect(url_for("auth.forgot_password"))
+
+    form = PasswordResetForm()
+    if not form.validate_on_submit():
+        flash("Please fix the form errors and try again.", "error")
+        return render_template("auth/reset_password.html", form=form, token=token, title="Choose a new password"), 400
+
+    user.set_password(form.new_password.data)
+    user.reset_token = None
+    user.reset_token_expires = None
+    db.session.commit()
+
+    try:
+        from ..utils import log_activity
+        log_activity(action="password_reset_completed", category="auth",
+                     details=f"user_id={user.id}", user_id=user.id, level="warning")
+    except Exception:
+        pass
+
+    flash("Your password has been updated. Log in with your new password.", "success")
+    return redirect(url_for("auth.login"))
 
 
 # ── Logout ────────────────────────────────────────────────────

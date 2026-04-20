@@ -108,6 +108,20 @@ class StorySubmitForm(FlaskForm):
             raise ValidationError("Please complete the reCAPTCHA and try again.")
 
 
+class PasswordResetRequestForm(FlaskForm):
+    email = StringField("Email", validators=[DataRequired(), Email(), Length(max=255)])
+    submit = SubmitField("Send reset link")
+
+
+class PasswordResetForm(FlaskForm):
+    new_password = PasswordField("New password", validators=[DataRequired(), Length(min=8, max=128)])
+    confirm_new_password = PasswordField(
+        "Confirm new password",
+        validators=[DataRequired(), EqualTo("new_password", message="Passwords must match.")],
+    )
+    submit = SubmitField("Update password")
+
+
 class ProfileForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired(), Length(max=120)])
     phone = StringField("Phone (optional)", validators=[Optional(), Length(max=40)])
