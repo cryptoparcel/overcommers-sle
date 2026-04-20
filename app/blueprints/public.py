@@ -551,21 +551,36 @@ def events():
         upcoming, past = [], []
 
     joined_ids = set()
-    if current_user.is_authenticated and (upcoming or past):
+    rsvp_counts = {}
+    if upcoming or past:
+        from sqlalchemy import func
         all_ids = [e.id for e in upcoming] + [e.id for e in past]
-        joined_ids = {
-            r.event_id
-            for r in EventRSVP.query.filter(
-                EventRSVP.user_id == current_user.id,
-                EventRSVP.event_id.in_(all_ids),
-            ).all()
-        }
+        try:
+            rows = (
+                db.session.query(EventRSVP.event_id, func.count(EventRSVP.id))
+                .filter(EventRSVP.event_id.in_(all_ids))
+                .group_by(EventRSVP.event_id)
+                .all()
+            )
+            rsvp_counts = {event_id: n for event_id, n in rows}
+        except Exception:
+            rsvp_counts = {}
+
+        if current_user.is_authenticated:
+            joined_ids = {
+                r.event_id
+                for r in EventRSVP.query.filter(
+                    EventRSVP.user_id == current_user.id,
+                    EventRSVP.event_id.in_(all_ids),
+                ).all()
+            }
 
     return render_template(
         "events.html",
         upcoming=upcoming,
         past=past,
         joined_ids=joined_ids,
+        rsvp_counts=rsvp_counts,
         title="Community Events",
         meta_description="Upcoming community events at Overcomers sober living — house meetings, volunteer days, alumni gatherings, and more in Grover Beach.",
     )
@@ -611,16 +626,22 @@ def event_detail(slug: str):
 @login_required
 @limiter.limit("20 per hour")
 def event_join(slug: str):
+    from sqlalchemy.exc import IntegrityError
     ev = Event.query.filter_by(slug=slug, status="published").first_or_404()
     existing = EventRSVP.query.filter_by(event_id=ev.id, user_id=current_user.id).first()
     if existing:
         flash("You're already on the list for this event.", "info")
-    else:
-        rsvp = EventRSVP(event_id=ev.id, user_id=current_user.id)
-        db.session.add(rsvp)
-        ev.rsvp_count = (ev.rsvp_count or 0) + 1
+        return redirect(url_for("public.event_detail", slug=ev.slug))
+
+    rsvp = EventRSVP(event_id=ev.id, user_id=current_user.id)
+    db.session.add(rsvp)
+    ev.rsvp_count = (ev.rsvp_count or 0) + 1
+    try:
         db.session.commit()
         flash("You're in — welcome to the thread.", "success")
+    except IntegrityError:
+        db.session.rollback()
+        flash("You're already on the list for this event.", "info")
     return redirect(url_for("public.event_detail", slug=ev.slug))
 
 
