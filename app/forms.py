@@ -199,7 +199,7 @@ class EventForm(FlaskForm):
     image_url = StringField("Image URL (optional)", validators=[Optional(), Length(max=500), URL(require_tld=False, message="Must be a valid http(s) URL")])
 
     is_public = BooleanField("Public event (uncheck for residents-only)", default=True)
-    allow_rsvp = BooleanField("Allow RSVPs", default=False)
+    allow_rsvp = BooleanField("Allow RSVPs and discussion", default=True)
 
     status = SelectField(
         "Status",

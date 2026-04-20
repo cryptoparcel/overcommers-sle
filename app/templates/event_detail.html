@@ -78,20 +78,24 @@
         <div style="flex:1; min-width:180px;">
           <strong>{{ attendee_count }}</strong> {{ 'person' if attendee_count == 1 else 'people' }} joined
         </div>
-        {% if current_user.is_authenticated %}
-          {% if joined %}
-            <form method="post" action="{{ url_for('public.event_leave', slug=event.slug) }}" style="display:inline;">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-              <button type="submit" class="btn">Leave event</button>
-            </form>
+        {% if event.allow_rsvp %}
+          {% if current_user.is_authenticated %}
+            {% if joined %}
+              <form method="post" action="{{ url_for('public.event_leave', slug=event.slug) }}" style="display:inline;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn">Leave event</button>
+              </form>
+            {% else %}
+              <form method="post" action="{{ url_for('public.event_join', slug=event.slug) }}" style="display:inline;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn--primary">Join event</button>
+              </form>
+            {% endif %}
           {% else %}
-            <form method="post" action="{{ url_for('public.event_join', slug=event.slug) }}" style="display:inline;">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-              <button type="submit" class="btn btn--primary">Join event</button>
-            </form>
+            <a class="btn btn--primary" href="{{ url_for('auth.login', next=url_for('public.event_detail', slug=event.slug)) }}">Log in to join</a>
           {% endif %}
         {% else %}
-          <a class="btn btn--primary" href="{{ url_for('auth.login', next=url_for('public.event_detail', slug=event.slug)) }}">Log in to join</a>
+          <span class="muted" style="font-size:13px;">RSVPs are closed for this event.</span>
         {% endif %}
         <a class="btn" href="{{ url_for('public.contact') }}?subject=Event: {{ event.title|urlencode }}">Ask about this event</a>
       </div>

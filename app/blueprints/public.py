@@ -529,20 +529,20 @@ def events():
     from datetime import date, timedelta
     try:
         cutoff = date.today() - timedelta(days=3)
+        base = Event.query.filter(Event.status == "published")
+        if not current_user.is_authenticated:
+            base = base.filter(Event.is_public == True)
         upcoming = (
-            Event.query
-            .filter(Event.status == "published")
-            .filter(Event.is_public == True)
-            .filter(Event.start_date >= cutoff)
+            base.filter(Event.start_date >= cutoff)
             .order_by(Event.start_date.asc())
             .limit(50)
             .all()
         )
+        past_q = Event.query.filter(Event.status == "published")
+        if not current_user.is_authenticated:
+            past_q = past_q.filter(Event.is_public == True)
         past = (
-            Event.query
-            .filter(Event.status == "published")
-            .filter(Event.is_public == True)
-            .filter(Event.start_date < cutoff)
+            past_q.filter(Event.start_date < cutoff)
             .order_by(Event.start_date.desc())
             .limit(6)
             .all()
@@ -596,6 +596,8 @@ def event_detail(slug: str):
     if not ev:
         from flask import abort
         abort(404)
+    if not ev.is_public and not current_user.is_authenticated:
+        return redirect(url_for("auth.login", next=url_for("public.event_detail", slug=slug)))
 
     attendee_count = ev.rsvps.count()
     joined = False
@@ -628,6 +630,9 @@ def event_detail(slug: str):
 def event_join(slug: str):
     from sqlalchemy.exc import IntegrityError
     ev = Event.query.filter_by(slug=slug, status="published").first_or_404()
+    if not ev.allow_rsvp:
+        flash("RSVPs aren't open for this event.", "info")
+        return redirect(url_for("public.event_detail", slug=ev.slug))
     existing = EventRSVP.query.filter_by(event_id=ev.id, user_id=current_user.id).first()
     if existing:
         flash("You're already on the list for this event.", "info")

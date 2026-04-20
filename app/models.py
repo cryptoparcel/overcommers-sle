@@ -265,8 +265,9 @@ class Event(db.Model):
     status = db.Column(db.String(20), nullable=False, default="draft")  # draft, published, cancelled
     is_public = db.Column(db.Boolean, nullable=False, default=True)  # False = residents-only
 
-    # RSVP (optional light version — just captures interest, not strict capacity)
-    allow_rsvp = db.Column(db.Boolean, nullable=False, default=False)
+    # RSVP + discussion thread. New events default to allow_rsvp=True so the
+    # join button and thread work out of the box; admins can toggle off.
+    allow_rsvp = db.Column(db.Boolean, nullable=False, default=True)
     rsvp_count = db.Column(db.Integer, nullable=False, default=0)
 
     def __repr__(self) -> str:
