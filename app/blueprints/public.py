@@ -22,6 +22,33 @@ def _can_moderate() -> bool:
     )
 
 
+POST_EDIT_WINDOW_MINUTES = 15
+
+
+def _within_edit_window(post) -> bool:
+    """Is this post still editable by its author?"""
+    from datetime import datetime, timezone, timedelta
+    if not post or not post.created_at:
+        return False
+    now_naive = datetime.now(timezone.utc).replace(tzinfo=None)
+    created = post.created_at
+    # Normalise a possibly tz-aware column value to naive for comparison
+    if getattr(created, "tzinfo", None) is not None:
+        created = created.replace(tzinfo=None)
+    return (now_naive - created) <= timedelta(minutes=POST_EDIT_WINDOW_MINUTES)
+
+
+def _post_editable_by(post, user) -> bool:
+    return (
+        post is not None
+        and user is not None
+        and getattr(user, "is_authenticated", False)
+        and post.user_id == user.id
+        and not post.is_hidden
+        and _within_edit_window(post)
+    )
+
+
 # ── Static / SEO ─────────────────────────────────────────────
 
 @public_bp.get("/donate")
@@ -454,16 +481,24 @@ def interest_post():
 @public_bp.get("/openings")
 def openings():
     interest_form = InterestForm()
+    q = (request.args.get("q") or "").strip()
     try:
-        items = (
-            Opening.query.filter_by(status="published")
-            .order_by(Opening.created_at.desc())
-            .limit(100)
-            .all()
-        )
+        query = Opening.query.filter_by(status="published")
+        if q:
+            needle = f"%{q}%"
+            query = query.filter(
+                db.or_(
+                    Opening.title.ilike(needle),
+                    Opening.summary.ilike(needle),
+                    Opening.city.ilike(needle),
+                )
+            )
+        items = query.order_by(Opening.created_at.desc()).limit(100).all()
     except Exception:
         items = []
-    return render_template("openings.html", openings=items, interest_form=interest_form, title="Upcoming Openings")
+    return render_template(
+        "openings.html", openings=items, interest_form=interest_form, q=q, title="Upcoming Openings"
+    )
 
 
 @public_bp.get("/openings/<slug>")
@@ -490,6 +525,27 @@ def opening_detail(slug: str):
         posts = list(reversed(recent_desc))
         older_hidden = total_posts - len(posts)
     post_form = OpeningPostForm()
+
+    editable_post_ids = set()
+    if current_user.is_authenticated:
+        for p in posts:
+            if _post_editable_by(p, current_user):
+                editable_post_ids.add(p.id)
+
+    editing_post_id = None
+    edit_post_form = None
+    try:
+        raw = request.args.get("edit_post")
+        if raw:
+            candidate_id = int(raw)
+            if candidate_id in editable_post_ids:
+                candidate = next((p for p in posts if p.id == candidate_id), None)
+                if candidate:
+                    editing_post_id = candidate_id
+                    edit_post_form = OpeningPostForm(body=candidate.body)
+    except (TypeError, ValueError):
+        pass
+
     return render_template(
         "opening_detail.html",
         opening=row,
@@ -500,6 +556,10 @@ def opening_detail(slug: str):
         older_hidden=older_hidden,
         total_posts=total_posts,
         show_all=show_all,
+        editable_post_ids=editable_post_ids,
+        editing_post_id=editing_post_id,
+        edit_post_form=edit_post_form,
+        edit_window_minutes=POST_EDIT_WINDOW_MINUTES,
     )
 
 
@@ -519,6 +579,28 @@ def opening_post_create(slug: str):
         body=form.body.data.strip(),
     )
     db.session.add(post)
+    db.session.commit()
+    return redirect(url_for("public.opening_detail", slug=row.slug) + f"#opening-post-{post.id}")
+
+
+@public_bp.post("/openings/<slug>/posts/<int:post_id>/edit")
+@login_required
+@limiter.limit("10 per minute")
+def opening_post_edit(slug: str, post_id: int):
+    from datetime import datetime, timezone
+    row = Opening.query.filter_by(slug=slug).first_or_404()
+    post = OpeningPost.query.filter_by(id=post_id, opening_id=row.id).first_or_404()
+    if not _post_editable_by(post, current_user):
+        flash("This post can't be edited any more.", "info")
+        return redirect(url_for("public.opening_detail", slug=row.slug) + f"#opening-post-{post.id}")
+
+    form = OpeningPostForm()
+    if not form.validate_on_submit():
+        flash("Your message can't be empty and must be under 2000 characters.", "error")
+        return redirect(url_for("public.opening_detail", slug=row.slug, edit_post=post.id))
+
+    post.body = form.body.data.strip()
+    post.edited_at = datetime.now(timezone.utc).replace(tzinfo=None)
     db.session.commit()
     return redirect(url_for("public.opening_detail", slug=row.slug) + f"#opening-post-{post.id}")
 
@@ -544,11 +626,21 @@ def opening_post_delete(slug: str, post_id: int):
 def events():
     """List of upcoming community events."""
     from datetime import date, timedelta
+    q = (request.args.get("q") or "").strip()
     try:
         cutoff = date.today() - timedelta(days=3)
         base = Event.query.filter(Event.status == "published")
         if not current_user.is_authenticated:
             base = base.filter(Event.is_public == True)
+        if q:
+            needle = f"%{q}%"
+            base = base.filter(
+                db.or_(
+                    Event.title.ilike(needle),
+                    Event.summary.ilike(needle),
+                    Event.description.ilike(needle),
+                )
+            )
         upcoming = (
             base.filter(Event.start_date >= cutoff)
             .order_by(Event.start_date.asc())
@@ -558,6 +650,14 @@ def events():
         past_q = Event.query.filter(Event.status == "published")
         if not current_user.is_authenticated:
             past_q = past_q.filter(Event.is_public == True)
+        if q:
+            past_q = past_q.filter(
+                db.or_(
+                    Event.title.ilike(needle),
+                    Event.summary.ilike(needle),
+                    Event.description.ilike(needle),
+                )
+            )
         past = (
             past_q.filter(Event.start_date < cutoff)
             .order_by(Event.start_date.desc())
@@ -612,6 +712,7 @@ def events():
         joined_ids=joined_ids,
         rsvp_counts=rsvp_counts,
         post_counts=post_counts,
+        q=q,
         title="Community Events",
         meta_description="Upcoming community events at Overcomers sober living — house meetings, volunteer days, alumni gatherings, and more in Grover Beach.",
     )
@@ -654,6 +755,29 @@ def event_detail(slug: str):
         older_hidden = total_posts - len(posts)
     post_form = EventPostForm()
 
+    # Which posts are still editable by the current user? Precompute the
+    # set so the template never does date math.
+    editable_post_ids = set()
+    if current_user.is_authenticated:
+        for p in posts:
+            if _post_editable_by(p, current_user):
+                editable_post_ids.add(p.id)
+
+    # Inline edit support: ?edit_post=<id> shows the edit form in place of the post.
+    editing_post_id = None
+    edit_post_form = None
+    try:
+        raw = request.args.get("edit_post")
+        if raw:
+            candidate_id = int(raw)
+            if candidate_id in editable_post_ids:
+                candidate = next((p for p in posts if p.id == candidate_id), None)
+                if candidate:
+                    editing_post_id = candidate_id
+                    edit_post_form = EventPostForm(body=candidate.body)
+    except (TypeError, ValueError):
+        pass
+
     return render_template(
         "event_detail.html",
         event=ev,
@@ -666,6 +790,10 @@ def event_detail(slug: str):
         older_hidden=older_hidden,
         total_posts=total_posts,
         show_all=show_all,
+        editable_post_ids=editable_post_ids,
+        editing_post_id=editing_post_id,
+        edit_post_form=edit_post_form,
+        edit_window_minutes=POST_EDIT_WINDOW_MINUTES,
     )
 
 
@@ -731,6 +859,28 @@ def event_post_create(slug: str):
         body=form.body.data.strip(),
     )
     db.session.add(post)
+    db.session.commit()
+    return redirect(url_for("public.event_detail", slug=ev.slug) + f"#post-{post.id}")
+
+
+@public_bp.post("/events/<slug>/posts/<int:post_id>/edit")
+@login_required
+@limiter.limit("10 per minute")
+def event_post_edit(slug: str, post_id: int):
+    from datetime import datetime, timezone
+    ev = Event.query.filter_by(slug=slug).first_or_404()
+    post = EventPost.query.filter_by(id=post_id, event_id=ev.id).first_or_404()
+    if not _post_editable_by(post, current_user):
+        flash("This post can't be edited any more.", "info")
+        return redirect(url_for("public.event_detail", slug=ev.slug) + f"#post-{post.id}")
+
+    form = EventPostForm()
+    if not form.validate_on_submit():
+        flash("Your message can't be empty and must be under 2000 characters.", "error")
+        return redirect(url_for("public.event_detail", slug=ev.slug, edit_post=post.id))
+
+    post.body = form.body.data.strip()
+    post.edited_at = datetime.now(timezone.utc).replace(tzinfo=None)
     db.session.commit()
     return redirect(url_for("public.event_detail", slug=ev.slug) + f"#post-{post.id}")
 

@@ -66,6 +66,17 @@
       </div>
     </div>
 
+    {# ── Search ── #}
+    <form method="get" action="{{ url_for('public.openings') }}" style="display:flex; gap:8px; max-width:520px; margin:0 0 18px;">
+      <input class="input" type="search" name="q" value="{{ q or '' }}" placeholder="Search by title, city, or keyword…" aria-label="Search openings">
+      <button class="btn btn--primary" type="submit">Search</button>
+      {% if q %}<a class="btn" href="{{ url_for('public.openings') }}">Clear</a>{% endif %}
+    </form>
+
+    {% if q and openings|length == 0 %}
+    <p class="muted" style="margin:0 0 16px;">No openings match "{{ q }}". <a href="{{ url_for('public.openings') }}" style="color:var(--brand);">Show all openings</a></p>
+    {% endif %}
+
     {# ── Active listings ── #}
     {% if openings and openings|length > 0 %}
       {% for o in openings %}

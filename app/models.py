@@ -296,6 +296,7 @@ class OpeningPost(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, nullable=False, default=_utcnow, index=True)
+    edited_at = db.Column(db.DateTime, nullable=True)
 
     opening_id = db.Column(db.Integer, db.ForeignKey("openings.id", ondelete="CASCADE"), nullable=False, index=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
@@ -330,6 +331,7 @@ class EventPost(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, nullable=False, default=_utcnow, index=True)
+    edited_at = db.Column(db.DateTime, nullable=True)
 
     event_id = db.Column(db.Integer, db.ForeignKey("events.id", ondelete="CASCADE"), nullable=False, index=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)

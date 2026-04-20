@@ -318,6 +318,79 @@ def test_load_user_rejects_locked_account(app, db):
     assert loader(f"{alice.id}:0") is None
 
 
+# ── Post edit ─────────────────────────────────────────────────
+
+def test_author_can_edit_own_post_within_window(client, db):
+    alice = make_user(db)
+    ev = _make_event(db)
+    login(client, "alice")
+    client.post(f"/events/{ev.slug}/join")
+    client.post(f"/events/{ev.slug}/posts", data={"body": "original"})
+    post = EventPost.query.filter_by(user_id=alice.id).first()
+
+    r = client.post(f"/events/{ev.slug}/posts/{post.id}/edit",
+                    data={"body": "edited"}, follow_redirects=False)
+    assert r.status_code in (302, 303)
+    db.session.refresh(post)
+    assert post.body == "edited"
+    assert post.edited_at is not None
+
+
+def test_non_author_cannot_edit(client, db):
+    alice = make_user(db)
+    bob = make_user(db, email="bob@test.com", username="bob")
+    ev = _make_event(db)
+    login(client, "alice")
+    client.post(f"/events/{ev.slug}/join")
+    client.post(f"/events/{ev.slug}/posts", data={"body": "mine"})
+    post = EventPost.query.filter_by(user_id=alice.id).first()
+
+    client.post("/auth/logout")
+    login(client, "bob")
+    client.post(f"/events/{ev.slug}/posts/{post.id}/edit", data={"body": "hacked"})
+    db.session.refresh(post)
+    assert post.body == "mine"
+
+
+def test_edit_blocked_after_window(client, db):
+    alice = make_user(db)
+    ev = _make_event(db)
+    login(client, "alice")
+    client.post(f"/events/{ev.slug}/join")
+    client.post(f"/events/{ev.slug}/posts", data={"body": "old post"})
+    post = EventPost.query.filter_by(user_id=alice.id).first()
+    # Age the post past the 15-minute window
+    post.created_at = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(minutes=60)
+    db.session.commit()
+
+    client.post(f"/events/{ev.slug}/posts/{post.id}/edit", data={"body": "sneaky"})
+    db.session.refresh(post)
+    assert post.body == "old post"
+
+
+# ── Search ────────────────────────────────────────────────────
+
+def test_events_search_matches_title(client, db):
+    _make_event(db, slug="yoga-sunday")
+    from app.models import Event
+    # Override title to something searchable
+    ev = Event.query.filter_by(slug="yoga-sunday").first()
+    ev.title = "Yoga on Sunday"
+    db.session.commit()
+
+    r = client.get("/events?q=yoga")
+    assert r.status_code == 200
+    assert b"Yoga on Sunday" in r.data
+
+
+def test_events_search_no_match(client, db):
+    _make_event(db)
+    r = client.get("/events?q=zzznomatchzzz")
+    assert r.status_code == 200
+    # Either shows "No events match" or hides the card for the unmatched event
+    assert b"No events match" in r.data or b"Test Event" not in r.data
+
+
 # ── Opening posts (no RSVP required) ──────────────────────────
 
 def test_logged_in_user_can_post_on_opening(client, db):
