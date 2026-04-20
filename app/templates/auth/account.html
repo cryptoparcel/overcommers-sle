@@ -50,6 +50,53 @@
 
       <div class="card" style="grid-column: span 12;">
         <div class="body">
+          <h3>Security</h3>
+          <div style="display:flex; gap:24px; flex-wrap:wrap; margin:6px 0 14px;">
+            <div>
+              <div class="muted tiny" style="text-transform:uppercase; letter-spacing:.04em; font-weight:700;">Last sign-in</div>
+              <div style="font-weight:700; margin-top:2px;">
+                {% if current_user.last_login %}
+                  {{ current_user.last_login.strftime('%b %d, %Y · %I:%M %p') }} UTC
+                {% else %}
+                  —
+                {% endif %}
+              </div>
+            </div>
+            <div>
+              <div class="muted tiny" style="text-transform:uppercase; letter-spacing:.04em; font-weight:700;">Email</div>
+              <div style="font-weight:700; margin-top:2px;">
+                {{ current_user.email }}
+                {% if current_user.email_confirmed %}<span class="pill" style="margin-left:6px;">verified</span>{% endif %}
+              </div>
+            </div>
+          </div>
+
+          {% if recent_auth and recent_auth|length > 0 %}
+          <details>
+            <summary style="cursor:pointer; font-weight:600; color:var(--muted);">Recent account activity</summary>
+            <ul style="list-style:none; padding:0; margin:10px 0 0; display:flex; flex-direction:column; gap:6px;">
+              {% for e in recent_auth %}
+              <li style="display:flex; justify-content:space-between; gap:12px; font-size:13.5px; padding:6px 0; border-bottom:1px solid rgba(0,0,0,.04);">
+                <span>
+                  {% if e.action == 'login_success' %}Signed in
+                  {% elif e.action == 'logout' %}Signed out
+                  {% elif e.action == 'password_reset_requested' %}Password reset requested
+                  {% elif e.action == 'password_reset_completed' %}Password changed via reset
+                  {% elif e.action == 'register' %}Account created
+                  {% else %}{{ e.action }}{% endif %}
+                  {% if e.ip_address %}<span class="muted" style="font-size:12px;"> · {{ e.ip_address }}</span>{% endif %}
+                </span>
+                <span class="muted" style="white-space:nowrap;">{{ e.created_at.strftime('%b %d, %I:%M %p') }}</span>
+              </li>
+              {% endfor %}
+            </ul>
+          </details>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card" style="grid-column: span 12;">
+        <div class="body">
           <h3>Your events</h3>
           {% if joined_events and joined_events|length > 0 %}
             <p class="muted" style="margin:2px 0 14px;">Events you've joined. Click to view details or leave the thread.</p>

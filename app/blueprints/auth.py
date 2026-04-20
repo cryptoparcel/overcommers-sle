@@ -376,10 +376,26 @@ def account():
     except Exception:
         joined_events = []
 
+    # Recent auth activity for the logged-in user (shown on the account page).
+    recent_auth = []
+    try:
+        from ..models import ActivityLog
+        recent_auth = (
+            ActivityLog.query
+            .filter(ActivityLog.user_id == current_user.id)
+            .filter(ActivityLog.category == "auth")
+            .order_by(ActivityLog.created_at.desc())
+            .limit(8)
+            .all()
+        )
+    except Exception:
+        recent_auth = []
+
     return render_template(
         "auth/account.html",
         profile_form=profile_form,
         password_form=password_form,
         joined_events=joined_events,
+        recent_auth=recent_auth,
         title="Account settings",
     )
