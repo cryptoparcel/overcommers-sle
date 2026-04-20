@@ -282,9 +282,9 @@
         <form method="post" action="{{ url_for('public.opening_post_create', slug=opening.slug) }}" style="margin-top:20px;">
           {{ post_form.hidden_tag() }}
           <div style="display:flex; flex-direction:column; gap:8px;">
-            {{ post_form.body(rows=3, placeholder="Ask a question about this home…", style="width:100%; padding:10px; background:#fff; border:1px solid rgba(11,95,87,.2); border-radius:8px; color:inherit; font-family:inherit; font-size:1em; resize:vertical;") }}
+            {{ post_form.body(rows=3, placeholder="Ask a question about this home…", class_="input", style="resize:vertical; min-height:80px;") }}
             {% if post_form.body.errors %}
-              {% for err in post_form.body.errors %}<p class="muted" style="color:#c55;">{{ err }}</p>{% endfor %}
+              {% for err in post_form.body.errors %}<p class="muted" style="color:var(--danger);">{{ err }}</p>{% endfor %}
             {% endif %}
             <div>{{ post_form.submit(class="btn btn--primary") }}</div>
           </div>

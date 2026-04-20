@@ -96,7 +96,7 @@
         <a class="btn" href="{{ url_for('public.contact') }}?subject=Event: {{ event.title|urlencode }}">Ask about this event</a>
       </div>
 
-      <div class="event-thread" style="margin-top:48px; padding-top:24px; border-top:1px solid var(--border, #2a2a2a);">
+      <div class="event-thread" style="margin-top:40px; padding-top:24px; border-top:1px solid rgba(0,0,0,.06);">
         <h2 class="h3" style="margin-bottom:8px;">Discussion</h2>
         <p class="muted" style="margin-bottom:20px;">
           {% if joined or can_moderate %}
@@ -104,19 +104,19 @@
           {% elif current_user.is_authenticated %}
             Join the event to post in the discussion.
           {% else %}
-            <a href="{{ url_for('auth.login', next=url_for('public.event_detail', slug=event.slug)) }}">Log in</a> and join this event to participate.
+            <a href="{{ url_for('auth.login', next=url_for('public.event_detail', slug=event.slug)) }}" style="color:var(--brand);">Log in</a> and join this event to participate.
           {% endif %}
         </p>
 
         {% if posts|length == 0 %}
           <p class="muted" style="font-style:italic;">No posts yet — be the first to say hello.</p>
         {% else %}
-          <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:16px;">
+          <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:12px;">
             {% for post in posts %}
-            <li id="post-{{ post.id }}" style="background:var(--surface, #191919); border:1px solid var(--border, #2a2a2a); border-radius:8px; padding:14px 16px;">
-              <div style="display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:6px;">
+            <li id="post-{{ post.id }}" style="background:rgba(11,95,87,.04); border:1px solid rgba(11,95,87,.1); border-radius:12px; padding:12px 14px;">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:6px;">
                 <strong>
-                  {% if post.user %}{{ post.user.name or post.user.username }}{% else %}[deleted]{% endif %}
+                  {% if post.user %}{{ post.user.name }}{% else %}[deleted]{% endif %}
                   {% if post.user and post.user.is_admin %}<span class="pill" style="margin-left:6px;">admin</span>{% elif post.user and post.user.is_moderator %}<span class="pill" style="margin-left:6px;">mod</span>{% endif %}
                 </strong>
                 <span class="muted" style="font-size:0.85em;">{{ post.created_at.strftime('%b %d, %Y · %I:%M %p') }}</span>
@@ -134,12 +134,12 @@
         {% endif %}
 
         {% if current_user.is_authenticated and (joined or can_moderate) %}
-        <form method="post" action="{{ url_for('public.event_post_create', slug=event.slug) }}" style="margin-top:24px;">
+        <form method="post" action="{{ url_for('public.event_post_create', slug=event.slug) }}" style="margin-top:20px;">
           {{ post_form.hidden_tag() }}
           <div style="display:flex; flex-direction:column; gap:8px;">
-            {{ post_form.body(rows=4, placeholder="Share something with the group…", style="width:100%; padding:10px; background:var(--surface, #191919); border:1px solid var(--border, #2a2a2a); border-radius:6px; color:inherit; font-family:inherit; font-size:1em; resize:vertical;") }}
+            {{ post_form.body(rows=3, placeholder="Share something with the group…", class_="input", style="resize:vertical; min-height:88px;") }}
             {% if post_form.body.errors %}
-              {% for err in post_form.body.errors %}<p class="muted" style="color:#c55;">{{ err }}</p>{% endfor %}
+              {% for err in post_form.body.errors %}<p class="muted" style="color:var(--danger);">{{ err }}</p>{% endfor %}
             {% endif %}
             <div>{{ post_form.submit(class="btn btn--primary") }}</div>
           </div>
