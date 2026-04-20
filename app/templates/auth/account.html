@@ -48,6 +48,32 @@
         </div>
       </div>
 
+      <div class="card" style="grid-column: span 12;">
+        <div class="body">
+          <h3>Your events</h3>
+          {% if joined_events and joined_events|length > 0 %}
+            <p class="muted" style="margin:2px 0 14px;">Events you've joined. Click to view details or leave the thread.</p>
+            <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:10px;">
+              {% for ev in joined_events %}
+              <li style="display:flex; justify-content:space-between; align-items:center; gap:12px; padding:10px 14px; background:rgba(11,95,87,.04); border:1px solid rgba(11,95,87,.1); border-radius:10px;">
+                <div style="min-width:0;">
+                  <div style="font-weight:700;">
+                    <a href="{{ url_for('public.event_detail', slug=ev.slug) }}" style="color:inherit; text-decoration:none;">{{ ev.title }}</a>
+                  </div>
+                  <div class="muted" style="font-size:13px;">
+                    {{ ev.start_date.strftime('%a, %b %d, %Y') }}{% if ev.start_time %} · {{ ev.start_time }}{% endif %}{% if ev.location_name %} · {{ ev.location_name }}{% endif %}
+                  </div>
+                </div>
+                <a class="btn btn--sm" href="{{ url_for('public.event_detail', slug=ev.slug) }}">Open</a>
+              </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="muted">You haven't joined any events yet. <a href="{{ url_for('public.events') }}" style="color:var(--brand);">Browse events &rarr;</a></p>
+          {% endif %}
+        </div>
+      </div>
+
       <div class="card" style="grid-column: span 6;">
         <div class="body">
           <h3>Password</h3>

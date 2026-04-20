@@ -8,7 +8,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 
 from ..extensions import db, limiter
 from ..forms import SignupForm, LoginForm, ProfileForm, PasswordChangeForm
-from ..models import User
+from ..models import User, Event, EventRSVP
 from ..utils.mailer import send_email
 
 auth_bp = Blueprint("auth", __name__)
@@ -256,9 +256,26 @@ def account():
             flash("Password updated.", "success")
             return redirect(url_for("auth.account"))
 
+    from datetime import date, timedelta
+    cutoff = date.today() - timedelta(days=3)
+    try:
+        joined_events = (
+            Event.query
+            .join(EventRSVP, EventRSVP.event_id == Event.id)
+            .filter(EventRSVP.user_id == current_user.id)
+            .filter(Event.status == "published")
+            .filter(Event.start_date >= cutoff)
+            .order_by(Event.start_date.asc())
+            .limit(50)
+            .all()
+        )
+    except Exception:
+        joined_events = []
+
     return render_template(
         "auth/account.html",
         profile_form=profile_form,
         password_form=password_form,
+        joined_events=joined_events,
         title="Account settings",
     )

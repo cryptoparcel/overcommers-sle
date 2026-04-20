@@ -77,6 +77,22 @@
           </div>
           {% endif %}
 
+          <div class="event-card__meta" style="margin-top:6px;">
+            {% if ev.rsvp_count and ev.rsvp_count > 0 %}
+            <span class="event-card__meta-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <span>{{ ev.rsvp_count }} joined</span>
+            </span>
+            {% endif %}
+            {% if ev.id in joined_ids %}
+            <span class="event-card__meta-divider"></span>
+            <span class="event-card__meta-item" style="color:var(--brand); font-weight:600;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>You're in</span>
+            </span>
+            {% endif %}
+          </div>
+
           <div class="event-card__cta">
             View details {{ icon_arrow_right() }}
           </div>

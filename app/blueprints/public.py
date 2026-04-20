@@ -528,7 +528,6 @@ def events():
     """List of upcoming community events."""
     from datetime import date, timedelta
     try:
-        # Show events from today onward, plus events within the last 3 days (in case they went long)
         cutoff = date.today() - timedelta(days=3)
         upcoming = (
             Event.query
@@ -539,7 +538,6 @@ def events():
             .limit(50)
             .all()
         )
-        # Also fetch recent past events (for the "past events" section if you want one later)
         past = (
             Event.query
             .filter(Event.status == "published")
@@ -551,10 +549,23 @@ def events():
         )
     except Exception:
         upcoming, past = [], []
+
+    joined_ids = set()
+    if current_user.is_authenticated and (upcoming or past):
+        all_ids = [e.id for e in upcoming] + [e.id for e in past]
+        joined_ids = {
+            r.event_id
+            for r in EventRSVP.query.filter(
+                EventRSVP.user_id == current_user.id,
+                EventRSVP.event_id.in_(all_ids),
+            ).all()
+        }
+
     return render_template(
         "events.html",
         upcoming=upcoming,
         past=past,
+        joined_ids=joined_ids,
         title="Community Events",
         meta_description="Upcoming community events at Overcomers sober living — house meetings, volunteer days, alumni gatherings, and more in Grover Beach.",
     )
