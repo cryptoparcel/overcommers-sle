@@ -15,7 +15,7 @@ from .conftest import login, make_user
 def test_register_then_login(client, db):
     r = client.post("/auth/register", data={
         "name": "Bob", "email": "bob@test.com", "username": "bob",
-        "password": "password123",
+        "password": "password1234",
     }, follow_redirects=True)
     assert r.status_code == 200
     user = User.query.filter_by(email="bob@test.com").first()
@@ -35,7 +35,7 @@ def test_register_duplicate_email_rejected(client, db):
     make_user(db, email="dup@test.com", username="first")
     r = client.post("/auth/register", data={
         "name": "Second", "email": "dup@test.com", "username": "second",
-        "password": "password123",
+        "password": "password1234",
     })
     assert r.status_code == 409
 
@@ -70,7 +70,7 @@ def test_reset_password_with_valid_token(client, db):
     db.session.refresh(alice)
     assert alice.reset_token is None  # single-use token cleared
     assert alice.check_password("newsecret456")
-    assert not alice.check_password("password123")
+    assert not alice.check_password("password1234")
 
 
 def test_reset_password_expired_token_rejected(client, db):
@@ -85,7 +85,7 @@ def test_reset_password_expired_token_rejected(client, db):
     # Redirects back to forgot-password with error flash
     assert r.status_code in (302, 303)
     db.session.refresh(alice)
-    assert alice.check_password("password123")  # password unchanged
+    assert alice.check_password("password1234")  # password unchanged
 
 
 def test_reset_password_unknown_token_rejected(client, db):

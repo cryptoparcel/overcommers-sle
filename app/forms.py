@@ -39,7 +39,7 @@ class SignupForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email(), Length(max=255)])
     username = StringField("Username", validators=[DataRequired(), username_re])
     phone = StringField("Phone (optional)", validators=[Optional(), Length(max=40)])
-    password = PasswordField("Password", validators=[DataRequired(), Length(min=8, max=128)])
+    password = PasswordField("Password (12+ characters)", validators=[DataRequired(), Length(min=12, max=128)])
     submit = SubmitField("Create account")
 
 
@@ -114,7 +114,7 @@ class PasswordResetRequestForm(FlaskForm):
 
 
 class PasswordResetForm(FlaskForm):
-    new_password = PasswordField("New password", validators=[DataRequired(), Length(min=8, max=128)])
+    new_password = PasswordField("New password (12+ characters)", validators=[DataRequired(), Length(min=12, max=128)])
     confirm_new_password = PasswordField(
         "Confirm new password",
         validators=[DataRequired(), EqualTo("new_password", message="Passwords must match.")],
@@ -130,7 +130,7 @@ class ProfileForm(FlaskForm):
 
 class PasswordChangeForm(FlaskForm):
     current_password = PasswordField("Current password", validators=[DataRequired()])
-    new_password = PasswordField("New password", validators=[DataRequired(), Length(min=8, max=128)])
+    new_password = PasswordField("New password (12+ characters)", validators=[DataRequired(), Length(min=12, max=128)])
     confirm_new_password = PasswordField(
         "Confirm new password",
         validators=[DataRequired(), EqualTo("new_password", message="Passwords must match.")],

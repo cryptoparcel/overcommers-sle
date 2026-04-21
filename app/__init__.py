@@ -53,7 +53,13 @@ def create_app() -> Flask:
 
     login_manager.login_view = "auth.login"
     login_manager.login_message_category = "info"
-    login_manager.session_protection = "strong"
+    # "basic" marks the session non-fresh on IP/UA change (so fresh_login_required
+    # endpoints require re-auth) but doesn't boot the user off the site — kinder
+    # to mobile users whose IP changes when they move between Wi-Fi and cellular.
+    # The session_version check in the user_loader still invalidates stale cookies
+    # after admin lock / revoke-all-sessions, so protection stays strong where it
+    # matters.
+    login_manager.session_protection = "basic"
 
     app.register_blueprint(public_bp)
     app.register_blueprint(auth_bp, url_prefix="/auth")
@@ -205,11 +211,22 @@ def create_app() -> Flask:
         try:
             existing = User.query.filter_by(email=admin_email).first()
             if existing:
+                changed = False
                 if not existing.is_admin:
                     existing.is_admin = True
+                    changed = True
+                if not existing.email_confirmed:
                     existing.email_confirmed = True
+                    changed = True
+                # If the account was ever locked (by an admin action or a
+                # compromise investigation), the env-driven bootstrap is the
+                # break-glass recovery path — re-open it.
+                if existing.is_locked:
+                    existing.is_locked = False
+                    changed = True
+                if changed:
                     db.session.commit()
-                    app.logger.info(f"Promoted {admin_email} to admin via env vars.")
+                    app.logger.info(f"Refreshed admin {admin_email} via env vars.")
                 return
             user = User(
                 name="Admin",

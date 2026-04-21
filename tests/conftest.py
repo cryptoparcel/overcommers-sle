@@ -38,7 +38,7 @@ def db(app):
     return _db
 
 
-def make_user(db, *, email="alice@test.com", username="alice", password="password123",
+def make_user(db, *, email="alice@test.com", username="alice", password="password1234",
                name="Alice", is_admin=False, is_moderator=False, is_locked=False,
                email_confirmed=True):
     user = User(name=name, username=username, email=email,
@@ -50,7 +50,7 @@ def make_user(db, *, email="alice@test.com", username="alice", password="passwor
     return user
 
 
-def login(client, identifier, password="password123"):
+def login(client, identifier, password="password1234"):
     return client.post(
         "/auth/login",
         data={"identifier": identifier, "password": password},
