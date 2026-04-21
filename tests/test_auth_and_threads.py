@@ -352,6 +352,26 @@ def test_non_author_cannot_edit(client, db):
     assert post.body == "mine"
 
 
+def test_mod_can_edit_any_post_and_past_window(client, db):
+    alice = make_user(db)
+    make_user(db, email="mod@test.com", username="modder", is_moderator=True)
+    ev = _make_event(db)
+    login(client, "alice")
+    client.post(f"/events/{ev.slug}/join")
+    client.post(f"/events/{ev.slug}/posts", data={"body": "original"})
+    post = EventPost.query.filter_by(user_id=alice.id).first()
+    # Age the post past the 15-minute window to prove mods aren't time-limited
+    post.created_at = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(minutes=60)
+    db.session.commit()
+
+    client.post("/auth/logout")
+    login(client, "modder")
+    client.post(f"/events/{ev.slug}/posts/{post.id}/edit", data={"body": "cleaned up"})
+    db.session.refresh(post)
+    assert post.body == "cleaned up"
+    assert post.edited_at is not None
+
+
 def test_edit_blocked_after_window(client, db):
     alice = make_user(db)
     ev = _make_event(db)

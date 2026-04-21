@@ -39,14 +39,18 @@ def _within_edit_window(post) -> bool:
 
 
 def _post_editable_by(post, user) -> bool:
-    return (
-        post is not None
-        and user is not None
-        and getattr(user, "is_authenticated", False)
-        and post.user_id == user.id
-        and not post.is_hidden
-        and _within_edit_window(post)
-    )
+    """Author can edit within the window; moderators and admins can edit any
+    non-hidden post at any time so they can fix typos, remove personal info,
+    or clean up spam without having to delete."""
+    if post is None or post.is_hidden:
+        return False
+    if not getattr(user, "is_authenticated", False):
+        return False
+    if getattr(user, "is_admin", False) or getattr(user, "is_moderator", False):
+        return True
+    if post.user_id == user.id and _within_edit_window(post):
+        return True
+    return False
 
 
 # ── Static / SEO ─────────────────────────────────────────────

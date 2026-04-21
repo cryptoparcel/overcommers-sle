@@ -297,7 +297,7 @@
                 <div style="white-space:pre-wrap; word-wrap:break-word;">{{ post.body|post_format }}</div>
                 {% if current_user.is_authenticated and (can_moderate or is_author) %}
                 <div style="display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;">
-                  {% if is_author and post.id in editable_post_ids %}
+                  {% if post.id in editable_post_ids %}
                     <a class="btn btn--sm" href="{{ url_for('public.opening_detail', slug=opening.slug, edit_post=post.id) }}#opening-post-{{ post.id }}">Edit</a>
                   {% endif %}
                   <form method="post" action="{{ url_for('public.opening_post_delete', slug=opening.slug, post_id=post.id) }}" style="display:inline;" onsubmit="return confirm('Delete this post?');">

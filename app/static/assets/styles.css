@@ -715,3 +715,103 @@ h3,.h3{font-size:17px;font-weight:700;line-height:1.35;margin:0 0 6px}
 .dash-stat-label{color:var(--muted)}
 .dash-stat-value{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
 .dash-stat-value--warn{color:#dc2626}
+
+/* ─────────────────────────────────────────────────────────────
+   Mobile refinement + polish layer (added; no overrides that
+   change the desktop look). Targets tap-target size, consistent
+   stacking, richer focus states, and smoother card depth.
+   ───────────────────────────────────────────────────────────── */
+
+/* Minimum tappable size on controls used throughout the app */
+.pw-toggle{min-width:44px;min-height:44px;padding:10px}
+.btn{transition:background .18s var(--ease),box-shadow .2s var(--ease),transform .15s var(--ease),border-color .15s var(--ease)}
+
+/* Subtle elevation refinement — same layered feel, a touch more defined */
+:root{
+  --ring:0 0 0 3px rgba(11,95,87,.18);
+  --border-soft:rgba(10,26,36,.08);
+  --accent:#f0b429;
+}
+.card{border-color:var(--border-soft)}
+.btn:focus-visible{box-shadow:var(--ring);outline:none}
+.input:focus,input:focus,textarea:focus,select:focus{box-shadow:var(--ring);outline:none}
+
+/* Make long-form cards breathe a bit more on phones, and tighten on
+   very narrow phones so content doesn't feel crushed. */
+@media (max-width:640px){
+  .section{padding:32px 0}
+  .card__body,.card .body{padding:18px}
+  .h1,h1{font-size:28px;line-height:1.2}
+  .h2,h2{font-size:22px}
+  .h3,h3{font-size:17px}
+  .lead{font-size:15.5px}
+  /* Action rows stack nicely */
+  .actions{display:flex;flex-wrap:wrap;gap:8px}
+  .actions .btn{flex:1 1 auto;justify-content:center}
+  /* Keep the sticky CTA bar readable */
+  .sticky-bar .btn{font-size:12.5px;padding:8px 10px;min-height:36px}
+}
+@media (max-width:420px){
+  .container{padding-left:16px;padding-right:16px}
+  .btn{padding:9px 14px;font-size:14px;min-height:40px}
+  .btn--sm{padding:6px 12px;font-size:12.5px;min-height:34px}
+  /* Hero titles */
+  .h1,h1{font-size:24px}
+  /* Event detail hero spacing */
+  .event-detail__header,.event-detail__facts{gap:14px}
+  /* Thread post avatar scales down on ultra-narrow */
+  li[id^="post-"] > div[aria-hidden],
+  li[id^="opening-post-"] > div[aria-hidden]{
+    flex-basis:30px !important;width:30px !important;height:30px !important;font-size:12px !important;
+  }
+}
+
+/* Admin table polish: already wrapped in overflow-x:auto on the users
+   page — harmonise scroll behavior + visual scrollbar on iOS/Android. */
+.table,[class*="table"] .row{min-width:max-content}
+
+/* Filter bars across admin pages collapse to single column on phones */
+@media (max-width:600px){
+  .admin-head .admin-nav{gap:6px}
+  .admin-head .admin-nav .btn{padding:6px 10px;font-size:12.5px;min-height:34px}
+  form[action*="/admin/activity-log"] .field{flex:1 1 100% !important;min-width:0 !important}
+}
+
+/* Event-detail top actions (Join / Leave / Ask) wrap gracefully and
+   buttons become full-width on narrow screens. */
+@media (max-width:480px){
+  .event-detail__actions{gap:8px !important}
+  .event-detail__actions > form,
+  .event-detail__actions > a.btn,
+  .event-detail__actions > .btn{flex:1 1 100% !important}
+  .event-detail__actions > form .btn{width:100%}
+}
+
+/* Footer columns stack cleanly */
+@media (max-width:600px){
+  .footer__inner{gap:20px !important}
+}
+
+/* Nav cta on small phones — keep Apply/Donate reachable, logout-bell tidy */
+@media (max-width:520px){
+  .nav__cta{gap:6px}
+  .nav__cta .btn{padding:7px 10px;font-size:12.5px;min-height:36px}
+}
+
+/* Discussion thread (event + opening) — tighten padding on very narrow phones
+   without touching desktop rhythm. */
+@media (max-width:520px){
+  .event-thread,.opening-thread{margin-top:28px;padding-top:18px}
+  li[id^="post-"],li[id^="opening-post-"]{padding:10px 12px !important;gap:10px !important}
+}
+
+/* Team page already has its own breakpoints — harmonise small-phone text */
+@media (max-width:420px){
+  .team-card__name{font-size:17px}
+  .team-card__bio{font-size:13.5px}
+}
+
+/* Links inside cards pick up brand color cleanly instead of blue default */
+.card a:not(.btn){color:var(--brand);text-decoration:none}
+.card a:not(.btn):hover{text-decoration:underline}
+
