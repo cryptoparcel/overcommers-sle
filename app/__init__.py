@@ -107,7 +107,8 @@ def create_app() -> Flask:
             "connect-src 'self' https://plausible.io https://www.google.com https://www.google-analytics.com https://api.stripe.com"
         )
         if os.environ.get("RENDER"):
-            response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+            # 1 year + subdomains + preload — eligible for the HSTS preload list.
+            response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload"
         # Cache static assets aggressively (CSS, JS, images)
         if response.content_type and any(t in response.content_type for t in ("css", "javascript", "image", "font")):
             response.headers["Cache-Control"] = "public, max-age=2592000"  # 30 days

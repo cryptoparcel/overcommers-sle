@@ -44,10 +44,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/styles.css') }}?v=20260420" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/styles.css') }}?v=20260421" />
     {% block head_extra %}{% endblock %}
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <header class="topbar" id="topbar">
       <div class="container topbar__inner">
         <a class="brand" href="{{ url_for('public.index') }}">
@@ -173,7 +174,7 @@
       </div>
     </div>
 
-    <main>
+    <main id="main-content">
       {% with messages = get_flashed_messages(with_categories=True) %}
         {% if messages %}
           <div class="container">
