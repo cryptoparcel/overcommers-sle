@@ -2,6 +2,34 @@
 {% extends "admin/_base.html" %}
 {% block admin_content %}
 
+{% if current_user.is_admin and (smtp_configured is defined) and not smtp_configured %}
+<div class="card" style="margin-bottom:16px; border-color:rgba(245,158,11,.35); background:rgba(245,158,11,.05);">
+  <div class="card__body" style="display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap;">
+    <div style="flex:0 0 32px; width:32px; height:32px; border-radius:50%; background:rgba(245,158,11,.2); color:#b45309; display:flex; align-items:center; justify-content:center; font-weight:800;">!</div>
+    <div style="flex:1; min-width:240px;">
+      <div style="font-weight:800; color:#92400e; margin-bottom:4px;">Email sending is not configured</div>
+      <p class="muted" style="margin:0; font-size:13.5px; line-height:1.5;">
+        Password-reset and confirmation emails will silently no-op until <code>SMTP_HOST</code>, <code>SMTP_USERNAME</code>, and <code>SMTP_PASSWORD</code> are set in Render &rarr; Environment. Zoho settings: <code>smtp.zoho.com</code> &middot; port <code>587</code>.
+      </p>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if current_user.is_admin and (recaptcha_configured is defined) and not recaptcha_configured %}
+<div class="card" style="margin-bottom:16px; border-color:rgba(59,130,246,.35); background:rgba(59,130,246,.05);">
+  <div class="card__body" style="display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap;">
+    <div style="flex:0 0 32px; width:32px; height:32px; border-radius:50%; background:rgba(59,130,246,.2); color:#1d4ed8; display:flex; align-items:center; justify-content:center; font-weight:800;">i</div>
+    <div style="flex:1; min-width:240px;">
+      <div style="font-weight:800; color:#1e3a8a; margin-bottom:4px;">reCAPTCHA is off</div>
+      <p class="muted" style="margin:0; font-size:13.5px; line-height:1.5;">
+        Public forms (Contact, Apply, Tour, Story) accept submissions without bot verification until <code>RECAPTCHA_SITE_KEY</code> and <code>RECAPTCHA_SECRET_KEY</code> are set in Render &rarr; Environment.
+      </p>
+    </div>
+  </div>
+</div>
+{% endif %}
+
 {# ─── HERO STATS: 4 metrics that matter most ─── #}
 <div class="dash-hero">
   <div class="dash-metric">

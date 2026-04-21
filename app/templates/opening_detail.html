@@ -1,5 +1,31 @@
 
 {% extends "base.html" %}
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LodgingBusiness",
+  "name": {{ opening.title|tojson }},
+  {% if opening.photos and opening.photos|length > 0 %}"image": {{ opening.photos[0]|tojson }},{% endif %}
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": {{ (opening.city or site.address_city or 'Grover Beach')|tojson }},
+    "addressRegion": {{ (opening.state or site.address_state or 'CA')|tojson }},
+    "postalCode": {{ (site.address_zip or '93433')|tojson }},
+    "addressCountry": "US"
+  },
+  {% if opening.beds_available %}"numberOfRooms": {{ opening.beds_available }},{% endif %}
+  {% if opening.price_monthly and not opening.hide_price %}"priceRange": {{ opening.price_monthly|tojson }},{% endif %}
+  "description": {{ (opening.summary or opening.title)|tojson }},
+  "url": {{ url_for('public.opening_detail', slug=opening.slug, _external=True)|tojson }},
+  "telephone": {{ site.phone_display|tojson }},
+  "amenityFeature": [
+    {"@type": "LocationFeatureSpecification", "name": "Peer-based supportive housing"},
+    {"@type": "LocationFeatureSpecification", "name": "Recovery-focused community"}
+  ]
+}
+</script>
+{% endblock %}
 {% block content %}
 <style>
 /* Photo grid */

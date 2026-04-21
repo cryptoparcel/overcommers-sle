@@ -160,7 +160,26 @@ def index():
         openings_preview = Opening.query.filter_by(status="published").order_by(Opening.created_at.desc()).limit(3).all()
     except Exception:
         openings_preview = []
-    return render_template("index.html", title="Overcomers — Transformative Thinking & Restorative Community", page_blocks=blocks, openings_preview=openings_preview)
+    try:
+        from datetime import date, timedelta
+        cutoff = date.today() - timedelta(days=1)
+        events_preview_q = (
+            Event.query
+            .filter(Event.status == "published")
+            .filter(Event.start_date >= cutoff)
+        )
+        if not current_user.is_authenticated:
+            events_preview_q = events_preview_q.filter(Event.is_public == True)
+        events_preview = events_preview_q.order_by(Event.start_date.asc()).limit(3).all()
+    except Exception:
+        events_preview = []
+    return render_template(
+        "index.html",
+        title="Overcomers — Transformative Thinking & Restorative Community",
+        page_blocks=blocks,
+        openings_preview=openings_preview,
+        events_preview=events_preview,
+    )
 
 
 # ── Core pages ───────────────────────────────────────────────

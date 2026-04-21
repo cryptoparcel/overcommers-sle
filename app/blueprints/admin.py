@@ -141,6 +141,15 @@ def dashboard():
         apps_per_day=apps_per_day,
         upcoming_tours=upcoming_tours,
         upcoming_events=upcoming_events,
+        smtp_configured=bool(
+            current_app.config.get("SMTP_HOST")
+            and current_app.config.get("SMTP_USERNAME")
+            and current_app.config.get("SMTP_PASSWORD")
+        ),
+        recaptcha_configured=bool(
+            current_app.config.get("RECAPTCHA_SITE_KEY")
+            and current_app.config.get("RECAPTCHA_SECRET_KEY")
+        ),
         active="dashboard",
     )
 
