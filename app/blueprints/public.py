@@ -104,6 +104,7 @@ def sitemap():
         ("/impact", "monthly", "0.6"),
         ("/stories", "weekly", "0.6"),
         ("/events", "weekly", "0.7"),
+        ("/team", "monthly", "0.7"),
         ("/programs", "monthly", "0.5"),
         ("/careers", "monthly", "0.5"),
         ("/classes", "monthly", "0.5"),
@@ -238,6 +239,15 @@ def partnerships():
 @public_bp.get("/careers")
 def careers():
     return render_template("careers.html", title="Careers")
+
+
+@public_bp.get("/team")
+def team():
+    return render_template(
+        "team.html",
+        title="Meet our team — Overcomers",
+        meta_description="Meet the team behind Overcomers — a peer-based supportive housing community in Grover Beach, California.",
+    )
 
 
 @public_bp.get("/privacy")

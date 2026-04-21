@@ -10,7 +10,8 @@
     {% if users|length == 0 %}
       <p class="muted">No users yet.</p>
     {% else %}
-      <div class="table">
+      <div style="overflow-x:auto; -webkit-overflow-scrolling:touch;">
+      <div class="table" style="min-width:900px;">
         <div class="row head" style="grid-template-columns: 100px 1fr 1fr 1.4fr 70px 70px 70px 70px 260px;">
           <div>Created</div><div>Name</div><div>Username</div><div>Email</div><div>Verified</div><div>Admin</div><div>Mod</div><div>Locked</div><div>Actions</div>
         </div>
@@ -48,6 +49,7 @@
           </div>
         </div>
         {% endfor %}
+      </div>
       </div>
     {% endif %}
   </div>

@@ -1,5 +1,38 @@
 {% extends "base.html" %}
 {% from "partials/icons.html" import icon_for_category, icon_location, icon_clock, icon_calendar, icon_arrow_right, category_label %}
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": {{ event.title|tojson }},
+  "startDate": "{{ event.start_date.isoformat() }}",
+  "eventStatus": "{% if event.status == 'cancelled' %}https://schema.org/EventCancelled{% else %}https://schema.org/EventScheduled{% endif %}",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "location": {
+    "@type": "Place",
+    "name": {{ (event.location_name or 'Overcomers — Grover Beach')|tojson }},
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": {{ (event.location_address or site.address_street or '')|tojson }},
+      "addressLocality": {{ (site.address_city or 'Grover Beach')|tojson }},
+      "addressRegion": {{ (site.address_state or 'CA')|tojson }},
+      "postalCode": {{ (site.address_zip or '93433')|tojson }},
+      "addressCountry": "US"
+    }
+  },
+  {% if event.image_url %}"image": {{ event.image_url|tojson }},{% endif %}
+  "description": {{ (event.summary or event.description or event.title)|tojson }},
+  "organizer": {
+    "@type": "Organization",
+    "name": "Overcomers",
+    "url": {{ url_for('public.index', _external=True)|tojson }}
+  },
+  "isAccessibleForFree": true,
+  "url": {{ url_for('public.event_detail', slug=event.slug, _external=True)|tojson }}
+}
+</script>
+{% endblock %}
 {% block content %}
 <section class="section">
   <div class="container">

@@ -36,11 +36,16 @@
     {% endif %}
 
     <link rel="icon" href="{{ url_for('public.favicon') }}" />
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/overcomers-circle-logo.png') }}" />
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}" />
+    <meta name="theme-color" content="#0b5f57" />
+    <link rel="canonical" href="{{ request.base_url }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/styles.css') }}?v=20260219" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/styles.css') }}?v=20260220" />
+    {% block head_extra %}{% endblock %}
   </head>
   <body>
     <header class="topbar" id="topbar">
@@ -64,6 +69,7 @@
           <a href="{{ url_for('public.resources') }}">Resources</a>
           <a href="{{ url_for('public.faq') }}">FAQ</a>
           <a href="{{ url_for('public.contact') }}">Contact</a>
+          <a class="nav__mobile-only" href="{{ url_for('public.team') }}">Team</a>
           <a class="nav__mobile-only" href="{{ url_for('public.what_we_do') }}">What We Do</a>
           <a class="nav__mobile-only" href="{{ url_for('public.standards') }}">Standards</a>
           <a class="nav__mobile-only" href="{{ url_for('public.veterans') }}">Veterans</a>
@@ -228,6 +234,7 @@
         <div>
           <div class="footer__col-title">About</div>
           <div class="footer__links">
+            <a href="{{ url_for('public.team') }}">Meet our team</a>
             <a href="{{ url_for('public.what_we_do') }}">What We Do</a>
             <a href="{{ url_for('public.standards') }}">Standards</a>
             <a href="{{ url_for('public.resources') }}">Resources</a>
